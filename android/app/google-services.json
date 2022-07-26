@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "349481760613",
+    "firebase_url": "https://eolasinternational-86570.firebaseio.com",
+    "project_id": "eolasinternational-86570",
+    "storage_bucket": "eolasinternational-86570.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349481760613:android:83e0a0c6b5f9f0db",
+        "android_client_info": {
+          "package_name": "com.eolas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "349481760613-j2d5foenm0qv47dbuckhjmosbd45jsk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr099pDUsJ5C9IDdrscFfz_c_F-5Eda58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "349481760613-j2d5foenm0qv47dbuckhjmosbd45jsk7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

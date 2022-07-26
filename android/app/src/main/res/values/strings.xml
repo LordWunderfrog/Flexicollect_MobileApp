@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Eolas Flexicollect</string>
+	<string name="filter_view_https_flexcollect">Eolas Flexicollect</string>
+	<string name="filter_view_flexcollect">Flexicollect</string>
+</resources>
