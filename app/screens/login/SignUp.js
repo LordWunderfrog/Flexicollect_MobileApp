@@ -872,6 +872,7 @@ class SignUp extends Component {
                                         returnKeyType="next"
                                         placeholder={translation[Language].Mobile}
                                         placeholderColor={Color.colorLitGrey}
+                                        placeholderTextColor={Color.colorLitGrey}
                                         selectionColor={'black'}
                                         keyboardType={'phone-pad'}
                                         //onSubmitEditing={() => this.dob.focus()}
@@ -894,6 +895,7 @@ class SignUp extends Component {
                                         keyboardType={'phone-pad'}
                                         placeholder={translation[Language].DOB}
                                         placeholderColor={Color.colorLitGrey}
+                                        placeholderTextColor={Color.colorLitGrey}
                                         onSubmitEditing={() => this.password.focus()}
                                         onKeyPress={() => this.checkRegister(this.state.dob, 7)}
                                         onChangeText={dob => this.checkRegister(dob, 7)}

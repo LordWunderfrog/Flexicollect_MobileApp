@@ -138,8 +138,8 @@ android {
         applicationId "com.eolas"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 34
-        versionName "5.18"
+        versionCode 35
+        versionName "5.19"
         missingDimensionStrategy 'react-native-camera', 'general'
         resValue "string", "google_maps_api_key",(project.findProperty("GOOGLE_MAPS_API_KEY")?:"")
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
