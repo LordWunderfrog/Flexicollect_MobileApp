@@ -263,7 +263,6 @@ class BarCodeScanner extends Component {
         );
     }
 }
-
 export default BarCodeScanner;
 
 /** UI styles used for this class */
