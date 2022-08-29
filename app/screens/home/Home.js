@@ -250,23 +250,26 @@ class Home extends Component {
                     style={styles.welcomeImage}
                     source={require('../../images/home/logoIcon.png')}
                   />
-                  <Text style={styles.welcomeText}>{'Welcome'}</Text>
+                  <Text style={styles.welcomeText}>{this.props.translation[this.props.Language].Welcome}</Text>
                 </View>
 
                 <View style={styles.modelBody}>
                   <Text style={styles.modelBodyText}>{this.props.translation[this.props.Language].Hi + ' ' + this.props.profileName}</Text>
                   <Text style={styles.modelBodyText}>{this.props.translation[this.props.Language].enter_participantCode}</Text>
-                  <Text style={{ marginTop: Dimension.marginFifteen, fontSize: Dimension.normalText, fontStyle: 'italic' }}>{this.props.translation[this.props.Language].code_info}</Text>
+                  <Text style={{ marginTop: Dimension.marginFifteen, fontSize: Dimension.normalText, fontStyle: 'italic', color: Color.colorBlack }}>{this.props.translation[this.props.Language].code_info}</Text>
                 </View>
 
                 <View style={styles.modelInputViewWrap}>
                   <TextInput
                     value={this.state.pepsiCoCode}
+                    placeholderTextColor={Color.colorLitGrey}
+                    placeholderColor={Color.colorLitGrey}
+                    selectionColor={Color.colorBlack}
+                    underlineColorAndroid={Color.colorWhiteBg}
                     onChangeText={(text) => { this.setState({ pepsiCoCode: text }) }}
                     style={{
                       flex: 1, marginHorizontal: 10,
-                      color: Color.colorBlack,
-                      backgroundColor: Color.colorWhite
+                      color: Color.colorBlack
                     }}
                   >
                   </TextInput>
@@ -282,7 +285,7 @@ class Home extends Component {
                   <TouchableOpacity
                     style={styles.skipbutton}
                     onPress={() => { this.skipAccessCodeAction() }}>
-                    <Text style={[styles.buttonText, { fontSize: Dimension.normalText }]}>{"Skip"}</Text>
+                    <Text style={[styles.buttonText, { fontSize: Dimension.normalText }]}>{this.props.translation[this.props.Language].Skip}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -558,7 +561,8 @@ const styles = ScaledSheet.create({
   modelMainView: {
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: Color.colorWhiteBg
   },
   modelHeader: {
     flexDirection: 'row',
@@ -573,7 +577,8 @@ const styles = ScaledSheet.create({
   welcomeText: {
     marginLeft: 10,
     fontSize: Dimension.extraLargeText,
-    fontFamily: Font.fontRobotoBold
+    fontFamily: Font.fontRobotoBold,
+    color: Color.colorBlack
   },
   modelBody: {
     padding: 10,
