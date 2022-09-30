@@ -236,7 +236,7 @@ module.exports = {
       "Signin": "Log in",
       "Terms_of_service": "Servicevoorwaarden",
       "password_invalid": "Wachtwoord is ongeldig",
-      "welcome": "Netwerk",
+      "welcome": "Welkom bij het \"Eolas\" netwerk",
       "Password_Changed_MSg": "Password changed successfully",
       "Email_Verified": "Email is verified successfully. Login to access app",
       "ResetPassword_Sucess_Msg": "Reset Password link has been sent to your registered address.",
@@ -709,7 +709,7 @@ module.exports = {
       "Valid_Email": "请输入一个有效电子邮箱"
     },
     "Dutch": {
-      "Agree_Terms_Conditions": " Ga akkoord met de algemene voorwaarden",
+      "Agree_Terms_Conditions": "Akkoord gaan met de voorwaarden",
       "City": "Plaats",
       "Confirm_Password": "Herhaal wachtwoord",
       "Country": "Land",
@@ -1415,6 +1415,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Arabic": {
       "App_Version": "نسخة التطبيق(App)",
@@ -1496,6 +1498,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Chinese": {
       "App_Version": "APP版本",
@@ -1577,6 +1581,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Dutch": {
       "App_Version": "App versie",
@@ -1658,6 +1664,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "English": {
       "App_Version": "App Version",
@@ -1739,6 +1747,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "French": {
       "App_Version": "Version de l'application",
@@ -1820,6 +1830,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "German": {
       "App_Version": "App Version",
@@ -1901,6 +1913,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Hindi": {
       "App_Version": "एप्लिकेशन वेरीज़न",
@@ -1982,6 +1996,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Indonesian": {
       "App_Version": "Versi Aplikasi",
@@ -2063,6 +2079,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Italian": {
       "App_Version": "Versione dell'app",
@@ -2144,6 +2162,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Japanese": {
       "App_Version": "アプリバージョン",
@@ -2225,6 +2245,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Malay": {
       "App_Version": "Versi Aplikasi",
@@ -2306,6 +2328,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Polish": {
       "App_Version": "Wersja aplikacji",
@@ -2387,6 +2411,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Portuguese": {
       "App_Version": "Versão do aplicativo",
@@ -2468,6 +2494,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Russian": {
       "App_Version": "Версия приложения",
@@ -2549,6 +2577,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Spanish": {
       "App_Version": "Version de aplicacion",
@@ -2630,6 +2660,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Tagalog": {
       "App_Version": "Bersyon ng App",
@@ -2710,7 +2742,9 @@ module.exports = {
       "Yes": "Yes",
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
-      "enterPepsicoCode": "Please enter PepsiCo Code"
+      "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Thai": {
       "App_Version": "เวอร์ชันแอป",
@@ -2791,7 +2825,9 @@ module.exports = {
       "Yes": "Yes",
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
-      "enterPepsicoCode": "Please enter PepsiCo Code"
+      "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
     "Urdu": {
       "App_Version": "ایپ ورژن",
@@ -2873,6 +2909,8 @@ module.exports = {
       "NO": "NO",
       "Sync_Error_Offlinemode": "Looks like your internet connection is slow, Please try with good network for better experience",
       "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
   },
   home_mission:
@@ -3607,7 +3645,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3641,7 +3679,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3675,7 +3713,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3691,7 +3729,7 @@ module.exports = {
       "Processing_Msg": "Voorgaande antwoorden worden verwerkt. Even geduld alstublieft en probeer opnieuw.",
       "Submit": "Verzend",
       "Submitting_Survey": "Verzend vragenlijst",
-      "Survey_Completed": "Enqu\u00eate succesvol afgerond",
+      "Survey_Completed": "Enquête succesvol afgerond",
       "Validating_Msg": "Controle...",
       "Video_Processing_Msg": "De video wordt verwerkt. Wacht tot de video laadt.",
       "SlowNetwork_Survey_Submit": "Looks like your internet connection is slow, for better experience your survey will be submitted as a offline",
@@ -3709,7 +3747,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3743,7 +3781,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3777,7 +3815,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3811,7 +3849,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3845,7 +3883,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3879,7 +3917,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3913,7 +3951,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3947,7 +3985,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -3981,7 +4019,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -4015,7 +4053,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -4049,7 +4087,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -4083,7 +4121,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -4117,7 +4155,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -4151,7 +4189,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -4185,7 +4223,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",
@@ -4219,7 +4257,7 @@ module.exports = {
       "OK": "OK",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
-      "Submission_Exceeded": "Mission Submissions exceeded",
+      "Submission_Exceeded": "You will not be able to submit this survey, Because mission submissions exceeded",
       "Try_Again": "Try Again",
       "NO_Scale_Found": "No scale found",
       "Take_Photo": "Take Photo",

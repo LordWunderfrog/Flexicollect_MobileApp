@@ -5,10 +5,17 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
+
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 
 public class MainActivity extends ReactActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     /**
      * Returns the name of the main component registered from JavaScript.

@@ -931,6 +931,29 @@ class ProfileScreen extends Component {
      * Navigate to signup screen 
      */
     async logout() {
+        const { translation, Language } = this.state;
+        let expData = await AsyncStorage.getItem('offlineExport');
+        let expSurveyData = JSON.parse(expData)
+        expSurveyData = expSurveyData && expSurveyData.filter(function (obj) {
+            return obj.isSynced == false;
+        });
+        if (expSurveyData && expSurveyData.length > 0) {
+            /** warning for data lose if offline survey is available and try to logout */
+            Alert.alert(
+                translation[Language].LOGOUT,
+                translation[Language].Logout_Message,
+                [
+                    { text: translation[Language].NO, onPress: () => { }, style: "cancel" },
+                    { text: translation[Language].Yes, onPress: () => this.callLogoutApi() }
+                ],
+                { cancelable: false },
+            );
+        }
+        else {
+            this.callLogoutApi()
+        }
+    }
+    callLogoutApi = async () => {
         let api_key = await AsyncStorage.getItem('api_key');
         let url = Constants.BASE_URL + Service.LOGOUT;
 
@@ -1363,109 +1386,121 @@ class ProfileScreen extends Component {
             let status = state.isConnected ? "online" : "offline";
             let setOffline = await AsyncStorage.getItem('setOffline') || false; // not in use
             if (status === "online" && global.isSlowNetwork != true) {
-                let missionObject = await AsyncStorage.getItem('ans_keys_list');
-                let apiKey = await AsyncStorage.getItem("api_key");
-                let offlineExpMission = await AsyncStorage.getItem('offlineExport');
-                let offlineExpData = JSON.parse(offlineExpMission)
+                if (global.isSubmitProgress != 'InProgress') {
+                    let missionObject = await AsyncStorage.getItem('ans_keys_list');
+                    let apiKey = await AsyncStorage.getItem("api_key");
+                    let offlineExpMission = await AsyncStorage.getItem('offlineExport');
+                    let offlineExpData = JSON.parse(offlineExpMission)
 
-                if (missionObject !== null && missionObject !== undefined && missionObject.length > 0) {
-                    let missionData = JSON.parse(missionObject);
-                    this.setState({ isSurveySyncLoading: true, modelVisible: false })
-                    for (var i = 0; i < missionData.length; i++) {
-                        try {
-                            let sub_ans = await AsyncStorage.getItem(missionData[i]);
-                            let answer = [];
-                            let data = {};
-                            let delList = [];
-                            if (sub_ans !== null && sub_ans !== undefined && sub_ans.length > 0) {
-                                answer = JSON.parse(sub_ans);
+                    if (missionObject !== null && missionObject !== undefined && missionObject.length > 0) {
+                        let missionData = JSON.parse(missionObject);
+                        this.setState({ isSurveySyncLoading: true, modelVisible: false })
+                        for (var i = 0; i < missionData.length; i++) {
+                            try {
+                                let sub_ans = await AsyncStorage.getItem(missionData[i]);
+                                let answer = [];
+                                let data = {};
+                                let delList = [];
+                                if (sub_ans !== null && sub_ans !== undefined && sub_ans.length > 0) {
+                                    answer = JSON.parse(sub_ans);
 
-                                data['mission_id'] = answer[0].mission_id;
-                                data['survey_id'] = answer[0].survey_id;
-                                data['index'] = missionData[i];
-                                data['survey_answer_tag'] = answer[0].survey_answer_tag_id;
-                                data['sub_key'] = '';
-                                for (var j = 0; j < answer.length; j++) {
-                                    if (answer[j].survey_answer_tag_id && answer[j].survey_answer_tag_id != -1) {
-                                        data['survey_answer_tag'] = answer[j].survey_answer_tag_id;
-                                    }
-                                }
-
-                                for (var j = 0; j < answer.length; j++) {
-                                    if (answer[j].sub_key) {
-                                        data['sub_key'] = answer[j].sub_key;
-                                    }
-                                    if (answer[j].activeTime) {
-                                        data['activeTime'] = answer[j].activeTime;
-                                    }
-                                }
-
-                                for (var j = 0; j < answer.length; j++) {
-                                    let questionObj = answer[j];
-                                    if (questionObj.question_type === "upload") {
-                                        try {
-
-                                            answer[j].answer['media'] = await RNFS.readFile(questionObj.answer['media'], "base64");
-                                            delList.push(questionObj.answer['media']);
-
-                                        } catch (err) {
-                                            //console.log(err);
-                                        }
-                                    } else if (questionObj.question_type === "capture") {
-                                        try {
-
-                                            answer[j].answer['image'] = await RNFS.readFile(questionObj.answer['image'], "base64");
-                                            delList.push(questionObj.answer['image']);
-
-                                        } catch (err) {
-                                            //console.log(err);
+                                    data['mission_id'] = answer[0].mission_id;
+                                    data['survey_id'] = answer[0].survey_id;
+                                    data['index'] = missionData[i];
+                                    data['survey_answer_tag'] = answer[0].survey_answer_tag_id;
+                                    data['sub_key'] = '';
+                                    for (var j = 0; j < answer.length; j++) {
+                                        if (answer[j].survey_answer_tag_id && answer[j].survey_answer_tag_id != -1) {
+                                            data['survey_answer_tag'] = answer[j].survey_answer_tag_id;
                                         }
                                     }
-                                    else if (questionObj.question_type === "barcode") {
-                                        try {
 
-                                            answer[j].answer['image'] = await RNFS.readFile(questionObj.answer['image'], "base64");
-                                            delList.push(questionObj.answer['image']);
-
-                                        } catch (err) {
-                                            //console.log(err);
+                                    for (var j = 0; j < answer.length; j++) {
+                                        if (answer[j].sub_key) {
+                                            data['sub_key'] = answer[j].sub_key;
+                                        }
+                                        if (answer[j].activeTime) {
+                                            data['activeTime'] = answer[j].activeTime;
                                         }
                                     }
-                                }
-                                data['answers'] = answer;
-                                let url = Constants.BASE_URL + Service.OFFLINE_SUBMIT_SERVICE;
-                                await axios.post(url, data, {
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        Auth: apiKey
-                                    },
-                                    timeout: Constants.TIMEOUT
-                                })
-                                    .then(response => {
-                                        const elementsIndex = offlineExpData && offlineExpData.findIndex(element => element.sub_key == data['index'])
-                                        offlineExpData[elementsIndex].isSynced = true
-                                        Constants.saveKey('offlineExport', JSON.stringify(offlineExpData))
-                                        this.deleteItem(data['index'], delList);
-                                        if (i == missionData.length - 1) {
-                                            this.setState({ offlineMissionList: [], isSurveySyncLoading: false })
-                                            /** message while all mission synced */
-                                            Constants.showSnack(this.state.translation[this.state.Language].Offline_Sync_Success)
-                                            this.resetStack()
+
+                                    for (var j = 0; j < answer.length; j++) {
+                                        let questionObj = answer[j];
+                                        if (questionObj.question_type === "upload") {
+                                            try {
+
+                                                answer[j].answer['media'] = await RNFS.readFile(questionObj.answer['media'], "base64");
+                                                delList.push(questionObj.answer['media']);
+
+                                            } catch (err) {
+                                                //console.log(err);
+                                            }
+                                        } else if (questionObj.question_type === "capture") {
+                                            try {
+
+                                                answer[j].answer['image'] = await RNFS.readFile(questionObj.answer['image'], "base64");
+                                                delList.push(questionObj.answer['image']);
+
+                                            } catch (err) {
+                                                //console.log(err);
+                                            }
                                         }
+                                        else if (questionObj.question_type === "barcode") {
+                                            try {
+
+                                                answer[j].answer['image'] = await RNFS.readFile(questionObj.answer['image'], "base64");
+                                                delList.push(questionObj.answer['image']);
+
+                                            } catch (err) {
+                                                //console.log(err);
+                                            }
+                                        }
+                                    }
+                                    data['answers'] = answer;
+                                    let url = Constants.BASE_URL + Service.OFFLINE_SUBMIT_SERVICE;
+                                    await axios.post(url, data, {
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            Auth: apiKey
+                                        },
+                                        timeout: Constants.TIMEOUT
                                     })
-                                    .catch(error => {
+                                        .then(response => {
+                                            const elementsIndex = offlineExpData && offlineExpData.findIndex(element => element.sub_key == data['index'])
+                                            offlineExpData[elementsIndex].isSynced = true
+                                            Constants.saveKey('offlineExport', JSON.stringify(offlineExpData))
+                                            this.deleteItem(data['index'], delList);
+                                            if (i == missionData.length - 1) {
+                                                this.setState({ offlineMissionList: [], isSurveySyncLoading: false })
+                                                /** message while all mission synced */
+                                                Constants.showSnack(this.state.translation[this.state.Language].Offline_Sync_Success)
+                                                this.resetStack()
+                                            }
+                                        })
+                                        .catch(error => {
+                                            if (i == missionData.length - 1) {
+                                                this.setState({ isSurveySyncLoading: false })
+                                            }
+                                            console.log('error', error);
+                                            Constants.showSnack(error && error.response.data.error)
+                                        });
+                                }
+                                else {
+                                    if (i == missionData.length - 1) {
                                         this.setState({ isSurveySyncLoading: false })
-                                        console.log('error', error);
-                                    });
+                                    }
+                                }
+                            } catch (err) {
+                                if (i == missionData.length - 1) {
+                                    this.setState({ isSurveySyncLoading: false })
+                                }
+                                console.log(err);
                             }
-                            else {
-                                this.setState({ isSurveySyncLoading: false })
-                            }
-                        } catch (err) {
-                            this.setState({ isSurveySyncLoading: false })
-                            console.log(err);
                         }
                     }
+                }
+                else {
+                    Constants.showSnack(this.state.translation[this.state.Language].Sync_Inprogress)
                 }
             }
             else {
@@ -2745,11 +2780,13 @@ const styles = ScaledSheet.create({
     modalTitle: {
         fontSize: Dimension.mediumText,
         fontFamily: Font.fontRobotoBold,
+        color: Color.colorBlack,
         marginBottom: 20,
     },
     modalText: {
         fontSize: Dimension.normalText,
         fontFamily: Font.fontRobotoMedium,
+        color: Color.colorBlack,
     },
     exportSurveyButton: {
         width: 120,

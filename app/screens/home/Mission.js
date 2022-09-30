@@ -52,17 +52,6 @@ class Mission extends Component {
 	}
 
 	/** components life cycle methods */
-	componentWillUnmount() {
-
-		this.onTokenRefreshListener();
-		//this.notificationDisplayedListener();
-		//this.notificationListener();
-		// AppState.removeEventListener('change', this._handleAppStateChange);
-		this.notificationOpenedListener();
-		this.messageListener();
-		this.appstateChangeMission.remove()
-		this._subscription && this._subscription();
-	}
 	componentDidMount() {
 		global.mission_mount = true;
 		this.checkNetworkSpeed()
@@ -149,7 +138,16 @@ class Mission extends Component {
 		// 	}
 		// });
 	}
-
+	componentWillUnmount() {
+		this.onTokenRefreshListener();
+		//this.notificationDisplayedListener();
+		//this.notificationListener();
+		// AppState.removeEventListener('change', this._handleAppStateChange);
+		this.notificationOpenedListener();
+		this.messageListener();
+		this.appstateChangeMission.remove()
+		this._subscription && this._subscription();
+	}
 	/** check network speed if slow network then set offline mode */
 	checkNetworkSpeed = async () => {
 		try {
@@ -186,15 +184,21 @@ class Mission extends Component {
 	 */
 	_handleConnectivityChange = (state: NetInfoState) => {
 		if (state.isConnected) {
-			if (!connected) {
+			if (Platform.OS == 'ios' && connected) {
+				/** ios not work proper connection change so call every time */
 				Constants.saveKey("NetworkState", "online");
 				connected = state.isConnected;
-				//this.postOfflineAnswers();
 				if (global.isSubmitProgress == '') {
-					global.isSubmitProgress = 'InProgress';
 					this.submitOfflineAnswers();
 				}
-				//this.syncSurveys();
+			}
+			else if (!connected) {
+				/** android condition */
+				Constants.saveKey("NetworkState", "online");
+				connected = state.isConnected;
+				if (global.isSubmitProgress == '') {
+					this.submitOfflineAnswers();
+				}
 			}
 		} else {
 			Constants.saveKey("NetworkState", "offline");
@@ -301,6 +305,7 @@ class Mission extends Component {
 					let data = {};
 					let delList = [];
 					if (sub_ans !== null && sub_ans !== undefined && sub_ans.length > 0) {
+						global.isSubmitProgress = 'InProgress';
 						answer = JSON.parse(sub_ans);
 						data['mission_id'] = answer[0].mission_id;
 						data['survey_id'] = answer[0].survey_id;
@@ -428,7 +433,7 @@ class Mission extends Component {
 				.then(response => {
 					if (response.data.status === 200) {
 						if (response.data.hasOwnProperty("data")) {
-							//console.log(response.data.data);
+
 							response.data.data.map(mdata => {
 
 								let mid = mdata.id;
@@ -968,17 +973,17 @@ class Mission extends Component {
 					mData[i].survey_status = "";
 				}
 
-				/** by - k  remove submission exided mission from list */
-				if (mData[i].per_user_submission_type === 'single' && mData[i].total_submissionDone_perUser > 0) {
-					mData.splice(i, 1);
-				}
-				else if (mData[i].per_user_submission_type === 'multiple' &&
-					mData[i].no_submissions_per_user > 0 && mData[i].total_submissionDone_perUser >= mData[i].no_submissions_per_user) {
-					mData.splice(i, 1);
-				} else if (mData[i].submission > 0 &&
-					mData[i].user_submission >= mData[i].submission) {
-					mData.splice(i, 1);
-				}
+				// /** by - k  remove submission exided mission from list */
+				// if (mData[i].per_user_submission_type === 'single' && mData[i].total_submissionDone_perUser > 0) {
+				// 	mData.splice(i, 1);
+				// }
+				// else if (mData[i].per_user_submission_type === 'multiple' &&
+				// 	mData[i].no_submissions_per_user > 0 && mData[i].total_submissionDone_perUser >= mData[i].no_submissions_per_user) {
+				// 	mData.splice(i, 1);
+				// } else if (mData[i].submission > 0 &&
+				// 	mData[i].user_submission >= mData[i].submission) {
+				// 	mData.splice(i, 1);
+				// }
 			}
 
 			if (missionObject !== null && missionObject !== undefined && missionObject.length > 0) {
@@ -1017,6 +1022,7 @@ class Mission extends Component {
 				status = state.isConnected ? 'online' : 'offline'
 				if (status === 'online' && global.isSlowNetwork != true) {
 					Constants.saveKey("NetworkState", "online");
+					console.log('Missio list url', url)
 					axios.get(url, {
 						headers: {
 							'Content-Type': 'application/json',
@@ -1025,6 +1031,7 @@ class Mission extends Component {
 						timeout: Constants.TIMEOUT,
 					}).then(response => {
 						if (response.data.status === 200) {
+							console.log('Missio list Response', response)
 							if (this.props.isPepsicoUser == '1') {
 								/** for pepsico user progrss increment is based on pointBadges array */
 								let currentXP = response.data.current_customer_xp
@@ -1042,35 +1049,35 @@ class Mission extends Component {
 								xpPoints = response.data.current_customer_xp + '/' + response.data.total_customer_xp;
 							}
 							Constants.saveKey("xpPoint", xpPoints);
-							const missionNewArray = response.data.mission_data && response.data.mission_data.map(obj => ({ ...obj, total_submissionDone_perUser: 0 }))
+							const missionNewArray = response.data.mission_data && response.data.mission_data.map(obj => ({ ...obj, totalSubmissionByuser: 0 }))
 
-							// /** get per user count done while user is online mode and set it as default value for key for offline mode and add total_submissionDone_perUser key for locally manage to submittion limit  */
+							// /** get per user count done while user is online mode and set it as default value for key for offline mode and add totalSubmissionByuser key for locally manage to submittion limit  */
 							if (missionObject !== null && missionObject !== undefined && missionObject.length > 0) {
 								let missionData = JSON.parse(missionObject);
 								missionNewArray && missionNewArray.map((obj, index) => {
 									const indexOfObj = missionData.findIndex(el => el["id"] == obj["id"]);
 									const offlineObj = indexOfObj !== -1 ? missionData[index] : {};
 									if (offlineObj) {
-										obj.total_submissionDone_perUser = (offlineObj.total_submissionDone_perUser ? offlineObj.total_submissionDone_perUser : 0)
+										obj.totalSubmissionByuser = (offlineObj.totalSubmissionByuser ? offlineObj.totalSubmissionByuser : 0)
 									}
 								});
 							}
 
 							Constants.saveKey("missionData", JSON.stringify(missionNewArray));
 
-							/** by - k  remove submission exided mission from list */
-							missionNewArray && missionNewArray.map((obj, index) => {
-								if (obj.per_user_submission_type === 'single' && obj.total_submissionDone_perUser > 0) {
-									missionNewArray.splice(index, 1);
-								}
-								else if (obj.per_user_submission_type === 'multiple' &&
-									obj.no_submissions_per_user > 0 && obj.total_submissionDone_perUser >= obj.no_submissions_per_user) {
-									missionNewArray.splice(index, 1);
-								} else if (obj.submission > 0 &&
-									obj.user_submission >= obj.submission) {
-									missionNewArray.splice(index, 1);
-								}
-							})
+							// /** by - k  remove submission exided mission from list */
+							// missionNewArray && missionNewArray.map((obj, index) => {
+							// 	if (obj.per_user_submission_type === 'single' && obj.total_submissionDone_perUser > 0) {
+							// 		missionNewArray.splice(index, 1);
+							// 	}
+							// 	else if (obj.per_user_submission_type === 'multiple' &&
+							// 		obj.no_submissions_per_user > 0 && obj.total_submissionDone_perUser >= obj.no_submissions_per_user) {
+							// 		missionNewArray.splice(index, 1);
+							// 	} else if (obj.submission > 0 &&
+							// 		obj.user_submission >= obj.submission) {
+							// 		missionNewArray.splice(index, 1);
+							// 	}
+							// })
 
 							this.setState({ missionData: missionNewArray }, () => {
 								setTimeout(() => {

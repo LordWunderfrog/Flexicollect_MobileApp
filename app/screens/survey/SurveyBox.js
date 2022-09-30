@@ -3307,7 +3307,7 @@ class SurveyBox extends Component {
                   let mData = JSON.parse(missionObject);
                   mData && mData.map((obj) => {
                     if (obj.id == this.state.missionId.toString()) {
-                      obj.total_submissionDone_perUser = (obj.total_submissionDone_perUser ? obj.total_submissionDone_perUser : 0) + 1;
+                      obj['totalSubmissionByuser'] = (obj.totalSubmissionByuser ? obj.totalSubmissionByuser : 0) + 1;
                     }
                   })
                   Constants.saveKey("missionData", JSON.stringify(mData))
@@ -3465,7 +3465,7 @@ class SurveyBox extends Component {
                     let mData = JSON.parse(missionObject);
                     mData && mData.map((obj) => {
                       if (obj.id == this.state.missionId.toString()) {
-                        obj.total_submissionDone_perUser = (obj.total_submissionDone_perUser ? obj.total_submissionDone_perUser : 0) + 1;
+                        obj['totalSubmissionByuser'] = (obj.totalSubmissionByuser ? obj.totalSubmissionByuser : 0) + 1;
                       }
                     })
                     Constants.saveKey("missionData", JSON.stringify(mData))
@@ -3633,7 +3633,7 @@ class SurveyBox extends Component {
                       let mData = JSON.parse(missionObject);
                       mData && mData.map((obj) => {
                         if (obj.id == this.state.missionId.toString()) {
-                          obj.total_submissionDone_perUser = (obj.total_submissionDone_perUser ? obj.total_submissionDone_perUser : 0) + 1;
+                          obj['totalSubmissionByuser'] = (obj.totalSubmissionByuser ? obj.totalSubmissionByuser : 0) + 1;
                         }
                       })
                       Constants.saveKey("missionData", JSON.stringify(mData))
@@ -3728,11 +3728,11 @@ class SurveyBox extends Component {
           let mData = JSON.parse(missionObject);
 
           for (let i = 0; i < mData.length; i++) {
-            if (mData[i].id == this.state.missionId && (mData[i].per_user_submission_type === 'single' && mData[i].total_submissionDone_perUser > 0)) {
+            if (mData[i].id == this.state.missionId && (mData[i].per_user_submission_type === 'single' && mData[i].totalSubmissionByuser > 0)) {
               subExceeded = true;
             }
             else if (mData[i].id == this.state.missionId && (mData[i].per_user_submission_type === 'multiple' &&
-              mData[i].no_submissions_per_user > 0 && mData[i].total_submissionDone_perUser >= mData[i].no_submissions_per_user)) {
+              mData[i].no_submissions_per_user > 0 && mData[i].totalSubmissionByuser >= mData[i].no_submissions_per_user)) {
               subExceeded = true;
             } else if (mData[i].id == this.state.missionId && (mData[i].submission > 0 &&
               mData[i].user_submission >= mData[i].submission)) {
@@ -3814,8 +3814,8 @@ class SurveyBox extends Component {
               for (let i = 0; i < mData.length; i++) {
                 if (mData[i].id == this.state.missionId) {
                   mData[i].user_submission = mData[i].user_submission + 1;
-                  mData[i].total_submissionDone_perUser = (mData[i].total_submissionDone_perUser ? mData[i].total_submissionDone_perUser : 0) + 1;
-
+                  mData[i]['totalSubmissionByuser'] = (mData[i].totalSubmissionByuser ? mData[i].totalSubmissionByuser : 0) + 1
+                  //mData[i].total_submissionDone_perUser = (mData[i].total_submissionDone_perUser ? mData[i].total_submissionDone_perUser : 0) + 1;
                   //by-k
                   let object = {
                     mission_id: mData[i].id,
@@ -8090,10 +8090,11 @@ class SurveyBox extends Component {
           let path = 'file://' + filepath.path;
           let ext = path.substring(path.lastIndexOf("."), path.length);
           let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext;
+          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + ext;
           let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+          RNFFmpeg.executeWithArguments(["-i", path, "-vf", "scale=iw/2:ih/2", newfile])
             .then(result => {
               let source = {
                 uri: 'file://' + newfile,
@@ -8150,7 +8151,7 @@ class SurveyBox extends Component {
         const min = 1;
         const max = 999999;
         const random = Math.random() * (+max - +min) + +min;
-        let uploadUrl = `${dirs.DCIMDir}/record${random}.mp3`;
+        let uploadUrl = `${dirs.CacheDir}/record${random}.mp3`;
         // uploadUrl = Platform.OS === "android" ? "file://" + uploadUrl : uploadUrl;
 
         let type = res.type;
@@ -8226,7 +8227,7 @@ class SurveyBox extends Component {
       const dirs = RNFetchBlob.fs.dirs;
       let absoluteAudioPath =
         Platform.OS === "android"
-          ? `${dirs.DCIMDir}/record${index}.mp3`
+          ? `${dirs.CacheDir}/record${index}.mp3`
           : audioPath;
       // Convert to base64
       RNFetchBlob.fs.readFile(absoluteAudioPath, "base64").then(data => {
@@ -8743,7 +8744,7 @@ class SurveyBox extends Component {
     const dirs = RNFetchBlob.fs.dirs;
     const path = Platform.select({
       ios: "record.m4a",
-      android: `${dirs.DCIMDir}/record${index}.mp3`
+      android: `${dirs.CacheDir}/record${index}.mp3`
     });
 
     const uri = await this.audioRecorderPlayer.startRecorder(path);

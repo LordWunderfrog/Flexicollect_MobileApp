@@ -269,17 +269,17 @@ class OfflineSurveyList extends Component {
         const { translation, Language } = this.state;
         if (item.questionType == 'info')
             return (
-                <Text>{item.properties.info_text ? translation[Language].Info_Text + ': ' + (item.properties.info_text && item.properties.info_text.replace(/(<([^>]+)>)/ig, '')) : this.defaultAnswer()}</Text>
+                <Text style={styles.answerTextstyle}>{item.properties.info_text ? translation[Language].Info_Text + ': ' + (item.properties.info_text && item.properties.info_text.replace(/(<([^>]+)>)/ig, '')) : this.defaultAnswer()}</Text>
             )
         else if (item.answer !== null && item.answer !== "" && item.hasOwnProperty("answer")) {
             if (item.questionType == 'input') {
                 return (
-                    <Text>{item.answer.text ? translation[Language].Ans + ': ' + item.answer.text : this.defaultAnswer()}</Text>
+                    <Text style={styles.answerTextstyle}>{item.answer.text ? translation[Language].Ans + ': ' + item.answer.text : this.defaultAnswer()}</Text>
                 )
             }
             else if (item.questionType == 'gps') {
                 return (
-                    <Text>{item.answer.address ? translation[Language].Address + ': ' + item.answer.address : this.defaultAnswer()}</Text>
+                    <Text style={styles.answerTextstyle}>{item.answer.address ? translation[Language].Address + ': ' + item.answer.address : this.defaultAnswer()}</Text>
                 )
             }
             else if (item.questionType == 'capture') {
@@ -317,12 +317,12 @@ class OfflineSurveyList extends Component {
                 }
                 else if (item.properties.media_type == 'video') {
                     return (
-                        <Text>{translation[Language].Ans + ': ' + translation[Language].Video_Presented}</Text>
+                        <Text style={styles.answerTextstyle}>{translation[Language].Ans + ': ' + translation[Language].Video_Presented}</Text>
                     )
                 }
                 else if (item.properties.media_type == 'audio') {
                     return (
-                        <Text>{translation[Language].Ans + ': ' + translation[Language].Audio_Presented}</Text>
+                        <Text style={styles.answerTextstyle}>{translation[Language].Ans + ': ' + translation[Language].Audio_Presented}</Text>
                     )
                 }
                 else {
@@ -335,7 +335,7 @@ class OfflineSurveyList extends Component {
                 let barcodeId = item.answer.barcode_id != null && item.answer.barcode_id != 'null' && item.answer.barcode_id != undefined ? item.answer.barcode_id : '--'
                 return (
                     <>
-                        <Text>{translation[Language].Barcode_Value + ': ' + barcodeId}</Text >
+                        <Text style={styles.answerTextstyle}>{translation[Language].Barcode_Value + ': ' + barcodeId}</Text >
                         {item.answer.image ? <Image
                             style={styles.imageStyle}
                             source={{ uri: item.answer.image }}
@@ -348,7 +348,7 @@ class OfflineSurveyList extends Component {
             else if (item.questionType == 'choice') {
                 if (item.questionType == 'choice' && item.properties.display_type === "dropdown") {
                     return (
-                        <Text>{translation[Language].Ans + ': ' + item.answer.label_text}</Text>
+                        <Text style={styles.answerTextstyle}>{translation[Language].Ans + ': ' + item.answer.label_text}</Text>
                     )
                 }
                 else {
@@ -357,8 +357,8 @@ class OfflineSurveyList extends Component {
                             return item.answer.selected_option && item.answer.selected_option.map((obj, index) => {
                                 return (
                                     <View key={index}>
-                                        <Text>{translation[Language].Option + ': ' + obj.label}</Text>
-                                        <Text style={{ marginLeft: 10 }}>{translation[Language].Sub_Option + ': ' + obj.sublabel}</Text>
+                                        <Text style={styles.answerTextstyle}>{translation[Language].Option + ': ' + obj.label}</Text>
+                                        <Text style={[styles.answerTextstyle, { marginLeft: 10 }]}>{translation[Language].Sub_Option + ': ' + obj.sublabel}</Text>
                                     </View>
                                 );
                             })
@@ -366,13 +366,13 @@ class OfflineSurveyList extends Component {
                         else if (item.properties.multilevel == 0 && item.properties.choice_type != 'single') {
                             return item.answer.selected_option && item.answer.selected_option.map((obj, index) => {
                                 return (
-                                    <Text key={index}>{translation[Language].Option + ': ' + obj.label}</Text>
+                                    <Text style={styles.answerTextstyle} key={index}>{translation[Language].Option + ': ' + obj.label}</Text>
                                 );
                             })
                         }
                         else {
                             return (
-                                <Text>{translation[Language].Ans + ': ' + item.answer.label}</Text>
+                                <Text style={styles.answerTextstyle}>{translation[Language].Ans + ': ' + item.answer.label}</Text>
                             )
                         }
                     }
@@ -413,7 +413,7 @@ class OfflineSurveyList extends Component {
                         })
                         return (
                             < View style={{ flexDirection: 'row' }}>
-                                <Text>{optionValue ? translation[Language].Option + ': ' + optionValue : this.defaultAnswer()}</Text>
+                                <Text style={styles.answerTextstyle}>{optionValue ? translation[Language].Option + ': ' + optionValue : this.defaultAnswer()}</Text>
                             </View>
                         )
                     }
@@ -464,7 +464,7 @@ class OfflineSurveyList extends Component {
      */
     defaultAnswer = () => {
         return (
-            <Text>{this.state.translation[this.state.Language].Ans + ': ' + this.state.translation[this.state.Language].Not_Answered}</Text>
+            <Text style={styles.answerTextstyle}>{this.state.translation[this.state.Language].Ans + ': ' + this.state.translation[this.state.Language].Not_Answered}</Text>
         )
     }
 
@@ -858,6 +858,11 @@ const styles = ScaledSheet.create({
         paddingBottom: 10
     },
     lableText: {
+        fontSize: Dimension.normalText,
+        fontFamily: Font.fontRobotoLight,
+        color: Color.colorGrey
+    },
+    answerTextstyle: {
         fontSize: Dimension.normalText,
         fontFamily: Font.fontRobotoLight,
         color: Color.colorGrey
