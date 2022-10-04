@@ -1481,8 +1481,7 @@ class ProfileScreen extends Component {
                                             if (i == missionData.length - 1) {
                                                 this.setState({ isSurveySyncLoading: false })
                                             }
-                                            console.log('error', error);
-                                            Constants.showSnack(error && error.response.data.error)
+                                            Constants.showSnack((error && error.response.data.error) ? error.response.data.error : "Something went wrong")
                                         });
                                 }
                                 else {

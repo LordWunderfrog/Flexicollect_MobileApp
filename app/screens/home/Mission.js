@@ -1022,7 +1022,6 @@ class Mission extends Component {
 				status = state.isConnected ? 'online' : 'offline'
 				if (status === 'online' && global.isSlowNetwork != true) {
 					Constants.saveKey("NetworkState", "online");
-					console.log('Missio list url', url)
 					axios.get(url, {
 						headers: {
 							'Content-Type': 'application/json',
@@ -1031,7 +1030,6 @@ class Mission extends Component {
 						timeout: Constants.TIMEOUT,
 					}).then(response => {
 						if (response.data.status === 200) {
-							console.log('Missio list Response', response)
 							if (this.props.isPepsicoUser == '1') {
 								/** for pepsico user progrss increment is based on pointBadges array */
 								let currentXP = response.data.current_customer_xp
