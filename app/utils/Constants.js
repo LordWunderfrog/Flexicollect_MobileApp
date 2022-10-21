@@ -10,14 +10,14 @@ module.exports = {
   */
 
   // DEVELOPMENT
-  // BASE_URL: 'https://devapi.flexicollect.com/v1/',
-  // BASE_URL_V2: 'https://devapi.flexicollect.com/v2/',
-  // BASE_URL_V3: 'https://devapi.flexicollect.com/v3/',
+  BASE_URL: 'https://devapi.flexicollect.com/v1/',
+  BASE_URL_V2: 'https://devapi.flexicollect.com/v2/',
+  BASE_URL_V3: 'https://devapi.flexicollect.com/v3/',
 
   // STAGING
-  BASE_URL: 'https://api.flexicollect.com/v1/',
-  BASE_URL_V2: 'https://api.flexicollect.com/v2/',
-  BASE_URL_V3: 'https://api.flexicollect.com/v3/',
+  // BASE_URL: 'https://api.flexicollect.com/v1/',
+  // BASE_URL_V2: 'https://api.flexicollect.com/v2/',
+  // BASE_URL_V3: 'https://api.flexicollect.com/v3/',
 
   /**Store url for redirect on store for upgrade application*/
   PLAY_STORE_URL: Platform.OS == 'ios' ? "https://apps.apple.com/us/app/id1463959676" : "https://play.google.com/store/apps/details?id=com.eolas",

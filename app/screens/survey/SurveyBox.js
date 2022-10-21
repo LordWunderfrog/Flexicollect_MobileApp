@@ -5793,6 +5793,17 @@ class SurveyBox extends Component {
         }
       }
 
+      /** check choice type element set limit */
+      if (questionsArray[currentQuesIndx].questionType === 'choice' && questionsArray[currentQuesIndx].properties.hasOwnProperty('setlimit') && questionsArray[currentQuesIndx].properties.setlimit == 1) {
+        let ansObj = questionsArray[currentQuesIndx].answer
+        let count = ansObj.selected_option && ansObj.selected_option.length || 0
+        let objProperty = questionsArray[currentQuesIndx].properties
+        if (count < objProperty.minlimit) {
+          Constants.showSnack('Please select minimum ' + objProperty.minlimit + ' options')
+          return;
+        }
+      }
+
       /**
        * check current question include release mission in condition
        * add release mission project id and mission id to current question answer object
@@ -7183,6 +7194,22 @@ class SurveyBox extends Component {
     );
     subItem.isClicked = !subItem.isClicked;
     questionCopy[headerIndex].data[childIndex] = subItem;
+
+    /** Logic of non of above */
+    questionCopy.map((obj1) => {
+      obj1.data.map(obj2 => {
+        if (subItem.id == "noneofabove" && obj2.id != "noneofabove") {
+          obj2.isClicked = false
+        }
+        else if (subItem.id != "noneofabove" && obj2.id == "noneofabove") {
+          obj2.isClicked = false
+        }
+        else {
+          subItem.isClicked = subItem.isClicked
+        }
+      })
+    })
+
     multiLevelTrueMultiChoiceOuterArray[parentIndex].data = questionCopy;
     this.setState({
       multiLevelTrueMultiChoiceOuterArray: multiLevelTrueMultiChoiceOuterArray
@@ -7334,6 +7361,35 @@ class SurveyBox extends Component {
     );
     item.isClicked = !item.isClicked;
     questionCopy[index] = item;
+
+    let queProperty = questionArray && questionArray.properties
+    if (queProperty && queProperty.setlimit == 1) {
+      if (queProperty.setlimit_type == "setminmaxlimit") {
+        var filteredArray = questionCopy.filter(function (element) { return element.isClicked == true })
+        let selectedObjLenth = filteredArray && filteredArray.length
+        if (selectedObjLenth > queProperty.maxlimit) {
+          item.isClicked = false
+          Constants.showSnack('Please select maximum ' + queProperty.maxlimit + ' options only')
+        }
+        else {
+          item.isClicked = item.isClicked
+        }
+      }
+      else {
+        questionCopy.map((obj, pos) => {
+          if (item.id == "noneofabove" && obj.id != "noneofabove") {
+            obj.isClicked = false
+          }
+          else if (item.id != "noneofabove" && obj.id == "noneofabove") {
+            obj.isClicked = false
+          }
+          else {
+            item.isClicked = item.isClicked
+          }
+        })
+      }
+    }
+
     multiLevelFalseMultiChoiceOuterArray[parentPosition].data = questionCopy;
     this.setState({
       multiLevelFalseMultiChoiceOuterArray: multiLevelFalseMultiChoiceOuterArray

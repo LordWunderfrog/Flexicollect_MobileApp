@@ -173,7 +173,7 @@ PODS:
   - GoogleUtilities/UserDefaults (7.7.0):
     - GoogleUtilities/Logger
   - libevent (2.1.12)
-  - mobile-ffmpeg-https (4.3.1.LTS)
+  - mobile-ffmpeg-https (4.4.LTS)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -408,8 +408,8 @@ PODS:
     - React-Core
   - react-native-document-picker (8.1.0):
     - React-Core
-  - react-native-ffmpeg/https-lts (0.4.4):
-    - mobile-ffmpeg-https (= 4.3.1.LTS)
+  - react-native-ffmpeg/https-lts (0.5.2):
+    - mobile-ffmpeg-https (= 4.4.LTS)
     - React
   - react-native-geolocation (2.1.0):
     - React-Core
@@ -919,7 +919,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  mobile-ffmpeg-https: aebe327c4cdacde636defa4118465413f099667d
+  mobile-ffmpeg-https: 7ec3461d626f2d86be1e904bcfb29ed0be8cad7a
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   Permission-Camera: bae27a8503530770c35aadfecbb97ec71823382a
@@ -943,7 +943,7 @@ SPEC CHECKSUMS:
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-document-picker: 5663fe4bcdb646200683a41790464d2793307ac8
-  react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
+  react-native-ffmpeg: 587fa045f985d775107f4b8cbb6c79df0ad68e63
   react-native-geolocation: 69f4fd37650b8e7fee91816d395e62dd16f5ab8d
   react-native-geolocation-service: 7c9436da6dfdecd9526c62eac62ea2bc3f0cc8ea
   react-native-image-picker: e95b4785b685cfc06609bc50ed6fb55b59990c99
