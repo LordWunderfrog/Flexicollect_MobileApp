@@ -2526,7 +2526,7 @@ const styles = ScaledSheet.create({
         fontSize: Dimension.mediumText,
         alignSelf: 'stretch',
         height: 40,
-        textAlign: 'left',
+        textAlign: 'auto',
         fontWeight: 'normal',
         color: Color.colorBlack,
         marginLeft: 4,

@@ -99,7 +99,6 @@ class Notification extends Component {
         },
         timeout: Constants.TIMEOUT,
       }).then(response => {
-
         if (response.data.status === 1 && response.data.result && response.data.result.length > 0) {
           let notificationData = []
           response.data.result.forEach(x => {
@@ -210,62 +209,65 @@ class Notification extends Component {
         {Platform.OS == 'android' ? <StatusBar translucent barStyle="light-content" backgroundColor={Color.colorBlack}></StatusBar> : null}
         <View style={styles.viewContainer}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => this.imagePressed()}>
-              <View style={{ marginLeft: 20, marginRight: 10 }}>
-                <Text style={styles.nameText}>{this.props.profileName}</Text>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity onPress={() => this.imagePressed()}>
+                <View style={{ marginLeft: 20, marginRight: 10 }}>
+                  <Text numberOfLines={2} style={styles.nameText}>{this.props.profileName}</Text>
 
-                {this.props.isPepsicoUser == 1 ?
-                  <View style={styles.streakView}>
-                    <View style={styles.streakTextWrap}>
-                      <Text style={styles.straekValue}>{this.props.currentStreak}</Text>
-                      <Text style={styles.strakText}>{this.props.translation[this.props.Language].Streak}</Text>
-                    </View>
-                    <Image
-                      style={styles.streakImage}
-                      resizeMode={'contain'}
-                      source={require('../../images/awards/streakFlame.png')}
-                    />
-                    <View style={{ marginLeft: 3 }}>
-                      <Text style={styles.countText}>{this.state.xpPoint}</Text>
-                      <Progress.Bar
-                        progress={finalValue}
-                        width={148}
-                        color={Color.colorGreen}
-                        borderColor={Color.colorDarkBlue}
-                        unfilledColor={Color.colorWhite}
-                        animated={true}
+                  {this.props.isPepsicoUser == 1 ?
+                    <View style={styles.streakView}>
+                      <View style={styles.streakTextWrap}>
+                        <Text style={styles.straekValue}>{this.props.currentStreak}</Text>
+                        <Text style={styles.strakText}>{this.props.translation[this.props.Language].Streak}</Text>
+                      </View>
+                      <Image
+                        style={styles.streakImage}
+                        resizeMode={'contain'}
+                        source={require('../../images/awards/streakFlame.png')}
                       />
+                      <View style={{ marginLeft: 3 }}>
+                        <Text style={styles.countText}>{this.state.xpPoint}</Text>
+                        <Progress.Bar
+                          progress={finalValue}
+                          width={148}
+                          color={Color.colorGreen}
+                          borderColor={Color.colorDarkBlue}
+                          unfilledColor={Color.colorWhite}
+                          animated={true}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  :
-                  <View style={{ flexDirection: 'row' }}>
-                    <Image
-                      style={styles.goldBadge}
-                      source={require('../../images/home/goldbadge.png')}
-                    />
-                    <View style={{ marginLeft: 8 }}>
-                      <Text style={styles.countText}>{this.state.xpPoint}</Text>
-                      <Progress.Bar
-                        progress={finalValue}
-                        width={148}
-                        color={Color.colorGreen}
-                        borderColor={Color.colorDarkBlue}
-                        unfilledColor={Color.colorWhite}
-                        animated={true}
+                    :
+                    <View style={{ flexDirection: 'row' }}>
+                      <Image
+                        style={styles.goldBadge}
+                        source={require('../../images/home/goldbadge.png')}
                       />
-                    </View>
-                  </View>}
-              </View>
-            </TouchableOpacity>
+                      <View style={{ marginLeft: 8 }}>
+                        <Text style={styles.countText}>{this.state.xpPoint}</Text>
+                        <Progress.Bar
+                          progress={finalValue}
+                          width={148}
+                          color={Color.colorGreen}
+                          borderColor={Color.colorDarkBlue}
+                          unfilledColor={Color.colorWhite}
+                          animated={true}
+                        />
+                      </View>
+                    </View>}
+                </View>
+              </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity onPress={this.supportAction}>
-              <Image
-                style={{ padding: 20, margin: 30, borderRadius: 5, backgroundColor: Color.colorOrange }}
-                resizeMode='cover'
-                source={require('../../images/home/support_icon.png')}
-              />
-            </TouchableOpacity>
-
+            <View style={{ width: 95 }}>
+              <TouchableOpacity onPress={this.supportAction}>
+                <Image
+                  style={{ padding: 20, margin: 30, borderRadius: 5, backgroundColor: Color.colorOrange }}
+                  resizeMode='cover'
+                  source={require('../../images/home/support_icon.png')}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {!isLoading && notificationData.length > 0 && (
@@ -380,7 +382,7 @@ const styles = ScaledSheet.create({
   },
   nameText: {
     color: Color.colorWhiteBg,
-    fontSize: Dimension.bigeText,
+    fontSize: Dimension.veryLargeText,
     fontFamily: Font.fontRobotoBold,
     paddingLeft: 5,
     marginTop: 20,
