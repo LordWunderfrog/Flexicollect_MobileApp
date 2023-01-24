@@ -965,6 +965,9 @@ class Mission extends Component {
 			/** case when offline mission available then take from there */
 			let mData = JSON.parse(missionObject);
 
+			/** Logfile TempCode*/
+			this.storeLogFile(mData, false)
+
 			for (let i = 0; i < mData.length; i++) {
 				let stat = await AsyncStorage.getItem("inp_" + mData[i].id.toString());
 				if (stat != null && stat != "") {
@@ -1083,6 +1086,9 @@ class Mission extends Component {
 								}, 1000)
 
 							})
+
+							/** Logfile TempCode*/
+							this.storeLogFile(missionNewArray, true)
 							this.syncSurveys();
 
 							this.props.xpPoint()
@@ -1111,6 +1117,38 @@ class Mission extends Component {
 		} catch (e) {
 			//console.log(e)
 		}
+	}
+
+	/** Logfile TempCode*/
+	/** Store response and request in log file for temporary to catch submit and disappear issue */
+	async storeLogFile(missionList, Isonline) {
+		// let logPath = ""
+		// if (Platform.OS == 'android') {
+		// 	logPath = RNFS.DownloadDirectoryPath + "/" + "MissionLog.txt"
+		// }
+		// else {
+		// 	await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile/`)
+		// 	logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "MissionLog.txt";
+		// }
+
+		// let readFiledata = ''
+		// if (await RNFS.exists(logPath)) {
+		// 	readFiledata = await RNFS.readFile(logPath, "utf8");
+		// }
+
+		// let strWritedata = readFiledata + '\n \n'
+		// 	+ "Date : " + new Date() + '\n \n'
+		// 	+ "Isonline= " + Isonline + '\n \n'
+		// 	+ "Mission List: " + JSON.stringify(missionList) + '\n'
+		// 	+ "======================================================================"
+
+		// RNFS.writeFile(logPath, strWritedata, 'utf8')
+		// 	.then(async (success) => {
+		// 		console.log('success', success)
+		// 	})
+		// 	.catch((err) => {
+		// 		console.log('Error in write file', err.message);
+		// 	});
 	}
 
 	/** get FCM token and update for the notification */

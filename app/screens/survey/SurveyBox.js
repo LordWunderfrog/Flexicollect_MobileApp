@@ -3279,6 +3279,9 @@ class SurveyBox extends Component {
                 }
               }
 
+              /** Logfile TempCode*/
+              this.storeLogFile(JSON.parse(missionObject), questionObj, true, response.data, true, true, isSubmit === true ? true : false)
+
               if (isSubmit === true) {
 
                 let delList = [];
@@ -3348,6 +3351,8 @@ class SurveyBox extends Component {
               }
             })
             .catch(error => {
+              /** Logfile TempCode*/
+              this.storeLogFile(JSON.parse(missionObject), questionObj, false, error.response, true, true, isSubmit === true ? true : false)
               questionResponseQue[questionsArr[currentPage].questionID] = true;
               if (backBtnFired === true) {
                 this.onBackButtonPressAndroid();
@@ -3437,6 +3442,9 @@ class SurveyBox extends Component {
                   }
                 }
 
+                /** Logfile TempCode*/
+                this.storeLogFile(JSON.parse(missionObject), questionObj, true, response.data, false, true, isSubmit === true ? true : false)
+
                 if (isSubmit === true) {
 
                   let delList = [];
@@ -3508,6 +3516,8 @@ class SurveyBox extends Component {
                 }
               })
               .catch(error => {
+                /** Logfile TempCode*/
+                this.storeLogFile(JSON.parse(missionObject), questionObj, false, error.response, false, true, isSubmit === true ? true : false)
                 console.log('Error is', error)
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
                 if (backBtnFired === true) {
@@ -3605,6 +3615,9 @@ class SurveyBox extends Component {
                     }
                   }
 
+                  /** Logfile TempCode*/
+                  this.storeLogFile(JSON.parse(missionObject), questionObj, true, response, false, true, isSubmit === true ? true : false)
+
                   if (isSubmit === true) {
 
                     let delList = [];
@@ -3697,6 +3710,8 @@ class SurveyBox extends Component {
                 }
               })
               .catch(error => {
+                /** Logfile TempCode*/
+                this.storeLogFile(JSON.parse(missionObject), questionObj, false, error.response, false, true, isSubmit === true ? true : false)
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
                 if (backBtnFired === true) {
                   this.onBackButtonPressAndroid();
@@ -3850,13 +3865,62 @@ class SurveyBox extends Component {
           else {
             this.setState({ isSubmit: false, isNoReturncheck: false });
           }
+          /** Logfile TempCode*/
+          this.storeLogFile(JSON.parse(missionObject), questionObj, true, 'Offline Submited', Platform.OS == 'ios' ? true : false, false, isSubmit === true ? true : false)
         } else {
           this.setState({ isSubmit: false, isNoReturncheck: false });
           Constants.showSnack(this.state.translation[this.state.Language].Submission_Exceeded);
+          /** Logfile TempCode*/
+          this.storeLogFile(JSON.parse(missionObject), questionObj, true, 'submition exeeded', Platform.OS == 'ios' ? true : false, false, isSubmit === true ? true : false)
         }
       }
     });
 
+  }
+
+
+  /** Logfile TempCode*/
+  /** Store response and request in log file for temporary to catch submit and disappear issue */
+  async storeLogFile(missionObj, questionObj, isSucess, resposeObj, isIos, isOnline, isSubmitLast) {
+    // let selectedMission = missionObj && missionObj.filter((obj) => {
+    //   return obj.id == this.state.missionId;
+    // });
+    // let logPath = ""
+    // if (Platform.OS == 'android') {
+    //   logPath = RNFS.DownloadDirectoryPath + "/" + "RequestLog.txt"
+    // }
+    // else {
+    //   await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile/`)
+    //   logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "RequestLog.txt";
+    // }
+    // console.log('Log file is', logPath)
+    // let readFiledata = ''
+    // if (await RNFS.exists(logPath)) {
+    //   readFiledata = await RNFS.readFile(logPath, "utf8");
+    // }
+    // let surveySubmitedStatus = isSubmitLast == true ? "Survey submitted successfully with tag id ==" + questionObj.survey_answer_tag_id : ""
+
+    // let strWritedata = readFiledata + '\n \n'
+    //   + "Mission_Name: " + selectedMission[0].mission_name + '\n'
+    //   + "Mission_ID: " + selectedMission[0].id + '\n \n'
+    //   + "REQUEST : " + new Date() + '\n \n'
+    //   + JSON.stringify(questionObj) + "\n \n"
+    //   + "Response: " + JSON.stringify(resposeObj) + '\n'
+    //   + "is_Sucess= " + isSucess + '\n'
+    //   + "is_Ios= " + isIos + '\n'
+    //   + "is_Online= " + isOnline + '\n'
+    //   + "Is_Submit= " + isSubmitLast + '\n'
+    //   + surveySubmitedStatus + '\n'
+    //   + "======================================================================"
+
+
+    // RNFS.writeFile(logPath, strWritedata, 'utf8')
+    //   .then(async (success) => {
+    //     console.log('success', success)
+    //   })
+    //   .catch((err) => {
+    //     console.log('Error in write file', err.message);
+    //   });
   }
 
   /** temp solution : Remove imaeg data from the infomation element infotext with image

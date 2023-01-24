@@ -35,6 +35,7 @@ import RNFS from "react-native-fs";
 import DialogInput from "../../components/DialogInput"
 import * as CAMERASTYLE from "../../style/Camera";
 import ExpandableView from "../../components/ExpandableView";
+import Mailer from 'react-native-mail';
 
 const { height, width } = Dimensions.get('window');
 const dropDownIcon = require('../../images/profile/down_arrow.png');
@@ -953,6 +954,42 @@ class ProfileScreen extends Component {
             this.callLogoutApi()
         }
     }
+    /** Logfile TempCode*/
+    // sendLogFile() {
+    //     let logPath = ""
+    //     let missionLogPath = ""
+    //     if (Platform.OS == 'android') {
+    //         logPath = RNFS.DownloadDirectoryPath + "/" + "RequestLog.txt"
+    //         missionLogPath = RNFS.DownloadDirectoryPath + "/" + "MissionLog.txt"
+    //     }
+    //     else {
+    //         logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "RequestLog.txt";
+    //         missionLogPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "MissionLog.txt";
+    //     }
+
+    //     let attachmentsObj = {
+    //         path: logPath,
+    //         type: 'text',
+
+    //     }
+    //     let attachmentsObj1 = {
+    //         path: missionLogPath,
+    //         type: 'text',
+    //     }
+
+    //     Mailer.mail({
+    //         subject: 'Flexicollect Support Request',
+    //         recipients: ['flexicollect-support@eolasinternational.com'],
+    //         ccRecipients: [''],
+    //         bccRecipients: [''],
+    //         body: '',
+    //         //customChooserTitle: "This is my new title", // Android only (defaults to "Send Mail")
+    //         isHTML: true,
+    //         attachments: [attachmentsObj, attachmentsObj1]
+    //     }, (error, event) => {
+    //         console.log('email send error is', error)
+    //     });
+    // }
     callLogoutApi = async () => {
         let api_key = await AsyncStorage.getItem('api_key');
         let url = Constants.BASE_URL + Service.LOGOUT;
@@ -2305,6 +2342,19 @@ class ProfileScreen extends Component {
                                         size="small" color={Color.colorWhiteBg} />
                                 )}
                             </TouchableOpacity>
+                            { /** Logfile TempCode*/}
+                            {/* <TouchableOpacity
+                                style={[styles.logoutContainer, { backgroundColor: Color.colorDarkRed, marginLeft: 5, minWidth: 100, width: 'auto' }]}
+                                onPress={() => this.sendLogFile()}>
+                                {this.state.isLogoutText && (
+                                    <Text style={styles.logoutText}>{"Send Logfile"}</Text>
+                                )}
+                                {this.state.isLogoutLoading && (
+                                    <ActivityIndicator
+                                        style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
+                                        size="small" color={Color.colorWhiteBg} />
+                                )}
+                            </TouchableOpacity> */}
                         </View>
                         <View style={{
                             flexDirection: 'row',
