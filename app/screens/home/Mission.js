@@ -1122,33 +1122,34 @@ class Mission extends Component {
 	/** Logfile TempCode*/
 	/** Store response and request in log file for temporary to catch submit and disappear issue */
 	async storeLogFile(missionList, Isonline) {
-		// let logPath = ""
-		// if (Platform.OS == 'android') {
-		// 	logPath = RNFS.DownloadDirectoryPath + "/" + "MissionLog.txt"
-		// }
-		// else {
-		// 	await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile/`)
-		// 	logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "MissionLog.txt";
-		// }
 
-		// let readFiledata = ''
-		// if (await RNFS.exists(logPath)) {
-		// 	readFiledata = await RNFS.readFile(logPath, "utf8");
-		// }
+		let logPath = ""
+		if (Platform.OS == 'android') {
+			logPath = RNFS.DownloadDirectoryPath + "/" + "MissionLog.txt"
+		}
+		else {
+			await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile`)
+			logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "MissionLog.txt";
+		}
 
-		// let strWritedata = readFiledata + '\n \n'
-		// 	+ "Date : " + new Date() + '\n \n'
-		// 	+ "Isonline= " + Isonline + '\n \n'
-		// 	+ "Mission List: " + JSON.stringify(missionList) + '\n'
-		// 	+ "======================================================================"
+		let readFiledata = ''
+		if (await RNFS.exists(logPath)) {
+			readFiledata = await RNFS.readFile(logPath, "utf8");
+		}
 
-		// RNFS.writeFile(logPath, strWritedata, 'utf8')
-		// 	.then(async (success) => {
-		// 		console.log('success', success)
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log('Error in write file', err.message);
-		// 	});
+		let strWritedata = readFiledata + '\n \n'
+			+ "Date : " + new Date() + '\n \n'
+			+ "Isonline= " + Isonline + '\n \n'
+			+ "Mission List: " + JSON.stringify(missionList) + '\n'
+			+ "======================================================================"
+
+		RNFS.writeFile(logPath, strWritedata, 'utf8')
+			.then(async (success) => {
+				console.log('success', success)
+			})
+			.catch((err) => {
+				console.log('Error in write file', err.message);
+			});
 	}
 
 	/** get FCM token and update for the notification */

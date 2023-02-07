@@ -80,6 +80,7 @@ import { RNFFmpeg } from 'react-native-ffmpeg';
 import RenderHtml from 'react-native-render-html';
 import DropDownPicker from '../../components/DropDownPicker'
 import { measureConnectionSpeed } from '../../components/GetNetworkSpeed';
+import Mailer from 'react-native-mail';
 
 const videoCompressOptions = {
   //width: 720,
@@ -3280,7 +3281,7 @@ class SurveyBox extends Component {
               }
 
               /** Logfile TempCode*/
-              this.storeLogFile(JSON.parse(missionObject), questionObj, true, response.data, true, true, isSubmit === true ? true : false)
+              this.storeLogFile(questionObj, true, response.data, true, true, isSubmit === true ? true : false)
 
               if (isSubmit === true) {
 
@@ -3352,7 +3353,7 @@ class SurveyBox extends Component {
             })
             .catch(error => {
               /** Logfile TempCode*/
-              this.storeLogFile(JSON.parse(missionObject), questionObj, false, error.response, true, true, isSubmit === true ? true : false)
+              this.storeLogFile(questionObj, false, error.response, true, true, isSubmit === true ? true : false)
               questionResponseQue[questionsArr[currentPage].questionID] = true;
               if (backBtnFired === true) {
                 this.onBackButtonPressAndroid();
@@ -3443,7 +3444,7 @@ class SurveyBox extends Component {
                 }
 
                 /** Logfile TempCode*/
-                this.storeLogFile(JSON.parse(missionObject), questionObj, true, response.data, false, true, isSubmit === true ? true : false)
+                this.storeLogFile(questionObj, true, response.data, false, true, isSubmit === true ? true : false)
 
                 if (isSubmit === true) {
 
@@ -3517,7 +3518,7 @@ class SurveyBox extends Component {
               })
               .catch(error => {
                 /** Logfile TempCode*/
-                this.storeLogFile(JSON.parse(missionObject), questionObj, false, error.response, false, true, isSubmit === true ? true : false)
+                this.storeLogFile(questionObj, false, error.response, false, true, isSubmit === true ? true : false)
                 console.log('Error is', error)
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
                 if (backBtnFired === true) {
@@ -3616,7 +3617,7 @@ class SurveyBox extends Component {
                   }
 
                   /** Logfile TempCode*/
-                  this.storeLogFile(JSON.parse(missionObject), questionObj, true, response, false, true, isSubmit === true ? true : false)
+                  this.storeLogFile(questionObj, true, response, false, true, isSubmit === true ? true : false)
 
                   if (isSubmit === true) {
 
@@ -3711,7 +3712,7 @@ class SurveyBox extends Component {
               })
               .catch(error => {
                 /** Logfile TempCode*/
-                this.storeLogFile(JSON.parse(missionObject), questionObj, false, error.response, false, true, isSubmit === true ? true : false)
+                this.storeLogFile(questionObj, false, error.response, false, true, isSubmit === true ? true : false)
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
                 if (backBtnFired === true) {
                   this.onBackButtonPressAndroid();
@@ -3866,12 +3867,12 @@ class SurveyBox extends Component {
             this.setState({ isSubmit: false, isNoReturncheck: false });
           }
           /** Logfile TempCode*/
-          this.storeLogFile(JSON.parse(missionObject), questionObj, true, 'Offline Submited', Platform.OS == 'ios' ? true : false, false, isSubmit === true ? true : false)
+          this.storeLogFile(questionObj, true, 'Offline Submited', Platform.OS == 'ios' ? true : false, false, isSubmit === true ? true : false)
         } else {
           this.setState({ isSubmit: false, isNoReturncheck: false });
           Constants.showSnack(this.state.translation[this.state.Language].Submission_Exceeded);
           /** Logfile TempCode*/
-          this.storeLogFile(JSON.parse(missionObject), questionObj, true, 'submition exeeded', Platform.OS == 'ios' ? true : false, false, isSubmit === true ? true : false)
+          this.storeLogFile(questionObj, true, 'submition exeeded', Platform.OS == 'ios' ? true : false, false, isSubmit === true ? true : false)
         }
       }
     });
@@ -3881,46 +3882,88 @@ class SurveyBox extends Component {
 
   /** Logfile TempCode*/
   /** Store response and request in log file for temporary to catch submit and disappear issue */
-  async storeLogFile(missionObj, questionObj, isSucess, resposeObj, isIos, isOnline, isSubmitLast) {
-    // let selectedMission = missionObj && missionObj.filter((obj) => {
-    //   return obj.id == this.state.missionId;
-    // });
-    // let logPath = ""
-    // if (Platform.OS == 'android') {
-    //   logPath = RNFS.DownloadDirectoryPath + "/" + "RequestLog.txt"
-    // }
-    // else {
-    //   await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile/`)
-    //   logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "RequestLog.txt";
-    // }
-    // console.log('Log file is', logPath)
-    // let readFiledata = ''
-    // if (await RNFS.exists(logPath)) {
-    //   readFiledata = await RNFS.readFile(logPath, "utf8");
-    // }
-    // let surveySubmitedStatus = isSubmitLast == true ? "Survey submitted successfully with tag id ==" + questionObj.survey_answer_tag_id : ""
+  async storeLogFile(questionObj, isSucess, resposeObj, isIos, isOnline, isSubmitLast) {
+    let logPath = await this.getLogPath()
+    console.log('Log file is', logPath)
+    let readFiledata = ''
+    if (await RNFS.exists(logPath)) {
+      readFiledata = await RNFS.readFile(logPath, "utf8");
+    }
+    let surveySubmitedStatus = isSubmitLast == true ? "Survey submitted successfully with tag id ==" + questionObj.survey_answer_tag_id : ""
 
-    // let strWritedata = readFiledata + '\n \n'
-    //   + "Mission_Name: " + selectedMission[0].mission_name + '\n'
-    //   + "Mission_ID: " + selectedMission[0].id + '\n \n'
-    //   + "REQUEST : " + new Date() + '\n \n'
-    //   + JSON.stringify(questionObj) + "\n \n"
-    //   + "Response: " + JSON.stringify(resposeObj) + '\n'
-    //   + "is_Sucess= " + isSucess + '\n'
-    //   + "is_Ios= " + isIos + '\n'
-    //   + "is_Online= " + isOnline + '\n'
-    //   + "Is_Submit= " + isSubmitLast + '\n'
-    //   + surveySubmitedStatus + '\n'
-    //   + "======================================================================"
+    let strWritedata = readFiledata + '\n \n'
+      + "Mission_Name: " + missionName + '\n'
+      + "Mission_ID: " + this.state.missionId + '\n \n'
+      + "REQUEST : " + new Date() + '\n \n'
+      + JSON.stringify(questionObj) + "\n \n"
+      + "Response: " + JSON.stringify(resposeObj) + '\n'
+      + "is_Sucess= " + isSucess + '\n'
+      + "is_Ios= " + isIos + '\n'
+      + "is_Online= " + isOnline + '\n'
+      + "Is_Submit= " + isSubmitLast + '\n'
+      + surveySubmitedStatus + '\n'
+      + "======================================================================"
 
 
-    // RNFS.writeFile(logPath, strWritedata, 'utf8')
-    //   .then(async (success) => {
-    //     console.log('success', success)
-    //   })
-    //   .catch((err) => {
-    //     console.log('Error in write file', err.message);
-    //   });
+    RNFS.writeFile(logPath, strWritedata, 'utf8')
+      .then(async (success) => {
+        console.log('success', success)
+      })
+      .catch((err) => {
+        console.log('Error in write file', err.message);
+      });
+  }
+
+  /** Logfile TempCode*/
+  async getLogPath() {
+    let logPath = ''
+    if (Platform.OS == 'android') {
+      logPath = RNFS.DownloadDirectoryPath + "/" + missionName + "_RequestLog.txt"
+    }
+    else {
+      await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile/`)
+      logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + missionName + "_RequestLog.txt";
+    }
+    return logPath
+  }
+
+  /** Logfile TempCode*/
+  async getMissionLogPath() {
+    let logPath = ""
+    if (Platform.OS == 'android') {
+      logPath = RNFS.DownloadDirectoryPath + "/" + "MissionLog.txt"
+    }
+    else {
+      logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "MissionLog.txt";
+    }
+    return logPath
+  }
+
+  /** Logfile TempCode*/
+  supportActionClieck = async () => {
+    let logPath = await this.getLogPath()
+    let missionLogPath = await this.getMissionLogPath()
+    let attachmentsObj = {
+      path: logPath,
+      type: 'text',
+    }
+    let attachmentsObj1 = {
+      path: missionLogPath,
+      type: 'text',
+    }
+
+    Mailer.mail({
+      subject: 'Flexicollect Support Request',
+      recipients: ['flexicollect-support@eolasinternational.com'],
+      ccRecipients: [''],
+      bccRecipients: [''],
+      body: '',
+      //customChooserTitle: "This is my new title", // Android only (defaults to "Send Mail")
+      isHTML: true,
+      attachments: [attachmentsObj, attachmentsObj1]
+    }, (error, event) => {
+      console.log('email send error is', error)
+    });
   }
 
   /** temp solution : Remove imaeg data from the infomation element infotext with image
@@ -4353,14 +4396,20 @@ class SurveyBox extends Component {
    * @param - filelist - all file list to remove
    */
   async deleteItem(fileList) {
+    /** Logfile TempCode for delete log file*/
+    let missonLogPath = await this.getMissionLogPath()
+    fileList.push(missonLogPath)
+    let logPath = await this.getLogPath()
+    fileList.push(logPath)
+
     try {
       for (let i = 0; i < fileList.length; i++) {
         RNFS.unlink(fileList[i])
           .then(() => {
-            //console.log('File deleted ' + fileList[i]);   
+            //console.log('File deleted ' + fileList[i]);
           })
           .catch((err) => {
-            //console.log('Error in File delete ' + fileList[i]);   
+            //console.log('Error in File delete ' + fileList[i]);
             // console.log(err)
           });
       }
@@ -12353,7 +12402,7 @@ class SurveyBox extends Component {
                 queue={questionResponseQue}
                 navigation={this.props.navigation}
                 updateToSurveyParent={this.getFromHeaderChild}
-
+                supportAction={this.supportActionClieck}
               />
               <KeyboardAvoidingView
                 style={styles.container}

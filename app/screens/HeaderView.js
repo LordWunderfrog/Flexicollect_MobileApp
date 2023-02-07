@@ -51,16 +51,25 @@ export default class HeaderView extends Component {
         return (
             <View style={[styles.topHeaderView]}>
 
-                <View style={styles.titleView}>
-                    <Text style={styles.headerText}
-                        numberOfLines={1}>{this.props.title}</Text>
-                </View>
-
                 <TouchableOpacity style={styles.backView}
                     onPress={() => this.goBack()}>
 
                     <Image source={require('../images/survey/arrow_back.png')}
                         style={Styles.styles.backArrow} />
+
+                </TouchableOpacity>
+
+                <View style={styles.titleView}>
+                    <Text style={styles.headerText}
+                        numberOfLines={1}>{this.props.title}</Text>
+                </View>
+
+                <TouchableOpacity
+                    style={styles.rightIconView}
+                    onPress={() => this.props.supportAction()}>
+
+                    <Image source={require('../images/home/support_icon.png')}
+                    />
 
                 </TouchableOpacity>
             </View>
@@ -83,16 +92,23 @@ const styles = ScaledSheet.create({
     backView: {
         height: '100%',
         flexDirection: 'row',
-        flex: 0.5,
+        flex: 0.1
     },
     titleView: {
-        top: Platform.OS === 'ios' ? 0 : 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
+        // top: Platform.OS === 'ios' ? 0 : 0,
+        // bottom: 0,
+        // left: 0,
+        // right: 0,
+        // position: 'absolute',
+        height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'absolute'
+        flex: 0.8
+    },
+    rightIconView: {
+        height: '100%',
+        flex: 0.1,
+        justifyContent: 'center'
     },
     headerText: {
         width: '100%',
@@ -101,8 +117,8 @@ const styles = ScaledSheet.create({
         fontWeight: '500',
         textAlign: 'center',
         alignSelf: 'center',
-        paddingLeft: '80@ms',
-        paddingRight: '80@ms',
+        paddingLeft: '10@ms',
+        paddingRight: '10@ms',
     },
     rightView: {
         height: '100%',
