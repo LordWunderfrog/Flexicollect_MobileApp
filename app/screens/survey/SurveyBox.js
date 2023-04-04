@@ -1,4 +1,5 @@
 //https://stackoverflow.com/questions/54626359/react-native-fs-ios-not-showing-files-in-the-document-directory
+//https://www.surveyking.com/help/max-diff-analysis
 import React, { Component } from "react";
 import {
   View,
@@ -55,7 +56,7 @@ import ScalableImage from "../../components/ScalableImage";
 import { AndroidBackHandler } from "react-navigation-backhandler";
 import axios from "axios";
 import RNFS from "react-native-fs";
-import { Table, TableWrapper, Row, Cell } from "react-native-table-component";
+import { Table, TableWrapper, Row, Cell, Rows } from "react-native-table-component";
 import VideoPlayer from "react-native-video-controls";
 import Sound from "react-native-sound";
 import MapView, { Marker } from "react-native-maps";
@@ -282,6 +283,10 @@ const extraLargetagsStyles = {
 
 /** survey class */
 class SurveyBox extends Component {
+  flatListRef;
+  selectedStepIndex = 0;
+  _keyExtractor = (item, index) => index.toString();
+
   constructor(props) {
     super(props);
     // const { params } = this.props.navigation.state;
@@ -9767,6 +9772,12 @@ class SurveyBox extends Component {
         parentIndex,
         null
       );
+    } else if (questionArray.properties.hasOwnProperty("attribute_data")) {
+      return this.layoutScaleTypeMaxdiffQuestion(
+        questionArray,
+        parentIndex,
+        null
+      );
     } else {
       return (
         <View style={noScaleFound}>
@@ -10141,6 +10152,195 @@ class SurveyBox extends Component {
           </TableWrapper>
         ))}
       </Table>
+    );
+  }
+
+  layoutScaleTypeMaxdiffQuestion(questionArray, parentIndex) {
+    let question = questionArray.properties;
+    let attributesSet = question.attribute_Set
+    let tableHead = ["Least", "", "Most"]
+
+    const radioMaxDiffElement = data => {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            this.addAnswerForSelectedScaleMaxdiff(
+              questionArray,
+              data,
+              parentIndex,
+              question
+            )
+          }}>
+          <ImageBackground
+            style={styles.radioWhiteLeft}
+            source={radioOuterCircle}
+          >
+            {data.isChecked && (
+              <Image style={styles.blackDot} source={radioInnerDot} />
+            )}
+          </ImageBackground>
+        </TouchableOpacity>
+      );
+    };
+
+    let attributeTableData = []
+    let selectedAnswer = []
+    if (
+      questionArray.hasOwnProperty("answer") &&
+      questionArray.answer !== "" &&
+      questionArray.answer !== null
+    ) {
+      selectedAnswer = questionArray.answer.selected_option;
+    }
+
+    attributeTableData = attributesSet && attributesSet.map((item, index) => {
+      return item && item.map((obj, index) => {
+        let ansObj = selectedAnswer.find(aObj => (aObj.id == obj.id && aObj.attributeSetID == obj.attributeSetID));
+        let arrTemp = []
+        if (ansObj) {
+          arrTemp[0] = radioMaxDiffElement({ ...obj, isLeastCheck: true, isChecked: ansObj.isLeastCheck == true ? true : false })
+          arrTemp[1] = obj.label
+          arrTemp[2] = radioMaxDiffElement({ ...obj, isLeastCheck: false, isChecked: ansObj.isLeastCheck == false ? true : false })
+        }
+        else {
+          arrTemp[0] = radioMaxDiffElement({ ...obj, isChecked: false, isLeastCheck: true })
+          arrTemp[1] = obj.label
+          arrTemp[2] = radioMaxDiffElement({ ...obj, isChecked: false, isLeastCheck: false })
+        }
+        return arrTemp
+      })
+    })
+    return (
+      <View>
+        <View style={{ height: 50 }}>
+          <View style={{ height: 50, padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableOpacity style={{ height: 50, flex: 0.5, alignItems: 'center', justifyContent: 'center' }}
+              onPress={() => this.maxdiffLeftAction(attributeTableData)}>
+              <Image
+                style={{ tintColor: Color.colorLiteBlue }}
+                source={require("../../images/survey/left_navigator.png")}
+              />
+            </TouchableOpacity>
+            <Text style={{ color: Color.colorLiteBlue }}>{"Set" + "  " + (this.selectedStepIndex + 1) + " of " + attributeTableData.length}</Text>
+            <TouchableOpacity style={{ height: 50, flex: 0.5, alignItems: 'center', justifyContent: 'center' }}
+              onPress={() => this.maxdiffRightAction(attributeTableData)}>
+              <Image
+                style={{ tintColor: Color.colorLiteBlue }}
+                source={require("../../images/survey/right_navigator.png")}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <FlatList
+          style={{ flex: 1 }}
+          ref={(r) => this.flatListRef = r}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={attributeTableData}
+          pagingEnabled={true}
+          renderItem={({ item, index, separators }) => this.rendermaxdiff(item, index, separators, tableHead)}
+          extraData={attributeTableData}
+          keyExtractor={this._keyExtractor}
+          onScroll={(event) => {
+            this.selectedStepIndex = Math.round(event.nativeEvent.contentOffset.x / (width - 40));
+            this.forceUpdate();
+          }}
+        />
+
+      </View>
+    );
+  }
+  rendermaxdiff = (item, index, separators, tableHead) => {
+    return (
+      <View style={{ width: width - 60 }}>
+        <Table>
+          <Row
+            data={tableHead}
+            flexArr={[1, 2, 1]}
+            style={{ height: 50 }}
+            textStyle={{ textAlign: 'center' }}
+          />
+          <Rows
+            data={item}
+            flexArr={[1, 2, 1]}
+            style={{ height: 50 }}
+            textStyle={{ textAlign: 'center' }}
+          />
+        </Table>
+      </View>
+    )
+  }
+  maxdiffLeftAction = (attributeTableData) => {
+    if (this.selectedStepIndex > 0) {
+      this.flatListRef.scrollToIndex({
+        animated: true,
+        index: this.selectedStepIndex - 1,
+      });
+    }
+  }
+  maxdiffRightAction = (attributeTableData) => {
+    if (this.selectedStepIndex < attributeTableData.length - 1) {
+      this.flatListRef.scrollToIndex({
+        animated: true,
+        index: this.selectedStepIndex + 1,
+      });
+    }
+  }
+
+  /**
+   * Selected Scale Maxdiff question's answer to an array
+   * @param {Array} questionArray All Questions list
+   * @param {Any} selectedContent Selected value
+   * @param {Number} parentIndex Current Question Index
+   */
+  addAnswerForSelectedScaleMaxdiff = (questionArray, selectedContent, parentIndex, question) => {
+    let maxdiffSelectedAnswer = [];
+    if (
+      questionArray.properties &&
+      questionArray.properties.hasOwnProperty("attribute_data") &&
+      questionArray.hasOwnProperty("answer") &&
+      questionArray.answer.hasOwnProperty("selected_option")
+    ) {
+      maxdiffSelectedAnswer = questionArray.answer.selected_option;
+    }
+
+    if (maxdiffSelectedAnswer.length > 0) {
+      if (maxdiffSelectedAnswer.some(e => e.attributeSetID == selectedContent.attributeSetID && e.id == selectedContent.id)) {
+        // already added item for same row lest/most item
+      }
+      else {
+        let isMatch = false
+        maxdiffSelectedAnswer.map((Ansobj, index) => {
+          if (Ansobj.attributeSetID == selectedContent.attributeSetID && Ansobj.isLeastCheck == selectedContent.isLeastCheck) {
+            maxdiffSelectedAnswer.splice(index, 1);
+            maxdiffSelectedAnswer.push(selectedContent);
+            isMatch = true
+          }
+        })
+        if (isMatch == false) {
+          maxdiffSelectedAnswer.push(selectedContent);
+        }
+      }
+    }
+    else {
+      maxdiffSelectedAnswer.push(selectedContent);
+    }
+
+    let answer = {
+      scale_type: questionArray.properties.scale_type,
+      selected_option: maxdiffSelectedAnswer
+    };
+
+    questionArray.answer = answer;
+    questionArray.isUpdated = true;
+    let localArray = this.state.questionsArr;
+    localArray[parentIndex] = questionArray;
+    this.setState(
+      {
+        questionsArr: localArray
+      },
+      _ => {
+      }
     );
   }
 
