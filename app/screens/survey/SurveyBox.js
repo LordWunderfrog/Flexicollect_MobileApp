@@ -5922,6 +5922,19 @@ class SurveyBox extends Component {
         }
       }
 
+      /** Check max diff all set item is selected */
+      if (questionsArray[currentQuesIndx].questionType === 'scale' && questionsArray[currentQuesIndx].properties.scale_type == 'maxdiff') {
+        let ansObj = questionsArray[currentQuesIndx].answer
+        if (ansObj && ansObj.selected_option && ansObj.selected_option.length > 0) {
+          let lengthofSet = questionsArray[currentQuesIndx].properties.attribute_Set && questionsArray[currentQuesIndx].properties.attribute_Set.length || 0
+          /** logic is every set has least and most selection so its lenth * 2 */
+          if (ansObj.selected_option.length < (lengthofSet * 2)) {
+            Constants.showSnack('Please select least and most item for all set of question')
+            return;
+          }
+        }
+      }
+
       /**
        * check current question include release mission in condition
        * add release mission project id and mission id to current question answer object
@@ -11947,6 +11960,19 @@ class SurveyBox extends Component {
     let questionsArray = this.state.questionsArr;
     let arrLength = questionsArray.length;
     let currentQuesIndx = this.state.pageCount;
+
+    /** Check max diff all set item is selected */
+    if (questionsArray[currentQuesIndx].questionType === 'scale' && questionsArray[currentQuesIndx].properties.scale_type == 'maxdiff') {
+      let ansObj = questionsArray[currentQuesIndx].answer
+      if (ansObj && ansObj.selected_option && ansObj.selected_option.length > 0) {
+        let lengthofSet = questionsArray[currentQuesIndx].properties.attribute_Set && questionsArray[currentQuesIndx].properties.attribute_Set.length || 0
+        /** logic is every set has least and most selection so its lenth * 2 */
+        if (ansObj.selected_option.length < (lengthofSet * 2)) {
+          Constants.showSnack('Please select max diff Question all set anser')
+          return;
+        }
+      }
+    }
 
     if (
       questionsArray[currentQuesIndx].properties.hasOwnProperty("mandatory") &&
