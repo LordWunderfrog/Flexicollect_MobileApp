@@ -1151,35 +1151,35 @@ class Mission extends Component {
 				console.log('Error in write file', err.message);
 			});
 	}
-	async storeSyncSurveyLogFile(missionList) {
-		let logPath = ""
-		if (Platform.OS == 'android') {
-			logPath = RNFS.DownloadDirectoryPath + "/" + "SyncSurvey.txt"
-		}
-		else {
-			await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile`)
-			logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "SyncSurvey.txt";
-		}
 
-		let readFiledata = ''
-		if (await RNFS.exists(logPath)) {
-			readFiledata = await RNFS.readFile(logPath, "utf8");
-		}
+	/** hide because survey sync has big image and video data insted of link while offline  */
+	// async storeSyncSurveyLogFile(requestObj, Response) {
+	// 	/** this log file not deleted but it replace last sync request */
+	// 	let logPath = ""
+	// 	if (Platform.OS == 'android') {
+	// 		logPath = RNFS.DownloadDirectoryPath + "/" + "SyncSurvey.txt"
+	// 	}
+	// 	else {
+	// 		await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile`)
+	// 		logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "SyncSurvey.txt";
+	// 	}
+	// 	console.log('Log path for sync survey', logPath)
+	// 	let strWritedata =
+	// 		+ "Date : " + new Date() + '\n \n'
+	// 		+ "device_name= " + await DeviceInfo.getDeviceName() + '\n'
+	// 		+ "device_Version= " + DeviceInfo.getSystemVersion() + '\n \n'
+	// 		+ "Sync survey request: " + JSON.stringify(requestObj) + '\n \n'
+	// 		+ "Sync survey request: " + JSON.stringify(requestObj) + '\n'
+	// 		+ "======================================================================"
 
-		let strWritedata = readFiledata + '\n \n'
-			+ "Date : " + new Date() + '\n \n'
-			+ "Isonline= " + Isonline + '\n \n'
-			+ "Mission List: " + JSON.stringify(missionList) + '\n'
-			+ "======================================================================"
-
-		RNFS.writeFile(logPath, strWritedata, 'utf8')
-			.then(async (success) => {
-				console.log('success', success)
-			})
-			.catch((err) => {
-				console.log('Error in write file', err.message);
-			});
-	}
+	// 	RNFS.writeFile(logPath, strWritedata, 'utf8')
+	// 		.then(async (success) => {
+	// 			console.log('success', success)
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log('Error in write file', err.message);
+	// 		});
+	// }
 
 	/** get FCM token and update for the notification */
 	async getFCMToken() {

@@ -6113,7 +6113,16 @@ class SurveyBox extends Component {
         }
 
         else if (questionsArray[currentQuesIndx].questionType === "scale") {
-          if (
+          if (questionsArray[currentQuesIndx].properties.scale_type == "table"
+            && questionsArray[currentQuesIndx].answer &&
+            ((questionsArray[currentQuesIndx].answer.selected_option &&
+              questionsArray[currentQuesIndx].answer.selected_option.length < questionsArray[currentQuesIndx].properties.table_content.table_value.length
+            ))) {
+            /** need to select option in every row if table scale type mendatory  */
+            mandatoryError = true;
+            Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
+          }
+          else if (
             questionsArray[currentQuesIndx].answer &&
             ((questionsArray[currentQuesIndx].answer.selected_option &&
               questionsArray[currentQuesIndx].answer.selected_option.length >
@@ -11781,7 +11790,15 @@ class SurveyBox extends Component {
         (questionsArray[currentQuesIndx].questionType === "choice") ||
         questionsArray[currentQuesIndx].questionType === "scale"
       ) {
-        if (
+        if (questionsArray[currentQuesIndx].properties.scale_type == "table"
+          && questionsArray[currentQuesIndx].answer &&
+          ((questionsArray[currentQuesIndx].answer.selected_option &&
+            questionsArray[currentQuesIndx].answer.selected_option.length < questionsArray[currentQuesIndx].properties.table_content.table_value.length
+          ))) {
+          /** need to select option in every row if table scale type mendatory  */
+          Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
+        }
+        else if (
           questionsArray[currentQuesIndx].answer &&
           ((questionsArray[currentQuesIndx].answer.selected_option &&
             questionsArray[currentQuesIndx].answer.selected_option.length >
