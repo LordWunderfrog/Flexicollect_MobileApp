@@ -535,44 +535,65 @@ class OfflineSurveyList extends Component {
             }
             else {
                 try {
-                    const granted = await PermissionsAndroid.request(
-                        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                    );
-                    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                        this.setState({ isLoading: true })
-                        let path = RNFS.DownloadDirectoryPath + '/' + item.mission_name + '_' + timestamp + '/' + 'media';
-                        RNFS.mkdir(path).then((result) => {
-                            console.log('result', result)
-                        }).catch((error) => { console.log(error) })
+                    // const granted = await PermissionsAndroid.request(
+                    //     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    // );
+                    // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
 
-                        let folder = item.mission_name + '_' + timestamp
-                        let meadiaFolder = item.mission_name + '_' + timestamp + '/' + 'media'
-                        let path_name = RNFS.DownloadDirectoryPath + '/' + folder + '/' + item.mission_name + '_' + timestamp + ".txt";
-                        RNFS.writeFile(path_name, JSON.stringify(item), 'utf8')
-                            .then(async (success) => {
-                                item && item.surveyData.map((obj, index) => {
-                                    if (obj.answer != null && obj.answer !== "") {
-                                        if (obj.questionType == "upload") {
-                                            this.exportMediaFile(obj.answer.media, meadiaFolder, obj.questionType, obj.answer.media_format, timestamp + index)
-                                        }
-                                        else if (obj.questionType == "capture") {
-                                            this.exportMediaFile(obj.answer.image, meadiaFolder, obj.questionType, 'jpg', timestamp + index)
-                                        }
-                                        else if (obj.questionType == "barcode") {
-                                            this.exportMediaFile(obj.answer.image, meadiaFolder, obj.questionType, 'jpg', timestamp + index)
-                                        }
-                                    }
-                                })
-                                this.setState({ isLoading: false })
-                                Constants.showSnack(this.state.translation[this.state.Language].Submission_Exported)
-                            })
-                            .catch((err) => {
-                                this.setState({ isLoading: false })
-                                console.log('Error in write file', err.message);
-                            });
-                    } else {
-                        console.log("external storage permission denied");
+                    if (Platform.OS === "android" && Platform.Version >= 23 && Platform.Version < 33) {
+                        try {
+                            const granted = await PermissionsAndroid.request(
+                                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                                {
+                                    title: this.state.translation[this.state.Language].Permission_Title,
+                                    message: this.state.translation[this.state.Language].External_Storage_Permission
+                                }
+                            );
+                            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                            } else {
+                                this.askPermissionAlert(this.state.translation[this.state.Language].External_Storage_Permission)
+                                return;
+                            }
+                        } catch (err) {
+                            //console.warn(err);
+                            return;
+                        }
                     }
+
+                    this.setState({ isLoading: true })
+                    let path = RNFS.DownloadDirectoryPath + '/' + item.mission_name + '_' + timestamp + '/' + 'media';
+                    RNFS.mkdir(path).then((result) => {
+                        console.log('result', result)
+                    }).catch((error) => { console.log(error) })
+
+                    let folder = item.mission_name + '_' + timestamp
+                    let meadiaFolder = item.mission_name + '_' + timestamp + '/' + 'media'
+                    let path_name = RNFS.DownloadDirectoryPath + '/' + folder + '/' + item.mission_name + '_' + timestamp + ".txt";
+                    RNFS.writeFile(path_name, JSON.stringify(item), 'utf8')
+                        .then(async (success) => {
+                            item && item.surveyData.map((obj, index) => {
+                                if (obj.answer != null && obj.answer !== "") {
+                                    if (obj.questionType == "upload") {
+                                        this.exportMediaFile(obj.answer.media, meadiaFolder, obj.questionType, obj.answer.media_format, timestamp + index)
+                                    }
+                                    else if (obj.questionType == "capture") {
+                                        this.exportMediaFile(obj.answer.image, meadiaFolder, obj.questionType, 'jpg', timestamp + index)
+                                    }
+                                    else if (obj.questionType == "barcode") {
+                                        this.exportMediaFile(obj.answer.image, meadiaFolder, obj.questionType, 'jpg', timestamp + index)
+                                    }
+                                }
+                            })
+                            this.setState({ isLoading: false })
+                            Constants.showSnack(this.state.translation[this.state.Language].Submission_Exported)
+                        })
+                        .catch((err) => {
+                            this.setState({ isLoading: false })
+                            console.log('Error in write file', err.message);
+                        });
+                    // } else {
+                    //     console.log("external storage permission denied");
+                    // }
                 } catch (err) {
                     console.log(err);
                 }

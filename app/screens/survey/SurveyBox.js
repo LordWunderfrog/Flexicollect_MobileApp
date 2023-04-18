@@ -7962,7 +7962,7 @@ class SurveyBox extends Component {
    */
   async cameraPermission(type, index) {
     if (Platform.OS === "android") {
-      if (Platform.Version >= 23) {
+      if (Platform.Version >= 23 && Platform.Version < 33) {
         try {
           const grantedCamera = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -8431,7 +8431,7 @@ class SurveyBox extends Component {
    */
   async galleryPermission(type, index) {
     if (Platform.OS === "android") {
-      if (Platform.Version >= 23) {
+      if (Platform.Version >= 23 && Platform.Version < 33) {
         const grantedCamera = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.CAMERA,
           {
@@ -8806,7 +8806,7 @@ class SurveyBox extends Component {
       });
     }
     else {
-      if (Platform.OS === "android") {
+      if (Platform.OS === "android" && Platform.Version >= 23 && Platform.Version < 33) {
         try {
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -8881,7 +8881,7 @@ class SurveyBox extends Component {
     this.setState({
       isAudioRecord: true
     });
-    if (Platform.OS === "android") {
+    if (Platform.OS === "android" && Platform.Version >= 23 && Platform.Version < 33) {
       try {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
