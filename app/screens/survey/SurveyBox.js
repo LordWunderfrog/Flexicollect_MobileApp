@@ -7962,7 +7962,30 @@ class SurveyBox extends Component {
    */
   async cameraPermission(type, index) {
     if (Platform.OS === "android") {
-      if (Platform.Version >= 23 && Platform.Version < 33) {
+      if (Platform.Version >= 33) {
+        try {
+          const grantedCamera = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+              title: this.state.translation[this.state.Language].Permission_Title,
+              message: this.state.translation[this.state.Language].Camera_General_Permission
+            }
+          );
+          if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
+            if (type === "image") {
+              this.photoFromCamera(index);
+            } else if (type === "video") {
+              this.videoFromCamera(index);
+            }
+          }
+          else {
+            this.askPermissionAlert(this.state.translation[this.state.Language].Camera_General_Permission)
+          }
+        } catch (err) {
+          //console.warn(err)
+        }
+      }
+      else if (Platform.Version >= 23 && Platform.Version < 33) {
         try {
           const grantedCamera = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -8263,12 +8286,21 @@ class SurveyBox extends Component {
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           this.setState({ changeImage: true, videoProcessing: true });
+          // let videoRes = res.assets[0]
+          // let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
+          // let path = 'file://' + filepath.path;
+          // let ext = path.substring(path.lastIndexOf("."), path.length);
+          // let questionArr = this.state.questionsArr[index];
+          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + ext;
+          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+
           let videoRes = res.assets[0]
-          let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
-          let path = 'file://' + filepath.path;
-          let ext = path.substring(path.lastIndexOf("."), path.length);
+          let extn = videoRes.type.split('/')
+          const destPath = `${RNFS.TemporaryDirectoryPath}/${videoRes.fileName}.${extn[extn.length - 1]}`;
+          await RNFS.moveFile(videoRes.uri, destPath);
+          let path = 'file://' + destPath;
           let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + ext;
+          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + extn[extn.length - 1];
           let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
           // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
@@ -8431,7 +8463,30 @@ class SurveyBox extends Component {
    */
   async galleryPermission(type, index) {
     if (Platform.OS === "android") {
-      if (Platform.Version >= 23 && Platform.Version < 33) {
+      if (Platform.Version >= 33) {
+        const grantedCamera = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: this.state.translation[this.state.Language].Permission_Title,
+            message: this.state.translation[this.state.Language].Photos_General_Permission
+          }
+        );
+        if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
+          if (type === "image") {
+            this.photoFromGallery(index);
+          } else if (type === "video") {
+            this.videoFromGallery(index);
+          } else if (type === "audio") {
+            this.audioFromGallery(index);
+          } else if (type === "capture") {
+            this.imageTaggingFromGallary(index);
+          }
+        }
+        else {
+          this.askPermissionAlert(this.state.translation[this.state.Language].Photos_General_Permission)
+        }
+      }
+      else if (Platform.Version >= 23 && Platform.Version < 33) {
         const grantedCamera = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.CAMERA,
           {
@@ -9313,6 +9368,7 @@ class SurveyBox extends Component {
               toggleResizeModeOnFullscreen={false}
               source={{ uri: questionArray.answer.media }}
               paused={this.state.paused}
+              controlTimeout={6000000}
               disableVolume={true}
               disableBack={true}
               onEnd={() => this.onEnd()}

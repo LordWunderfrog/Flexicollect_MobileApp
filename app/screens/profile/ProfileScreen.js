@@ -1133,7 +1133,25 @@ class ProfileScreen extends Component {
      * */
     async TakePhoto() {
         if (Platform.OS === 'android') {
-            if (Platform.Version >= 23 && Platform.Version < 33) {
+            if (Platform.Version >= 33) {
+                try {
+                    const grantedCamera = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,
+                        {
+                            'title': 'Camera Permission',
+                            'message': 'Eolas needs to access your camera photos' +
+                                'for your profile'
+                        },
+                    )
+                    if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
+                        this.cameraCall()
+                    } else {
+                        // console.log("permission denied")
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+            else if (Platform.Version >= 23 && Platform.Version < 33) {
                 try {
                     const grantedCamera = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,
                         {
@@ -1168,7 +1186,6 @@ class ProfileScreen extends Component {
                 }
             } else {
                 this.cameraCall()
-
             }
         } else {
             setTimeout(() => {
@@ -1216,7 +1233,19 @@ class ProfileScreen extends Component {
      * */
     async pickFromGallery() {
         if (Platform.OS === 'android') {
-            if (Platform.Version >= 23 && Platform.Version < 33) {
+            if (Platform.Version >= 33) {
+                const grantedCamera = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        'title': 'Camera Permission',
+                        'message': 'Eolas needs to access your camera photos' +
+                            'for your profile'
+                    },
+                )
+                if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
+                    this.gallerySelection()
+                }
+            }
+            else if (Platform.Version >= 23 && Platform.Version < 33) {
                 const grantedCamera = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,
                     {
                         'title': 'Camera Permission',
