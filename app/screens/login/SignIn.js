@@ -1255,7 +1255,7 @@ const styles = ScaledSheet.create({
         alignSelf: 'center',
         width: 152.8,
         height: 74.5,
-        marginTop: 50,
+        marginTop: 60,
         marginBottom: 50
     },
 

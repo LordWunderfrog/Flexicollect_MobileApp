@@ -1704,7 +1704,7 @@ class ProfileScreen extends Component {
 
                         {/* firstName*/}
 
-                        <View style={[styles.rowInputView, { marginTop: Dimension.marginTwenty }]}>
+                        <View style={[styles.rowInputView, { marginTop: Dimension.marginTen }]}>
                             <View flex={0.5} style={{ marginRight: 3 }}>
                                 <Text style={styles.textInputTitle}>{translation[Language].First_Name}</Text>
                                 <TextInput
@@ -2436,7 +2436,7 @@ const styles = ScaledSheet.create({
         alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center',
         justifyContent: 'flex-start',
         height: Platform.OS === 'ios' ? 56 : 70 - 14,
-        marginTop: Platform.OS === 'ios' ? height === 812 ? 25 : 0 : 0
+        marginTop: Platform.OS === 'ios' ? 25 : 0
     },
     textContainer: {
         top: Platform.OS === 'ios' ? 0 : 0,
