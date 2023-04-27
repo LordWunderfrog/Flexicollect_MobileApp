@@ -7397,7 +7397,15 @@ class SurveyBox extends Component {
 
     return img;
   }
-
+  imageRadioBox(isClick) {
+    let img;
+    if (isClick) {
+      img = require("../../images/survey/radio_fill.png");
+    } else {
+      img = require("../../images/survey/radio_no_fill.png");
+    }
+    return img;
+  }
   /* change expand image based on user clicked */
   headerClickImage(isClick) {
     let img;
@@ -10767,7 +10775,7 @@ class SurveyBox extends Component {
                       paddingBottom: 5
                     }]}>
                       <Image style={styles.checkBoxImage}
-                        source={this.imageCheckBox(item.isClicked)} />
+                        source={this.imageRadioBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.sublabel}</Text> */}
                       {item.sublabel ? <RenderHtml
                         source={{ html: item.sublabel_text ? item.sublabel_text : item.sublabel }}
@@ -10909,7 +10917,7 @@ class SurveyBox extends Component {
                     >
                       <Image
                         style={styles.checkBoxImage}
-                        source={this.imageCheckBox(item.isClicked)}
+                        source={choice_type === 'single' ? this.imageRadioBox(item.isClicked) : this.imageCheckBox(item.isClicked)}
                       />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
@@ -11096,7 +11104,7 @@ class SurveyBox extends Component {
                           >
                             <Image
                               style={styles.checkBoxImage}
-                              source={this.imageCheckBox(elem.isClicked)}
+                              source={choice_type === 'single' ? this.imageRadioBox(elem.isClicked) : this.imageCheckBox(elem.isClicked)}
                             />
                             {/* <Text style={{
                               // styles.subText
@@ -11183,7 +11191,7 @@ class SurveyBox extends Component {
                     }}>
                       <Image
                         style={styles.checkBoxImage}
-                        source={this.imageCheckBox(item.isClicked)} />
+                        source={this.imageRadioBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
                         source={{ html: item.label_text ? item.label_text : item.label }}
