@@ -1269,8 +1269,8 @@ const styles = ScaledSheet.create(
             alignSelf: 'center',
             width: 152.8,
             height: 74.5,
-            marginTop: 50,
-            marginBottom: 40
+            marginTop: 60,
+            marginBottom: 10
         },
         //titleContainer
         titleContainer: {
@@ -1303,7 +1303,7 @@ const styles = ScaledSheet.create(
             borderWidth: 2,
             justifyContent: 'center',
             marginTop: Dimension.marginTwenty,
-            marginBottom: Dimension.marginThirty
+            marginBottom: Dimension.marginTwenty
         },
         signInText: {
             color: Color.colorWhite,

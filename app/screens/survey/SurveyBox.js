@@ -7415,7 +7415,15 @@ class SurveyBox extends Component {
 
     return img;
   }
-
+  imageRadioBox(isClick) {
+    let img;
+    if (isClick) {
+      img = require("../../images/survey/radio_fill.png");
+    } else {
+      img = require("../../images/survey/radio_no_fill.png");
+    }
+    return img;
+  }
   /* change expand image based on user clicked */
   headerClickImage(isClick) {
     let img;
@@ -7980,7 +7988,30 @@ class SurveyBox extends Component {
    */
   async cameraPermission(type, index) {
     if (Platform.OS === "android") {
-      if (Platform.Version >= 23 && Platform.Version < 33) {
+      if (Platform.Version >= 33) {
+        try {
+          const grantedCamera = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+              title: this.state.translation[this.state.Language].Permission_Title,
+              message: this.state.translation[this.state.Language].Camera_General_Permission
+            }
+          );
+          if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
+            if (type === "image") {
+              this.photoFromCamera(index);
+            } else if (type === "video") {
+              this.videoFromCamera(index);
+            }
+          }
+          else {
+            this.askPermissionAlert(this.state.translation[this.state.Language].Camera_General_Permission)
+          }
+        } catch (err) {
+          //console.warn(err)
+        }
+      }
+      else if (Platform.Version >= 23 && Platform.Version < 33) {
         try {
           const grantedCamera = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -8281,12 +8312,21 @@ class SurveyBox extends Component {
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           this.setState({ changeImage: true, videoProcessing: true });
+          // let videoRes = res.assets[0]
+          // let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
+          // let path = 'file://' + filepath.path;
+          // let ext = path.substring(path.lastIndexOf("."), path.length);
+          // let questionArr = this.state.questionsArr[index];
+          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + ext;
+          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+
           let videoRes = res.assets[0]
-          let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
-          let path = 'file://' + filepath.path;
-          let ext = path.substring(path.lastIndexOf("."), path.length);
+          let extn = videoRes.type.split('/')
+          const destPath = `${RNFS.TemporaryDirectoryPath}/${videoRes.fileName}.${extn[extn.length - 1]}`;
+          await RNFS.moveFile(videoRes.uri, destPath);
+          let path = 'file://' + destPath;
           let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + ext;
+          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + extn[extn.length - 1];
           let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
           // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
@@ -8449,7 +8489,30 @@ class SurveyBox extends Component {
    */
   async galleryPermission(type, index) {
     if (Platform.OS === "android") {
-      if (Platform.Version >= 23 && Platform.Version < 33) {
+      if (Platform.Version >= 33) {
+        const grantedCamera = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: this.state.translation[this.state.Language].Permission_Title,
+            message: this.state.translation[this.state.Language].Photos_General_Permission
+          }
+        );
+        if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
+          if (type === "image") {
+            this.photoFromGallery(index);
+          } else if (type === "video") {
+            this.videoFromGallery(index);
+          } else if (type === "audio") {
+            this.audioFromGallery(index);
+          } else if (type === "capture") {
+            this.imageTaggingFromGallary(index);
+          }
+        }
+        else {
+          this.askPermissionAlert(this.state.translation[this.state.Language].Photos_General_Permission)
+        }
+      }
+      else if (Platform.Version >= 23 && Platform.Version < 33) {
         const grantedCamera = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.CAMERA,
           {
@@ -9331,6 +9394,7 @@ class SurveyBox extends Component {
               toggleResizeModeOnFullscreen={false}
               source={{ uri: questionArray.answer.media }}
               paused={this.state.paused}
+              controlTimeout={6000000}
               disableVolume={true}
               disableBack={true}
               onEnd={() => this.onEnd()}
@@ -10924,7 +10988,7 @@ class SurveyBox extends Component {
                       paddingBottom: 5
                     }]}>
                       <Image style={styles.checkBoxImage}
-                        source={this.imageCheckBox(item.isClicked)} />
+                        source={this.imageRadioBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.sublabel}</Text> */}
                       {item.sublabel ? <RenderHtml
                         source={{ html: item.sublabel_text ? item.sublabel_text : item.sublabel }}
@@ -11066,7 +11130,7 @@ class SurveyBox extends Component {
                     >
                       <Image
                         style={styles.checkBoxImage}
-                        source={this.imageCheckBox(item.isClicked)}
+                        source={choice_type === 'single' ? this.imageRadioBox(item.isClicked) : this.imageCheckBox(item.isClicked)}
                       />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
@@ -11253,7 +11317,7 @@ class SurveyBox extends Component {
                           >
                             <Image
                               style={styles.checkBoxImage}
-                              source={this.imageCheckBox(elem.isClicked)}
+                              source={choice_type === 'single' ? this.imageRadioBox(elem.isClicked) : this.imageCheckBox(elem.isClicked)}
                             />
                             {/* <Text style={{
                               // styles.subText
@@ -11340,7 +11404,7 @@ class SurveyBox extends Component {
                     }}>
                       <Image
                         style={styles.checkBoxImage}
-                        source={this.imageCheckBox(item.isClicked)} />
+                        source={this.imageRadioBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
                         source={{ html: item.label_text ? item.label_text : item.label }}
