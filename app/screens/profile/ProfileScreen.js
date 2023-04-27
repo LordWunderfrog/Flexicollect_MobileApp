@@ -1133,7 +1133,7 @@ class ProfileScreen extends Component {
      * */
     async TakePhoto() {
         if (Platform.OS === 'android') {
-            if (Platform.Version >= 23) {
+            if (Platform.Version >= 23 && Platform.Version < 33) {
                 try {
                     const grantedCamera = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,
                         {
@@ -1216,7 +1216,7 @@ class ProfileScreen extends Component {
      * */
     async pickFromGallery() {
         if (Platform.OS === 'android') {
-            if (Platform.Version >= 23) {
+            if (Platform.Version >= 23 && Platform.Version < 33) {
                 const grantedCamera = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,
                     {
                         'title': 'Camera Permission',
