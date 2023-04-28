@@ -10299,16 +10299,16 @@ class SurveyBox extends Component {
     return (
       <View>
         <View style={{ height: 50 }}>
-          <View style={{ height: 50, padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <TouchableOpacity style={{ height: 50, flex: 0.5, alignItems: 'center', justifyContent: 'center' }}
+          <View style={styles.maxdiffpageview}>
+            <TouchableOpacity style={styles.maxdiffArraow}
               onPress={() => this.maxdiffLeftAction(attributeTableData)}>
               <Image
                 style={{ tintColor: Color.colorLiteBlue }}
                 source={require("../../images/survey/left_navigator.png")}
               />
             </TouchableOpacity>
-            <Text style={{ color: Color.colorLiteBlue }}>{"Set" + "  " + (this.selectedStepIndex + 1) + " of " + attributeTableData.length}</Text>
-            <TouchableOpacity style={{ height: 50, flex: 0.5, alignItems: 'center', justifyContent: 'center' }}
+            <Text style={styles.maxdifftextstyle}>{"Set" + "  " + (this.selectedStepIndex + 1) + " of " + attributeTableData.length}</Text>
+            <TouchableOpacity style={styles.maxdiffArraow}
               onPress={() => this.maxdiffRightAction(attributeTableData)}>
               <Image
                 style={{ tintColor: Color.colorLiteBlue }}
@@ -10328,7 +10328,7 @@ class SurveyBox extends Component {
           extraData={attributeTableData}
           keyExtractor={this._keyExtractor}
           onScroll={(event) => {
-            this.selectedStepIndex = Math.round(event.nativeEvent.contentOffset.x / (width - 40));
+            this.selectedStepIndex = Math.round(event.nativeEvent.contentOffset.x / event.nativeEvent.layoutMeasurement.width);
             this.forceUpdate();
           }}
         />
@@ -10344,13 +10344,13 @@ class SurveyBox extends Component {
             data={tableHead}
             flexArr={[1, 2, 1]}
             style={{ height: 50 }}
-            textStyle={{ textAlign: 'center' }}
+            textStyle={styles.maxdifftextstyle}
           />
           <Rows
             data={item}
             flexArr={[1, 2, 1]}
             style={{ height: 50 }}
-            textStyle={{ textAlign: 'center' }}
+            textStyle={styles.maxdifftextstyle}
           />
         </Table>
       </View>
@@ -13778,5 +13778,24 @@ const styles = ScaledSheet.create({
     width: '100%',
     color: Color.colorDarkBlue,
     fontSize: Dimension.normalText,
+  },
+  maxdifftextstyle: {
+    textAlign: 'center',
+    fontSize: Dimension.normalText,
+    color: Color.colorDarkBlue,
+    fontFamily: "Helvetica Neue"
+  },
+  maxdiffpageview: {
+    height: 50,
+    padding: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  maxdiffArraow: {
+    height: 50,
+    flex: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
