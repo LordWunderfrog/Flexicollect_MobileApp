@@ -1125,7 +1125,7 @@ class Mission extends Component {
 
 		let logPath = ""
 		if (Platform.OS == 'android') {
-			logPath = RNFS.DownloadDirectoryPath + "/" + "MissionLog.txt"
+			logPath = RNFS.CachesDirectoryPath + "/" + "MissionLog.txt"
 		}
 		else {
 			await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile`)
