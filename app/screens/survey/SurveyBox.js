@@ -1361,6 +1361,7 @@ class SurveyBox extends Component {
                       },
                       _ => {
                         this.componentUpdateHandler(allQuestions.length, true);
+                        this.writeStoreLogFile()
                       }
                     );
                   } else {
@@ -1525,6 +1526,7 @@ class SurveyBox extends Component {
           },
           _ => {
             this.componentUpdateHandler(allQuestions.length, true);
+            this.writeStoreLogFile()
           }
         );
       } else {
@@ -3886,6 +3888,25 @@ class SurveyBox extends Component {
 
 
   /** Logfile TempCode*/
+  /** Write initial question object */
+  async writeStoreLogFile() {
+    let logPath = await this.getLogPath()
+    if (await RNFS.exists(logPath)) {
+    }
+    else {
+      let strWritedata = "Survey Question: " + JSON.stringify(this.state.questionsArr)
+        + "\n" + "======================================================================"
+        + "\n \n"
+      RNFS.writeFile(logPath, strWritedata, 'utf8')
+        .then(async (success) => {
+          console.log('success', success)
+        })
+        .catch((err) => {
+          console.log('Error in write file', err.message);
+        });
+    }
+  }
+
   /** Store response and request in log file for temporary to catch submit and disappear issue */
   async storeLogFile(questionObj, isSucess, resposeObj, isIos, isOnline, isSubmitLast) {
     let logPath = await this.getLogPath()
@@ -3923,7 +3944,7 @@ class SurveyBox extends Component {
   async getLogPath() {
     let logPath = ''
     if (Platform.OS == 'android') {
-      logPath = RNFS.DownloadDirectoryPath + "/" + missionName + "_RequestLog.txt"
+      logPath = RNFS.CachesDirectoryPath + "/" + missionName + "_RequestLog.txt"
     }
     else {
       await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/LogFile/`)
@@ -3936,7 +3957,7 @@ class SurveyBox extends Component {
   async getMissionLogPath() {
     let logPath = ""
     if (Platform.OS == 'android') {
-      logPath = RNFS.DownloadDirectoryPath + "/" + "MissionLog.txt"
+      logPath = RNFS.CachesDirectoryPath + "/" + "MissionLog.txt"
     }
     else {
       logPath = RNFS.DocumentDirectoryPath + "/" + "LogFile" + "/" + "MissionLog.txt";
