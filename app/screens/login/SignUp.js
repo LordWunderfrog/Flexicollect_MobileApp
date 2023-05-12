@@ -749,6 +749,7 @@ class SignUp extends Component {
                             <Image
                                 style={styles.logo}
                                 source={eolasLogo}
+                                resizeMode='contain'
                             />
 
                             <View style={styles.topOverLay}>
@@ -1267,10 +1268,12 @@ const styles = ScaledSheet.create(
         //logo
         logo: {
             alignSelf: 'center',
-            width: 152.8,
-            height: 74.5,
-            marginTop: 60,
-            marginBottom: 10
+            // width: 152.8,
+            // height: 74.5,
+            width: '60%',
+            height: 100,
+            marginTop: 50,
+            //marginBottom: 10
         },
         //titleContainer
         titleContainer: {
@@ -1282,7 +1285,7 @@ const styles = ScaledSheet.create(
             //borderRadius: Dimension.radiusLarge,
             // borderWidth: 2,
             justifyContent: 'center',
-            marginTop: Dimension.marginTwenty
+            marginTop: 5
         },
         //title
         newUserText: {
@@ -1302,8 +1305,8 @@ const styles = ScaledSheet.create(
             paddingTop: 2,
             borderWidth: 2,
             justifyContent: 'center',
-            marginTop: Dimension.marginTwenty,
-            marginBottom: Dimension.marginTwenty
+            marginTop: Dimension.marginTen,
+            marginBottom: Dimension.marginTen
         },
         signInText: {
             color: Color.colorWhite,

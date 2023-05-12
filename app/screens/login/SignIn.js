@@ -1079,6 +1079,7 @@ class SignIn extends Component {
                                 <Image
                                     style={styles.logo}
                                     source={eolasLogo}
+                                    resizeMode='contain'
                                 />
 
                                 {/*Title*/}
@@ -1253,8 +1254,10 @@ const styles = ScaledSheet.create({
     //logo
     logo: {
         alignSelf: 'center',
-        width: 152.8,
-        height: 74.5,
+        // width: 152.8,
+        // height: 74.5,
+        width: '60%',
+        height: 100,
         marginTop: 60,
         marginBottom: 50
     },

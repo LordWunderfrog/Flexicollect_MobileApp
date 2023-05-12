@@ -66,7 +66,7 @@ export const noSurveyQuestion = 'No Survey Questions'
 //export const mobileOrEmail = 'Mobile No. / Email';
 //export const password = 'Password';
 //export const enterMobOrEmail = 'Please enter your mobile number or EmailId ';
-//export const eolasCopyRight = '\u00a9 2019 Eolas International';
+//export const eolasCopyRight = '\u00a9 2023 Eolas International';
 //export const confirmPassword = 'Confirm Password';
 
 /**
