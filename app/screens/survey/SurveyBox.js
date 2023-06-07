@@ -1307,6 +1307,15 @@ class SurveyBox extends Component {
                     }
 
                     target = [];
+
+                    /** make randomise max diff question set */
+                    // if (temp_questionsArr[j].questionType == "scale" && temp_questionsArr[j].properties.scale_type == "maxdiff") {
+                    //   this.randomiseMaxdiffattribute(temp_questionsArr[j])
+                    // }
+                    if (temp_questionsArr[j].questionType == "scale" && temp_questionsArr[j].properties.scale_type == "maxdiff") {
+                      this.createMaxdiffSet(temp_questionsArr[j])
+                    }
+
                   }
 
                   allQuestions = temp_questionsArr;
@@ -1392,6 +1401,77 @@ class SurveyBox extends Component {
 
     // /** set questionbackup array */
     this.setupQuestionArrayBackup(mid)
+  }
+
+  /** Shuffle main array and sub array of maxdiff question attribute set */
+  // async randomiseMaxdiffattribute(question) {
+  //   let tempObj = question.properties.attribute_Set
+  //   const randomizedArray = [...tempObj];
+
+  //   for (let i = 0; i < randomizedArray.length; i++) {
+  //     if (Array.isArray(randomizedArray[i])) {
+  //       randomizedArray[i] = this.shuffleArray(randomizedArray[i]);
+  //     }
+  //   }
+  //   return question["properties"]["attribute_Set"] = this.shuffleArray(randomizedArray)
+  // }
+  // shuffleArray(array) {
+  //   const shuffledArray = [...array]; // Create a copy of the original array
+
+  //   for (let i = shuffledArray.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  //   }
+  //   return shuffledArray;
+  // }
+
+  createMaxdiffSet = (question) => {
+    let max_attr = question.properties.Maximum_Attributes ? question.properties.Maximum_Attributes.value : 0
+    let attr_per_task = question.properties.Attribute_PerTask ? question.properties.Attribute_PerTask.value : 0
+    let repeat_attr = question.properties.Repeate_Attribute ? question.properties.Repeate_Attribute.value : 0
+    const num_sets = (max_attr / attr_per_task) * repeat_attr;
+    let tempAtt = question.properties.attribute_data
+
+    let setOfAttribute = [];
+    let occurrences = {}; // Track occurrences of each item
+    const maxAttempts = 10000; // Maximum number of attempts to find suitable combinations
+
+    // Loop through num_sets and generate subarrays
+    for (let i = 0; i < num_sets; i++) {
+      let subarray = [];
+
+      // Loop until subarray is filled with unique attributes or until maximum attempts is reached
+      let attempts = 0;
+      while (subarray.length < attr_per_task && attempts < maxAttempts) {
+        let randomIndex = Math.floor(Math.random() * max_attr);
+        let randomItem = tempAtt[randomIndex];
+
+        // Check if the random item has exceeded the desired count (repeat_attr) in the subarray
+        if (
+          !subarray.includes(randomItem) &&
+          (!occurrences[randomIndex] || occurrences[randomIndex] < repeat_attr)
+        ) {
+          subarray.push(randomItem);
+          // Update the occurrences for the selected random item
+          occurrences[randomIndex] = occurrences[randomIndex] ? occurrences[randomIndex] + 1 : 1;
+        }
+        attempts++;
+      }
+
+      // If subarray is not filled with unique attributes or maximum attempts is reached,
+      // reset setOfAttribute and start over from the beginning
+      if (subarray.length < attr_per_task || attempts === maxAttempts) {
+        setOfAttribute = [];
+        occurrences = {};
+        i = -1;
+      } else {
+        subarray = subarray.map((element) => {
+          return { ...element, attributeSetID: i };
+        });
+        setOfAttribute.push(subarray);
+      }
+    }
+    question["properties"]["attribute_Set"] = setOfAttribute
   }
 
   /** get offline answered question 
@@ -1504,8 +1584,12 @@ class SurveyBox extends Component {
         }
 
         target = [];
-      }
 
+        /** make randomise max diff question set only if it is not generaged */
+        if (temp_questionsArr[j].questionType == "scale" && temp_questionsArr[j].properties.scale_type == "maxdiff") {
+          this.createMaxdiffSet(temp_questionsArr[j])
+        }
+      }
       allQuestions = temp_questionsArr;
       this.state.questionsArr = [];
 
@@ -5905,6 +5989,7 @@ class SurveyBox extends Component {
       Keyboard.dismiss();
       this.state.webview = false;
 
+      this.selectedStepIndex = 0
       let currentPage = this.state.pageCount;
       let conditions = this.state.questionsArr[currentPage].conditions;
       let questionsArray = this.state.questionsArr;
@@ -10320,23 +10405,24 @@ class SurveyBox extends Component {
     return (
       <View>
         <View style={{ height: 50 }}>
-          <View style={styles.maxdiffpageview}>
-            <TouchableOpacity style={styles.maxdiffArraow}
-              onPress={() => this.maxdiffLeftAction(attributeTableData)}>
-              <Image
-                style={{ tintColor: Color.colorLiteBlue }}
-                source={require("../../images/survey/left_navigator.png")}
-              />
-            </TouchableOpacity>
-            <Text style={styles.maxdifftextstyle}>{"Set" + "  " + (this.selectedStepIndex + 1) + " of " + attributeTableData.length}</Text>
-            <TouchableOpacity style={styles.maxdiffArraow}
-              onPress={() => this.maxdiffRightAction(attributeTableData)}>
-              <Image
-                style={{ tintColor: Color.colorLiteBlue }}
-                source={require("../../images/survey/right_navigator.png")}
-              />
-            </TouchableOpacity>
-          </View>
+          {(attributeTableData && attributeTableData.length > 0) ?
+            <View style={styles.maxdiffpageview}>
+              <TouchableOpacity style={styles.maxdiffArraow}
+                onPress={() => this.maxdiffLeftAction(attributeTableData)}>
+                <Image
+                  style={{ tintColor: Color.colorLiteBlue }}
+                  source={require("../../images/survey/left_navigator.png")}
+                />
+              </TouchableOpacity>
+              <Text style={styles.maxdifftextstyle}>{"Set" + "  " + (this.selectedStepIndex + 1) + " of " + attributeTableData.length}</Text>
+              <TouchableOpacity style={styles.maxdiffArraow}
+                onPress={() => this.maxdiffRightAction(attributeTableData)}>
+                <Image
+                  style={{ tintColor: Color.colorLiteBlue }}
+                  source={require("../../images/survey/right_navigator.png")}
+                />
+              </TouchableOpacity>
+            </View> : null}
         </View>
         <FlatList
           style={{ flex: 1 }}
@@ -10435,7 +10521,8 @@ class SurveyBox extends Component {
 
     let answer = {
       scale_type: questionArray.properties.scale_type,
-      selected_option: maxdiffSelectedAnswer
+      selected_option: maxdiffSelectedAnswer,
+      attribute_Set: questionArray.properties.attribute_Set
     };
 
     questionArray.answer = answer;

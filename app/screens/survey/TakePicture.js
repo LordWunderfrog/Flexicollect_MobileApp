@@ -144,33 +144,34 @@ class TakePicture extends Component {
                     let imageData = res && res.assets[0]
                     // this.props.navigation.navigate('PreviewImage', { imageData: imageData && imageData.uri, imageProperty: imageProperty })
 
-                    /** for rotating image in some android device is rotate landscape image */
-                    let rotateDgree = 0
-                    if (res && (res.assets[0].width > res.assets[0].height) && Platform.OS == 'android') {
-                        /** Rotate image while image is landscape then its rotate potrait by image picker */
-                        rotateDgree = 90
-                    }
-                    else {
-                        rotateDgree = 0
-                    }
+                    // /** for rotating image in some android device is rotate landscape image */
+                    // let rotateDgree = 0
+                    // if (res && (res.assets[0].width > res.assets[0].height) && Platform.OS == 'android') {
+                    //     /** Rotate image while image is landscape then its rotate potrait by image picker */
+                    //     rotateDgree = 90
+                    // }
+                    // else {
+                    //     rotateDgree = 0
+                    // }
 
                     /** directly pass next screen not in our preview page */
                     if (imageData.uri !== '') {
-                        /** condition for andorid and landscap images then only rotate it */
-                        if (res && (res.assets[0].width > res.assets[0].height) && Platform.OS == 'android') {
-                            /** Rotate image while image is landscape then its rotate potrait by image picker */
-                            await ImageResizer.createResizedImage(imageData.uri, width, height, 'JPEG', 100, rotateDgree)
-                                .then(response => {
-                                    localImage = { uri: response.uri }
-                                })
-                                .catch(err => {
-                                    // console.log(err)
-                                    localImage = { uri: imageData.uri }
-                                });
-                        }
-                        else {
-                            localImage = { uri: imageData.uri }
-                        }
+                        // /** condition for andorid and landscap images then only rotate it */
+                        // if (res && (res.assets[0].width > res.assets[0].height) && Platform.OS == 'android') {
+                        //     /** Rotate image while image is landscape then its rotate potrait by image picker */
+                        //     await ImageResizer.createResizedImage(imageData.uri, width, height, 'JPEG', 100, rotateDgree)
+                        //         .then(response => {
+                        //             localImage = { uri: response.uri }
+                        //         })
+                        //         .catch(err => {
+                        //             // console.log(err)
+                        //             localImage = { uri: imageData.uri }
+                        //         });
+                        // }
+                        // else {
+                        //     localImage = { uri: imageData.uri }
+                        // }
+                        localImage = { uri: imageData.uri }
                     } else {
                         localImage = require('../../images/home/mission/product_bg.png')
                     }
