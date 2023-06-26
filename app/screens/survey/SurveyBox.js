@@ -3100,6 +3100,7 @@ class SurveyBox extends Component {
     devCoord.systemVersion = DeviceInfo.getSystemVersion()
       ? DeviceInfo.getSystemVersion()
       : "";
+    devCoord.appVersion = DeviceInfo.getVersion() ? DeviceInfo.getVersion() : ""
     questionObj.answer = devCoord;
 
     apiKey = await AsyncStorage.getItem("api_key");
@@ -3994,7 +3995,7 @@ class SurveyBox extends Component {
   /** Store response and request in log file for temporary to catch submit and disappear issue */
   async storeLogFile(questionObj, isSucess, resposeObj, isIos, isOnline, isSubmitLast) {
     let logPath = await this.getLogPath()
-    console.log('Log file is', logPath)
+    //console.log('Log file is', logPath)
     let readFiledata = ''
     if (await RNFS.exists(logPath)) {
       readFiledata = await RNFS.readFile(logPath, "utf8");
