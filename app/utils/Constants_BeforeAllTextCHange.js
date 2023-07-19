@@ -147,9 +147,10 @@ module.exports = {
     { "label": "Spanish", "value": "Spanish" },
     { "label": "Tagalog", "value": "Tagalog" },
     { "label": "Thai", "value": "Thai" },
+    { "label": "Vietnamese", "value": "Vietnamese" },
     { "label": "Urdu", "value": "Urdu" }]
     : ["Afrikaans", "Arabic", "Chinese", "Dutch", "English", "French", "German", "Hindi",
-      "Indonesian", "Italian", "Japanese", "Malay", "Polish", "Portuguese", "Russian", "Spanish", "Tagalog", "Thai", "Urdu"],
+      "Indonesian", "Italian", "Japanese", "Malay", "Polish", "Portuguese", "Russian", "Spanish", "Tagalog", "Thai", "Vietnamese", "Urdu"],
   signin:
   {
     "Afrikaans": {
@@ -565,6 +566,29 @@ module.exports = {
       "Version_Check": "Version Check",
       "Upgraded_App_Msg": "If you have upgraded the app, Click OK to continue.",
       "New_Version_Msg": "New Version of App is available in Store. Click OK to upgrade and continue.",
+    },
+    "Vietnamese": {
+      "Email": "E-mail",
+      "Eolas_International": "© 2023 Eolas International",
+      "Forgot_Password": "Quên mật khẩu",
+      "Forgot_Password_Msg": "Vui lòng kiểm tra email/tin nhắn của bạn để lấy mã xác thực",
+      "Login": "ĐĂNG NHẬP",
+      "Mobile": "Số di động",
+      "Mobile_Email": "Số di động / Email",
+      "Password": "Mật khẩu",
+      "Privacy_Policy": "Chính sách bảo mật",
+      "Register_new_account": "Đăng ký tài khoản mới",
+      "Reset_Password": "Đặt lại mật khẩu",
+      "Signin": "Đăng nhập",
+      "Terms_of_service": "Điều khoản dịch vụ",
+      "password_invalid": "Mật khẩu không hợp lệ",
+      "welcome": "Chào mừng đến với Mạng lưới \"Eolas\"",
+      "Password_Changed_MSg": "Mật khẩu đã thay đổi thành công",
+      "Email_Verified": "Xác minh địa chỉ email thành công. Đăng nhập để truy cập ứng dụng",
+      "ResetPassword_Sucess_Msg": "Nhấp vào liên kết được gửi đến địa chỉ đã đăng ký để đặt lại mật khẩu",
+      "Version_Check": "Kiểm tra phiên bản",
+      "Upgraded_App_Msg": "Nếu bạn đã nâng cấp ứng dụng, hãy nhấp vào OK để tiếp tục",
+      "New_Version_Msg": "Phiên bản mới của ứng dụng đã có trong Store. Nhấp vào OK để nâng cấp và tiếp tục"
     },
     "Urdu": {
       "Email": "ای میل",
@@ -1292,6 +1316,45 @@ module.exports = {
       "Success_Reg_Msg": "ลงทะเบียนเรียบร้อยแล้ว",
       "Terms_Service": "เงื่อนไขการให้บริการ",
       "Valid_Email": "กรุณาใส่อีเมลที่ถูกต้อง"
+    },
+    "Vietnamese": {
+      "Agree_Terms_Conditions": "Đồng ý với Điều khoản và Điều kiện",
+      "City": "Thành phố",
+      "Confirm_Password": "Xác nhận mật khẩu",
+      "Country": "Quốc gia",
+      "DOB": "Ngày sinh",
+      "Email_ID": "Địa chỉ email",
+      "Eolas_International": "© 2023 Eolas International",
+      "First_Name": "Tên",
+      "Gender": "Giới tính",
+      "Gender_List": [
+        {
+          "label": "Nam giới",
+          "value": "1"
+        },
+        {
+          "label": "Nữ giới",
+          "value": "2"
+        },
+        {
+          "label": "Không sẵn lòng trả lời",
+          "value": "3"
+        }
+      ],
+      "Last_Name": "Họ",
+      "Mobile": "Số di động",
+      "New_User_Sign_up": "Người dùng mới đăng ký",
+      "Password": "Mật khẩu",
+      "Register": "Đăng ký",
+      "Select_City": "Chọn thành phố",
+      "Select_Country": "Chọn quốc gia",
+      "Select_Gender": "Chọn giới tính",
+      "Select_State": "Chọn quận",
+      "Sign_In": "Đăng nhập",
+      "State": "Trạng thái",
+      "Success_Reg_Msg": "Đăng ký thành công",
+      "Terms_Service": "Điều khoản dịch vụ",
+      "Valid_Email": "Vui lòng nhập email hợp lệ"
     },
     "Urdu": {
       "Agree_Terms_Conditions": "شرائط و ضوابط سے اتفاق کریں",
@@ -2829,6 +2892,89 @@ module.exports = {
       "Sync_Inprogress": "Syncing Is InProgress",
       "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
     },
+    "Vietnamese": {
+      "App_Version": "Phiên bản ứng dụng",
+      "Cancel": "Hủy bỏ",
+      "Change_Password": "Đổi mật khẩu",
+      "City": "Thành phố",
+      "Country": "Quốc gia",
+      "Country_Code": "Mã quốc gia",
+      "Current_Password": "Mật khẩu hiện tại",
+      "Email": "E-mail",
+      "Eolas_International": "© 2023 Eolas International",
+      "First_Name": "Tên",
+      "Gender": "Giới tính",
+      "Gender_List": [
+        {
+          "label": "Nam giới",
+          "value": "1"
+        },
+        {
+          "label": "Nữ giới",
+          "value": "2"
+        },
+        {
+          "label": "Không sẵn lòng trả lời",
+          "value": "3"
+        }
+      ],
+      "LOGOUT": "ĐĂNG XUẤT",
+      "Last_Name": "Họ",
+      "Mobile_Number": "Số điện thoại",
+      "New_Password": "Mật khẩu mới",
+      "Password": "Mật khẩu",
+      "Payal_Email": "Paypal Email",
+      "Photo": "Hình chụp",
+      "Photos": "Ảnh",
+      "Profile_Setup": "Thiết lập hồ sơ",
+      "Save": "Lưu",
+      "Skip": "Bỏ qua",
+      "State": "Trạng thái",
+      "Sync_Offline": "Đồng bộ hóa khảo sát ngoại tuyến",
+      "Mission_Backup": "Sao lưu khảo sát ngoại tuyến",
+      "Export_Mission": "Xuất khảo sát",
+      "Set_Offline": "Thiết lập ngoại tuyến",
+      "No_Offline_Mission": "Khảo sát ngoại tuyến không khả dụng",
+      "Offline_Mission": "Khảo sát ngoại tuyến",
+      "Sync_Now": "Đồng bộ hóa ngay bây giờ",
+      "View_Survey": "Xem khảo sát",
+      "Que": "Quê",
+      "Ans": "Trả lời",
+      "Info_Text": "Văn bản thông tin",
+      "Address": "Địa chỉ",
+      "Barcode_Value": "Giá trị mã vạch",
+      "Video_Presented": "Video được trình bày",
+      "Audio_Presented": "Âm thanh được trình bày",
+      "Option": "Tùy chọn",
+      "Sub_Option": "Tùy chọn phụ",
+      "Not_Answered": "dữ liệu không tồn tại",
+      "Export": "Xuất khẩu",
+      "Delete": "Xóa bỏ",
+      "Mission": "khảo sát",
+      "DeleteAll_Text": "Xóa hết",
+      "Delete_All_Mission": "Xóa tất cả khảo sát",
+      "Synced": "Đã đồng bộ hóa",
+      "Not_Synced": "Không được đồng bộ hóa",
+      "Sync_Status": "Trạng thái đồng bộ hóa",
+      "Offline_Sync_Success": "Khảo sát ngoại tuyến được đồng bộ hóa thành công",
+      "Submission_Exported": "Đã xuất phản hồi thành công",
+      "Empty_Answer_Msg": "Bạn chưa đưa ra bất kỳ câu trả lời nào cho khảo sát này",
+      "Advanced_Settings": "Advanced Settings",
+      "Delete_Mission_Confirmation": "Bạn có chắc chắn muốn xóa khảo sát này không?",
+      "Delete_Mission_Msg": "Bạn đã lưu trữ các phản hồi ngoại tuyến. Vui lòng kiểm tra với người liên hệ của bạn tại Eolas để đảm bảo rằng tất cả các phản hồi này đã được nhận",
+      "DeleteAll_Mission_Confirmation": "Bạn có chắc chắn muốn xóa tất cả các khảo sát ngoại tuyến không? Vui lòng kiểm tra với người liên hệ tại Eolas của bạn để đảm bảo rằng tất cả các phản hồi này đã được nhận",
+      "Delete_Profile": "Xóa hồ sơ",
+      "Delete_Profile_confirmation": "Để xác nhận xóa hồ sơ của bạn, vui lòng nhập từ XÓA vào ô bên dưới",
+      "Enter_Delete": "Vui lòng nhập DELETE để xác nhận",
+      "Confirm": "Xác nhận",
+      "Delete_Account": "Bạn có chắc rằng bạn muốn xóa tài khoản của bạn?",
+      "Yes": "Đúng",
+      "NO": "KHÔNG",
+      "Sync_Error_Offlinemode": "Có vẻ như kết nối internet của bạn bị chậm, Vui lòng thử với mạng tốt để có trải nghiệm tốt hơn",
+      "enterPepsicoCode": "Please enter PepsiCo Code",
+      "Sync_Inprogress": "Syncing Is InProgress",
+      "Logout_Message": "Are you sure you want to logout?  Make sure some offline survey is not synced yet. You will lose that data if you logout without sync"
+    },
     "Urdu": {
       "App_Version": "ایپ ورژن",
       "Cancel": "منسوخ کریں",
@@ -3581,6 +3727,43 @@ module.exports = {
       "emptyLeader": "Hey, it looks like no one has completed this mission yet. Be the first to complete the mission and take the top spot.",
       "Offlinemode_MSG": "You are in offline mode"
     },
+    "Vietnamese": {
+      "History": "Lịch sử",
+      "Home": "Trang chủ",
+      "In_Progress": "Trong tiến trình",
+      "Mission": "Nhiệm vụ",
+      "Mission_Completed": "Nhiệm vụ đã hoàn thành",
+      "Missions": "Nhiệm vụ",
+      "No_Notification": "Không có thông báo",
+      "No_Payment": "Không có nhiệm vụ hoàn thành",
+      "No_Survey": "Không có khảo sát",
+      "No_XP": "Không có nhiệm vụ hoàn thành",
+      "Notifications": "Thông báo",
+      "Payment": "Thanh toán",
+      "Payments": "Thanh toán",
+      "Profile": "Hồ sơ",
+      "XP_Experience": "XP (Kinh nghiệm)",
+      "Streak": "chuỗi thắng",
+      "Achievements": "Thành tựu",
+      "Points": "Điểm",
+      "Leaders": "Người dẫn đầu",
+      "Awards": "Giải thưởng",
+      "Welcome": "Chào mừng",
+      "Hi": "Chào",
+      "enter_participantCode": "Vui lòng nhập mã tham gia được chia sẻ với bạn trong hướng dẫn thiết lập và nhấp vào tiếp tục",
+      "code_info": "This code is required to access Canada PepsiCo missions and leader board content.",
+      "Skip": "Skip",
+      "Continue": "Tiếp tục",
+      "Highest": "Cao nhất",
+      "Total_Points": "Tổng số điểm",
+      "Current_Rank": "Xếp hạng hiện tại",
+      "Position": "pos",
+      "User": "Người dùng",
+      "Total_XP": "Tổng số điểm tích lũy",
+      "enterPepsicoCode": "Please enter PepsiCo Code",
+      "emptyLeader": "Này, có vẻ như chưa có ai hoàn thành khảo sát này. Hãy là người đầu tiên hoàn thành khảo sát và chiếm vị trí cao nhất",
+      "Offlinemode_MSG": "Bạn đang ở chế độ ngoại tuyến"
+    },
     "Urdu": {
       "History": "ہسٹری /",
       "Home": "مرکزی / گھر",
@@ -3653,7 +3836,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Arabic": {
       "Loading_Questions": "تحميل الأسئلة",
@@ -3687,7 +3878,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Chinese": {
       "Loading_Questions": "加载问题",
@@ -3721,7 +3920,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Dutch": {
       "Loading_Questions": "Vragen worden geladen",
@@ -3755,7 +3962,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "English": {
       "Loading_Questions": "Loading Questions",
@@ -3789,7 +4004,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "French": {
       "Loading_Questions": "Chargement des questions",
@@ -3823,7 +4046,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "German": {
       "Loading_Questions": "Fragen werden hochgeladen",
@@ -3857,7 +4088,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Hindi": {
       "Loading_Questions": "प्रश्न लोड हो रहे हैं",
@@ -3891,7 +4130,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Indonesian": {
       "Loading_Questions": "Memuat pertanyaan",
@@ -3925,7 +4172,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Italian": {
       "Loading_Questions": "Caricamento domande",
@@ -3959,7 +4214,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Japanese": {
       "Loading_Questions": "質問の誤謬",
@@ -3993,7 +4256,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Malay": {
       "Loading_Questions": "Memuat naik  soalan",
@@ -4027,7 +4298,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Polish": {
       "Loading_Questions": "Ładowanie pytań",
@@ -4061,7 +4340,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Portuguese": {
       "Loading_Questions": "Carregando perguntas",
@@ -4095,7 +4382,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Russian": {
       "Loading_Questions": "Вопросы загружаются",
@@ -4129,7 +4424,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Spanish": {
       "Loading_Questions": "Cargando preguntas",
@@ -4163,7 +4466,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Tagalog": {
       "Loading_Questions": "Naglo-load ng mga Katanungan",
@@ -4197,7 +4508,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Thai": {
       "Loading_Questions": "กำลังโหลดคำถาม",
@@ -4231,7 +4550,57 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
+    },
+    "Vietnamese": {
+      "Loading_Questions": "Đang tải câu hỏi",
+      "Mandatory_Msg": "Vui lòng trả lời câu hỏi này",
+      "Processing_Msg": "Đang xử lý câu trả lời trước. Vui lòng đợi và thử lại.",
+      "Submit": "Nộp",
+      "Submitting_Survey": "Gửi khảo sát",
+      "Survey_Completed": "Khảo sát đã hoàn thành thành công",
+      "Validating_Msg": "Đang xác thực...",
+      "Video_Processing_Msg": "Đang xử lý video. Vui lòng đợi cho đến khi tải xong.",
+      "SlowNetwork_Survey_Submit": "Có vẻ như kết nối internet của bạn bị chậm, để có trải nghiệm tốt hơn, bản khảo sát của bạn sẽ được gửi ngoại tuyến",
+      "Permission_Title": "Sự cho phép",
+      "GPS_Permission_Msg": "Vui lòng bật vị trí và chế độ định vị",
+      "Camera_Barcode_Permission": "Eolas cần quyền truy cập vào máy ảnh của bạn để quét mã vạch",
+      "Camera_TakePicture_Permission": 'Eolas cần quyền truy cập vào máy ảnh của bạn để chụp ảnh phục vụ khảo sát',
+      "Camera_Video_Permission": 'Eolas cần quyền truy cập vào máy ảnh của bạn để quay video phục vụ khảo sát',
+      "Camera_General_Permission": "Eolas cần quyền truy cập vào máy ảnh của bạn để tải phương tiện lên phục vụ khảo sát",
+      "Photos_General_Permission": "Eolas cần quyền truy cập vào Ảnh của bạn để tải phương tiện lên phục vụ khảo sát",
+      "External_Storage_Permission": "Eolas cần ghi bộ nhớ ngoài của bạn",
+      "Microphone_Permission": "Eolas cần quyền truy cập vào micrô của bạn để ghi âm",
+      "Audio_Recorder_Permission": "Eolas cần truy cập máy ghi âm của bạn để ghi âm",
+      "Cancel": "Hủy bỏ",
+      "OK": "Đồng ý",
+      "Survey_NotAvailable_For_Offline": "Khảo sát này không khả dụng. Vui lòng đóng khảo sát này và kết nối với internet để tải xuống. Sau khi tải xuống, khảo sát sẽ khả dụng ngoại tuyến",
+      "Survey_Submitting_Error": "Có vẻ như đã xảy ra sự cố khi gửi khảo sát này. Vui lòng sử dụng nút hỗ trợ trên trang chủ để liên hệ với chúng tôi",
+      "Submission_Exceeded": "Khảo sát đã vượt quá giới hạn",
+      "Try_Again": "Thử lại",
+      "NO_Scale_Found": "Không tìm thấy tỷ lệ",
+      "Take_Photo": "Chụp hình",
+      "Take_Audio": "Thu âm",
+      "Take_Video": "Quay video",
+      "Choose_Image": "Chọn hình ảnh",
+      "Choose_Audio": "Chọn âm thanh",
+      "Choose_Video": "Chọn video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
     "Urdu": {
       "Loading_Questions": "سوالات لوڈ ہو رہے ہیں",
@@ -4265,7 +4634,15 @@ module.exports = {
       "Take_Video": "Take Video",
       "Choose_Image": "Choose Image",
       "Choose_Audio": "Choose Audio",
-      "Choose_Video": "Choose Video"
+      "Choose_Video": "Choose Video",
+      "Minimum_Validation_Msg": "Please select minimum",
+      "Maximum_Validation_Msg": "Please select maximum",
+      "Option": "options",
+      "Set": "Set",
+      "of": "of",
+      "Least": "Least",
+      "Most": "Most",
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
     },
   },
   common_text: {
@@ -4809,6 +5186,36 @@ module.exports = {
       "We_CouldNot_GetYour_Location": "We could not get your location.",
       "InValid_User": "Invalid User ID"
     },
+    "Vietnamese": {
+      "No_Internet": "Please check your network connection",
+      "Enter_Email": "Please enter your Email",
+      "Enter_Password": "Please enter your password",
+      "Enter_FirstName": "Please enter your first name",
+      "Enter_LastName": "Please enter your last name",
+      "Password_Character": "Password must have atleast 6 characters",
+      "ValidMobOr_Email": "Please enter valid mobile number or EmailId",
+      "Valid_Email": "Please enter the valid email",
+      "Password_Validation": "Password and Confirm password does not match",
+      "Enter_Confirmpassword": "Please enter Confirm Password",
+      "Enter_ValidDate": "Please enter valid date of birth",
+      "Enter_Dob": "Please enter your date of birth",
+      "Enter_MobNo": "Please enter your mobile number",
+      "Enter_Country_Code": "Please enter your country code",
+      "TapTo_Place": "Tap to place marker",
+      "Enter_Text": "Enter text...",
+      "Select_Rate": "Please select a value",
+      "Processing_Image": "Please wait! We are processing image.",
+      "Not_Valid_BarCode": "NOT VALID BARCODE",
+      "BarCode_NotReadable": "BARCODE NOT READABLE",
+      "Scan_Hint": "Place a barcode inside the rectangle to scan it",
+      "QrCode_Not_Supported": "The barcode cannot be scanned",
+      "Posting_Error": "There was a problem with saving one of your answers.Please hit the go to button and fill in that question again.",
+      "Session_Expired": "Looks like something went wrong.Please log in again",
+      "Loading_Detail": "Loading details...",
+      "Address_NotFound": "Address not found",
+      "We_CouldNot_GetYour_Location": "We could not get your location.",
+      "InValid_User": "Invalid User ID"
+    },
     "Urdu": {
       "No_Internet": "Please check your network connection",
       "Enter_Email": "Please enter your Email",
@@ -4839,5 +5246,6 @@ module.exports = {
       "We_CouldNot_GetYour_Location": "We could not get your location.",
       "InValid_User": "Invalid User ID"
     }
+
   }
 };

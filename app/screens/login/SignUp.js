@@ -1391,6 +1391,7 @@ const styles = ScaledSheet.create(
             fontSize: Dimension.mediumText,
             alignSelf: 'center',
             marginLeft: Dimension.marginTen,
+            marginRight: Dimension.marginTen,
             textDecorationLine: 'underline'
         },
         //register
