@@ -3100,6 +3100,7 @@ class SurveyBox extends Component {
     devCoord.systemVersion = DeviceInfo.getSystemVersion()
       ? DeviceInfo.getSystemVersion()
       : "";
+    devCoord.appVersion = DeviceInfo.getVersion() ? DeviceInfo.getVersion() : ""
     questionObj.answer = devCoord;
 
     apiKey = await AsyncStorage.getItem("api_key");
@@ -3994,7 +3995,7 @@ class SurveyBox extends Component {
   /** Store response and request in log file for temporary to catch submit and disappear issue */
   async storeLogFile(questionObj, isSucess, resposeObj, isIos, isOnline, isSubmitLast) {
     let logPath = await this.getLogPath()
-    console.log('Log file is', logPath)
+    //console.log('Log file is', logPath)
     let readFiledata = ''
     if (await RNFS.exists(logPath)) {
       readFiledata = await RNFS.readFile(logPath, "utf8");
@@ -5989,7 +5990,6 @@ class SurveyBox extends Component {
       Keyboard.dismiss();
       this.state.webview = false;
 
-      this.selectedStepIndex = 0
       let currentPage = this.state.pageCount;
       let conditions = this.state.questionsArr[currentPage].conditions;
       let questionsArray = this.state.questionsArr;
@@ -6023,7 +6023,7 @@ class SurveyBox extends Component {
         let count = ansObj.selected_option && ansObj.selected_option.length || 0
         let objProperty = questionsArray[currentQuesIndx].properties
         if (count < objProperty.minlimit) {
-          Constants.showSnack('Please select minimum ' + objProperty.minlimit + ' options')
+          Constants.showSnack(this.state.translation[this.state.Language].Minimum_Validation_Msg + " " + objProperty.minlimit + " " + this.state.translation[this.state.Language].Option)
           return;
         }
       }
@@ -6035,8 +6035,13 @@ class SurveyBox extends Component {
           let lengthofSet = questionsArray[currentQuesIndx].properties.attribute_Set && questionsArray[currentQuesIndx].properties.attribute_Set.length || 0
           /** logic is every set has least and most selection so its lenth * 2 */
           if (ansObj.selected_option.length < (lengthofSet * 2)) {
-            Constants.showSnack('Please select least and most item for all set of question')
+            Constants.showSnack(this.state.translation[this.state.Language].MaxDiffSelectMsg)
             return;
+          }
+          else {
+            /** for next second maxdiff question make selected set 
+             * of attribute start from begining */
+            this.selectedStepIndex = 0
           }
         }
       }
@@ -7623,7 +7628,8 @@ class SurveyBox extends Component {
         let selectedObjLenth = filteredArray && filteredArray.length
         if (selectedObjLenth > queProperty.maxlimit) {
           item.isClicked = false
-          Constants.showSnack('Please select maximum ' + queProperty.maxlimit + ' options only')
+          Constants.showSnack(this.state.translation[this.state.Language].Maximum_Validation_Msg + " " + queProperty.maxlimit + " " + this.state.translation[this.state.Language].Option)
+          // Constants.showSnack('Please select maximum ' + queProperty.maxlimit + ' options')
         }
         else {
           item.isClicked = item.isClicked
@@ -9656,14 +9662,14 @@ class SurveyBox extends Component {
 
   /* unused funtion */
   onMapPress = (e, index) => {
-    isGpsModified = true;
-    let region = {
-      latitude: e.latitude,
-      longitude: e.longitude,
-      latitudeDelta: e.latitudeDelta * 1.5,
-      longitudeDelta: e.longitudeDelta * 1.5
-    };
-    this.onRegionChange(region, region.latitude, region.longitude, index);
+    // isGpsModified = true;
+    // let region = {
+    //   latitude: e.latitude,
+    //   longitude: e.longitude,
+    //   latitudeDelta: e.latitudeDelta * 1.5,
+    //   longitudeDelta: e.longitudeDelta * 1.5
+    // };
+    // this.onRegionChange(region, region.latitude, region.longitude, index);
   };
 
   /* unused funtion */
@@ -10350,7 +10356,7 @@ class SurveyBox extends Component {
   layoutScaleTypeMaxdiffQuestion(questionArray, parentIndex) {
     let question = questionArray.properties;
     let attributesSet = question.attribute_Set
-    let tableHead = ["Least", "", "Most"]
+    let tableHead = [this.state.translation[this.state.Language].Least, "", this.state.translation[this.state.Language].Most]
 
     const radioMaxDiffElement = data => {
       return (
@@ -10414,7 +10420,7 @@ class SurveyBox extends Component {
                   source={require("../../images/survey/left_navigator.png")}
                 />
               </TouchableOpacity>
-              <Text style={styles.maxdifftextstyle}>{"Set" + "  " + (this.selectedStepIndex + 1) + " of " + attributeTableData.length}</Text>
+              <Text style={styles.maxdifftextstyle}>{this.state.translation[this.state.Language].Set + "  " + (this.selectedStepIndex + 1) + " " + this.state.translation[this.state.Language].of + " " + attributeTableData.length}</Text>
               <TouchableOpacity style={styles.maxdiffArraow}
                 onPress={() => this.maxdiffRightAction(attributeTableData)}>
                 <Image
@@ -10472,14 +10478,38 @@ class SurveyBox extends Component {
     }
   }
   maxdiffRightAction = (attributeTableData) => {
-    if (this.selectedStepIndex < attributeTableData.length - 1) {
-      this.flatListRef.scrollToIndex({
-        animated: true,
-        index: this.selectedStepIndex + 1,
-      });
+    /** logic for select least and most item for every set then only move for second set */
+    let questionsArray = this.state.questionsArr
+    let currentQuesIndx = this.state.pageCount;
+    let ansObj = questionsArray[currentQuesIndx].answer
+    if (ansObj && ansObj.selected_option && ansObj.selected_option.length > 0) {
+      let lengthOfObj = this.countOccurrences(ansObj.selected_option, this.selectedStepIndex)
+      if (lengthOfObj == 1) {
+        /**lenth 1 meanse only one set item either least or most is selected.
+         * Must need to select least or most both */
+        Constants.showSnack(this.state.translation[this.state.Language].MaxDiffSelectMsg)
+      }
+      else {
+        /** Move to second set */
+        if (this.selectedStepIndex < attributeTableData.length - 1) {
+          this.flatListRef.scrollToIndex({
+            animated: true,
+            index: this.selectedStepIndex + 1,
+          });
+        }
+      }
     }
   }
 
+  countOccurrences(array, value) {
+    let count = 0;
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].attributeSetID === value) {
+        count++;
+      }
+    }
+    return count;
+  }
   /**
    * Selected Scale Maxdiff question's answer to an array
    * @param {Array} questionArray All Questions list
@@ -12149,7 +12179,8 @@ class SurveyBox extends Component {
         let lengthofSet = questionsArray[currentQuesIndx].properties.attribute_Set && questionsArray[currentQuesIndx].properties.attribute_Set.length || 0
         /** logic is every set has least and most selection so its lenth * 2 */
         if (ansObj.selected_option.length < (lengthofSet * 2)) {
-          Constants.showSnack('Please select max diff Question all set anser')
+          // Constants.showSnack('Please select max diff Question all set anser')
+          Constants.showSnack(this.state.translation[this.state.Language].MaxDiffSelectMsg)
           return;
         }
       }

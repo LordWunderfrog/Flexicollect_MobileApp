@@ -250,6 +250,7 @@ class ProfileScreen extends Component {
         if (lan) {
             this.setState({ Language: lan }, () => {
                 this.getCountries();
+                this.profileUpdateforLanguage()
                 // this.getStates(this.state.state);
 
                 /** for update tabbar text change while change language
@@ -879,6 +880,34 @@ class ProfileScreen extends Component {
             }
         });
 
+    }
+
+    async profileUpdateforLanguage() {
+        let api_key = await AsyncStorage.getItem('api_key');
+        let url = Constants.BASE_URL + Service.CUSTOMER;
+        let data = {
+            email: this.state.email,
+            language: this.state.Language ? this.state.Language : ""
+        }
+        NetInfo.fetch().then(state => {
+            status = state.isConnected ? 'online' : 'offline';
+            if (status === 'online') {
+                axios.patch(url, data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Auth': api_key
+                    },
+                    timeout: Constants.TIMEOUT
+                }).then(response => {
+                    if (response.data.status === 200) {
+                        AsyncStorage.setItem('Language', this.state.Language);
+                        global.language = this.state.Language;
+                    }
+                }).catch((error) => {
+                    console.log('error', error)
+                })
+            }
+        })
     }
 
     /**
@@ -2264,7 +2293,7 @@ class ProfileScreen extends Component {
                                 <View style={styles.offlineBackupView}>
                                     <Text style={styles.skipText}>{translation[Language].Delete_Profile}</Text>
                                     <TouchableOpacity
-                                        style={[styles.exportSurveyButton, { backgroundColor: Color.colorDarkBlue, marginLeft: Dimension.margin, marginTop: 5 }]}
+                                        style={[styles.exportSurveyButton, { backgroundColor: Color.colorDarkBlue, marginLeft: Dimension.margin, marginTop: 5, paddingHorizontal: 5 }]}
                                         onPress={() => this.deleteProfile()}>
                                         {
                                             <Text style={styles.skipText}>{translation[Language].Delete_Profile}</Text>
