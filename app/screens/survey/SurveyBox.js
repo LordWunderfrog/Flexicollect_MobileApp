@@ -6017,6 +6017,16 @@ class SurveyBox extends Component {
         }
       }
 
+      /** Check text input content type validation */
+      if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type")) {
+        let answerText = questionsArray[currentQuesIndx].answer.text
+        if (answerText && answerText.trim()) {
+          if (!this.inputElementValidation(answerText, questionsArray[currentQuesIndx].properties.content_type)) {
+            return;
+          }
+        }
+      }
+
       /** check choice type element set limit */
       if (questionsArray[currentQuesIndx].questionType === 'choice' && questionsArray[currentQuesIndx].properties.hasOwnProperty('setlimit') && questionsArray[currentQuesIndx].properties.setlimit == 1) {
         let ansObj = questionsArray[currentQuesIndx].answer
@@ -7192,6 +7202,44 @@ class SurveyBox extends Component {
       type = "default";
     }
     return type;
+  }
+
+  /** As per the content type - restrict the input text validation */
+  inputElementValidation(text, contentType) {
+    console.log('text inside validation', text)
+    if (contentType == "number") {
+      let regNumber = /^[0-9.]+$/
+      if (regNumber.test(text)) {
+        return true
+      }
+      else {
+        Constants.showSnack("Please enter numeric value only")
+        return false
+      }
+    }
+    else if (contentType == "email") {
+      let regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (regEmail.test(text)) {
+        return true
+      }
+      else {
+        Constants.showSnack(this.state.translation_common[this.state.Language].Valid_Email)
+        return false
+      }
+    }
+    else if (contentType == "alphabets") {
+      let regAlphabets = /^[A-Za-z\s]+$/;
+      if (regAlphabets.test(text)) {
+        return true
+      }
+      else {
+        Constants.showSnack("Please enter alphabets value only")
+        return false
+      }
+    }
+    else {
+      return true
+    }
   }
 
   /**
@@ -12171,6 +12219,40 @@ class SurveyBox extends Component {
     let questionsArray = this.state.questionsArr;
     let arrLength = questionsArray.length;
     let currentQuesIndx = this.state.pageCount;
+
+    //check for text input limit validation
+    if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("limitchar") &&
+      questionsArray[currentQuesIndx].properties.limitchar === 1) {
+
+      let limit_check = this.limitCharValidation(questionsArray[currentQuesIndx], questionsArray[currentQuesIndx].answer);
+      if (
+        limit_check.limitValid === false
+      ) {
+        Constants.showSnack(limit_check.limitMessage);
+        return;
+      }
+    }
+    /** Check text input content type validation */
+    if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type")) {
+      let answerText = questionsArray[currentQuesIndx].answer.text
+      if (answerText && answerText.trim()) {
+        if (!this.inputElementValidation(answerText, questionsArray[currentQuesIndx].properties.content_type)) {
+          return;
+        }
+      }
+    }
+
+    /** check choice type element set limit */
+    if (questionsArray[currentQuesIndx].questionType === 'choice' && questionsArray[currentQuesIndx].properties.hasOwnProperty('setlimit') && questionsArray[currentQuesIndx].properties.setlimit == 1) {
+      let ansObj = questionsArray[currentQuesIndx].answer
+      let count = ansObj.selected_option && ansObj.selected_option.length || 0
+      let objProperty = questionsArray[currentQuesIndx].properties
+      if (count < objProperty.minlimit) {
+        Constants.showSnack(this.state.translation[this.state.Language].Minimum_Validation_Msg + " " + objProperty.minlimit + " " + this.state.translation[this.state.Language].Option)
+        return;
+      }
+    }
+
 
     /** Check max diff all set item is selected */
     if (questionsArray[currentQuesIndx].questionType === 'scale' && questionsArray[currentQuesIndx].properties.scale_type == 'maxdiff') {
