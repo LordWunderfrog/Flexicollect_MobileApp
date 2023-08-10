@@ -6978,6 +6978,13 @@ react-native-customized-image-picker@^1.3.4:
   resolved "https://registry.yarnpkg.com/react-native-customized-image-picker/-/react-native-customized-image-picker-1.3.4.tgz#6498b27262350adddecfa05c1a0b340d5fa56ae3"
   integrity sha512-Y4aL54acBQGUNWWRGRI2K1g7j31u1GJub5mhDnsXCoAUCikGFWF1KDAKnnegagAqgwRB06CdDW0wB9wXznwp3g==
 
+react-native-date-picker@^4.2.13:
+  version "4.2.13"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-4.2.13.tgz#b5b894ee6c5a154a752f9094342170515e169ea6"
+  integrity sha512-cQ3k+ExXggAnytomeNGNrtV/l2a7WzVUeWKo7Gs2pv/z3TCjjlmKn0ZBMPgcThrFAgFMxgYI0XzKVKT7TPsOmw==
+  dependencies:
+    prop-types "^15.8.1"
+
 react-native-device-info@^8.7.1:
   version "8.7.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.7.1.tgz#fbb06f87dbbc4423abe713874699fb2e6e99fd15"
