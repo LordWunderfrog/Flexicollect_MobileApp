@@ -6009,8 +6009,7 @@ class SurveyBox extends Component {
 
       //check for text input limit validation
       if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("limitchar") &&
-        questionsArray[currentQuesIndx].properties.limitchar === 1 &&
-        (questionsArray[currentQuesIndx].properties.hasOwnProperty("datePickerOn") && questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
+        questionsArray[currentQuesIndx].properties.limitchar === 1 && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
 
         let limit_check = this.limitCharValidation(questionsArray[currentQuesIndx], questionsArray[currentQuesIndx].answer);
         if (
@@ -6023,7 +6022,7 @@ class SurveyBox extends Component {
 
       /** Check text input content type validation */
       if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type")
-        && (questionsArray[currentQuesIndx].properties.hasOwnProperty("datePickerOn") && questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
+        && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
         let answerText = questionsArray[currentQuesIndx].answer.text
         if (answerText && answerText.trim()) {
           if (!this.inputElementValidation(answerText, questionsArray[currentQuesIndx].properties.content_type)) {
@@ -6794,12 +6793,14 @@ class SurveyBox extends Component {
       ) {
         questions.push(questionsArray[i])
       }
-      else if (aviMultifiled && aviMultifiled.some(obj => obj.value === handlerData)) {
-        /** condition added for if hide element is contain by any other looping question then not hide that element
-         *  to solve error hide element out side looping is also hiding in loop question so added this condition
-        */
-        questions.push(questionsArray[i])
-      }
+      // else if (aviMultifiled && aviMultifiled.some(obj => obj.value === handlerData)) {
+      //   /** condition added for if hide element is contain by any other looping question then not hide that element
+      //    *  to solve error hide element out side looping is also hiding in loop question so added this condition
+      //   */
+      //   questions.push(questionsArray[i])
+      // }
+
+
       // else if (questionsArray[i].conditions && questionsArray[i].conditions.length > 0) {
       //   /** condition added for if hide element is contain any condtion then not hide that element 
       //    *  to solve error hide element out side looping is also hiding in loop question so added this condition
@@ -7211,7 +7212,6 @@ class SurveyBox extends Component {
 
   /** As per the content type - restrict the input text validation */
   inputElementValidation(text, contentType) {
-    console.log('text inside validation', text)
     if (contentType == "number") {
       let regNumber = /^[0-9.]+$/
       if (regNumber.test(text)) {
@@ -12285,8 +12285,7 @@ class SurveyBox extends Component {
 
     //check for text input limit validation
     if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("limitchar") &&
-      questionsArray[currentQuesIndx].properties.limitchar === 1 &&
-      (questionsArray[currentQuesIndx].properties.hasOwnProperty("datePickerOn") && questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
+      questionsArray[currentQuesIndx].properties.limitchar === 1 && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
 
       let limit_check = this.limitCharValidation(questionsArray[currentQuesIndx], questionsArray[currentQuesIndx].answer);
       if (
@@ -12298,7 +12297,7 @@ class SurveyBox extends Component {
     }
     /** Check text input content type validation */
     if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type") &&
-      (questionsArray[currentQuesIndx].properties.hasOwnProperty("datePickerOn") && questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
+      (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
       let answerText = questionsArray[currentQuesIndx].answer.text
       if (answerText && answerText.trim()) {
         if (!this.inputElementValidation(answerText, questionsArray[currentQuesIndx].properties.content_type)) {
