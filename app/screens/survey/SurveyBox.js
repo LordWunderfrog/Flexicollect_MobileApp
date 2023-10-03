@@ -6789,12 +6789,14 @@ class SurveyBox extends Component {
       ) {
         questions.push(questionsArray[i])
       }
-      else if (aviMultifiled && aviMultifiled.some(obj => obj.value === handlerData)) {
-        /** condition added for if hide element is contain by any other looping question then not hide that element
-         *  to solve error hide element out side looping is also hiding in loop question so added this condition
-        */
-        questions.push(questionsArray[i])
-      }
+      // else if (aviMultifiled && aviMultifiled.some(obj => obj.value === handlerData)) {
+      //   /** condition added for if hide element is contain by any other looping question then not hide that element
+      //    *  to solve error hide element out side looping is also hiding in loop question so added this condition
+      //   */
+      //   questions.push(questionsArray[i])
+      // }
+
+
       // else if (questionsArray[i].conditions && questionsArray[i].conditions.length > 0) {
       //   /** condition added for if hide element is contain any condtion then not hide that element 
       //    *  to solve error hide element out side looping is also hiding in loop question so added this condition
