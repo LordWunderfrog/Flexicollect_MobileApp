@@ -3847,7 +3847,7 @@ module.exports = {
       "Least": "Minste",
       "Most": "Meeste",
       "MaxDiffSelectMsg": "Kies asseblief die minste en meeste item vir elke stel van vrae",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Kies asseblief datum"
     },
     "Arabic": {
       "Loading_Questions": "تحميل الأسئلة",
@@ -3892,7 +3892,7 @@ module.exports = {
       "Least": "الأدنى",
       "Most": "الأكثر",
       "MaxDiffSelectMsg": "يرجى اختيار العنصر الأقل والأكثر لكل مجموعة من الأسئلة",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "الرجاء تحديد التاريخ"
     },
     "Chinese": {
       "Loading_Questions": "加载问题",
@@ -3937,7 +3937,7 @@ module.exports = {
       "Least": "最小",
       "Most": "最大",
       "MaxDiffSelectMsg": "请为所有问题集选择最小和最大项目",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "请选择日期",
     },
     "Dutch": {
       "Loading_Questions": "Vragen worden geladen",
@@ -3982,7 +3982,7 @@ module.exports = {
       "Least": "Minst",
       "Most": "Meest",
       "MaxDiffSelectMsg": "Selecteer de minst en meest gekozen items voor alle vragenreeksen.",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Selecteer alsjeblieft de datum",
     },
     "English": {
       "Loading_Questions": "Loading Questions",
@@ -4072,7 +4072,7 @@ module.exports = {
       "Least": "Le moins",
       "Most": "Le plus",
       "MaxDiffSelectMsg": "Veuillez sélectionner l'option la moins et la plus choisie pour chaque ensemble de questions.",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Veuillez sélectionner une date",
     },
     "German": {
       "Loading_Questions": "Fragen werden hochgeladen",
@@ -4117,7 +4117,7 @@ module.exports = {
       "Least": "Am wenigsten",
       "Most": "Am meisten",
       "MaxDiffSelectMsg": "Bitte wählen Sie das Element mit der geringsten und der größten Bewertung für alle Fragengruppen.",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Bitte Datum auswählen",
     },
     "Hindi": {
       "Loading_Questions": "प्रश्न लोड हो रहे हैं",
@@ -4162,7 +4162,7 @@ module.exports = {
       "Least": "सबसे कम",
       "Most": "सबसे अधिक",
       "MaxDiffSelectMsg": "कृपया सभी सेट के प्रश्न के लिए सबसे कम और सबसे अधिक आइटम का चयन करें",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "कृपया दिनांक चुनें",
     },
     "Indonesian": {
       "Loading_Questions": "Memuat pertanyaan",
@@ -4207,7 +4207,7 @@ module.exports = {
       "Least": "Paling Sedikit",
       "Most": "Paling Banyak",
       "MaxDiffSelectMsg": "Silakan pilih item paling sedikit dan paling banyak untuk semua set pertanyaan",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Silakan Pilih Tanggal",
     },
     "Italian": {
       "Loading_Questions": "Caricamento domande",
@@ -4252,7 +4252,7 @@ module.exports = {
       "Least": "Minimo",
       "Most": "Massimo",
       "MaxDiffSelectMsg": "Seleziona l'elemento minimo e massimo per tutti i set di domande",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Seleziona la data",
     },
     "Japanese": {
       "Loading_Questions": "質問の誤謬",
@@ -4297,7 +4297,7 @@ module.exports = {
       "Least": "最低",
       "Most": "最高",
       "MaxDiffSelectMsg": "すべてのセットの質問について、最低と最高のアイテムを選択してください",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "日付を選択してください",
     },
     "Malay": {
       "Loading_Questions": "Memuat naik  soalan",
@@ -4342,7 +4342,7 @@ module.exports = {
       "Least": "Terendah",
       "Most": "Tertinggi",
       "MaxDiffSelectMsg": "Sila pilih item terendah dan tertinggi untuk semua set soalan",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Sila pilih tarikh",
     },
     "Polish": {
       "Loading_Questions": "Ładowanie pytań",
@@ -4387,7 +4387,7 @@ module.exports = {
       "Least": "Najmniej",
       "Most": "Najwięcej",
       "MaxDiffSelectMsg": "Proszę wybrać najmniej i najwięcej element dla wszystkich zestawów pytań",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Proszę wybrać datę",
     },
     "Portuguese": {
       "Loading_Questions": "Carregando perguntas",
@@ -4432,7 +4432,7 @@ module.exports = {
       "Least": "Mínimo",
       "Most": "Máximo",
       "MaxDiffSelectMsg": "Por favor, selecione o item mínimo e máximo para todos os conjuntos de perguntas",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Selecione a data",
     },
     "Russian": {
       "Loading_Questions": "Вопросы загружаются",
@@ -4477,7 +4477,7 @@ module.exports = {
       "Least": "Наименьшее",
       "Most": "Наибольшее",
       "MaxDiffSelectMsg": "Пожалуйста, выберите наименьший и наибольший элементы для всех наборов вопросов",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Пожалуйста, выберите дату",
     },
     "Spanish": {
       "Loading_Questions": "Cargando preguntas",
@@ -4522,7 +4522,7 @@ module.exports = {
       "Least": "Menor",
       "Most": "Mayor",
       "MaxDiffSelectMsg": "Por favor selecciona el elemento más pequeño y más grande para todos los conjuntos de preguntas",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Por favor seleccione fecha",
     },
     "Tagalog": {
       "Loading_Questions": "Naglo-load ng mga Katanungan",
@@ -4567,7 +4567,7 @@ module.exports = {
       "Least": "Pinakamababa",
       "Most": "Pinakamataas",
       "MaxDiffSelectMsg": "Mangyaring pumili ng pinakamababa at pinakamataas na item para sa lahat ng set ng tanong",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Mangyaring pumili ng petsa",
     },
     "Thai": {
       "Loading_Questions": "กำลังโหลดคำถาม",
@@ -4612,7 +4612,7 @@ module.exports = {
       "Least": "น้อยที่สุด",
       "Most": "มากที่สุด",
       "MaxDiffSelectMsg": "โปรดเลือกรายการน้อยที่สุดและมากที่สุดสำหรับชุดคำถามทั้งหมด",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "กรุณาเลือกวันที่",
     },
     "Vietnamese": {
       "Loading_Questions": "Đang tải câu hỏi",
@@ -4657,7 +4657,7 @@ module.exports = {
       "Least": "Ít nhất",
       "Most": "Nhiều nhất",
       "MaxDiffSelectMsg": "Vui lòng chọn mục ít nhất và nhiều nhất cho tất cả các bộ câu hỏi",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Vui lòng chọn ngày",
     },
     "Urdu": {
       "Loading_Questions": "سوالات لوڈ ہو رہے ہیں",
@@ -4702,7 +4702,7 @@ module.exports = {
       "Least": "کمترین",
       "Most": "زیادہ سے زیادہ",
       "MaxDiffSelectMsg": "براہ کرم ہر سیٹ کے سوال کے لئے کمترین اور زیادہ سے زیادہ آئٹم منتخب کریں",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "براہ کرم تاریخ منتخب کریں۔",
     },
   },
   common_text: {
