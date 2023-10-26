@@ -71,6 +71,7 @@ import DeviceInfo from "react-native-device-info";
 import { RNCamera } from "react-native-camera";
 // Commen the below line for IOS build - The support for 4.2 Swift is not available yet.
 //import { ProcessingManager } from "react-native-video-processing";
+import { Video } from 'react-native-compressor';
 //import Orientation from 'react-native-orientation';
 import Orientation from "react-native-orientation-locker";
 import cloneDeep from 'lodash/cloneDeep';
@@ -8086,15 +8087,26 @@ class SurveyBox extends Component {
         compressQuality: CAMERASTYLE.COMPRESS_QUALITY,
         cropping: false,
         isVideo: true
-      }).then(video => {
+      }).then(async (video) => {
         this.setState({ videoProcessing: true });
-        let mime = video.mime.split("/");
-        let type = mime[1];
-        let path = video.path.replace(/(^\w+:|^)\/\//, '');
-        //         RNCompress.compressVideo(path, "medium").then(compressedFile => {
+        let path = "file://" + video.path
+        path = path.replace(/ /g, '%20')
+        const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+          (progress) => {
+            console.log('Compression Progress: ', progress);
+          }
+        );
+        let compressedPath = compressedVideo.replace('file://', '')
+        let source = { uri: compressedPath, data: '', type: 'mp4' };
+        this.addAnswerForSelectedMedia(index, source);
+
+        // RNCompress.compressVideo(path, "medium").then(compressedFile => {
         // let source = { uri: compressedFile.path, data: '', type: 'mp4' };
         //             this.addAnswerForSelectedMedia(index, source);
         //     })
+        //let path = video.path.replace(/(^\w+:|^)\/\//, '');
+        //let mime = video.mime.split("/");
+        //let type = mime[1];
         // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
         //   .then((compressedVideo) => {
         //     let compressedPath = compressedVideo.replace('file://', '')
@@ -8399,15 +8411,30 @@ class SurveyBox extends Component {
         compressQuality: CAMERASTYLE.COMPRESS_QUALITY,
         includeBase64: true,
         isVideo: true
-      }).then(video => {
+      }).then(async (video) => {
         this.setState({ changeImage: true, videoProcessing: true });
-        let mime = video[0].mime.split("/");
-        let type = mime[1];
-        let path = video[0].path.replace(/(^\w+:|^)\/\//, '');
+        let path = "file://" + video[0].path
+        path = path.replace(/ /g, '%20')
+        const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+          (progress) => {
+            console.log('Compression Progress: ', progress);
+          }
+        );
+        let compressedPath = compressedVideo.replace('file://', '')
+        RNFetchBlob.fs.readFile(compressedPath, 'base64')
+          .then((data) => {
+            let base64 = data;
+            let source = { uri: compressedPath, data: base64, type: 'mp4' };
+            this.addAnswerForSelectedMedia(index, source);
+          })
+
         // RNCompress.compressVideo(path, "medium").then(compressedFile => {
         //   console.log('compressedFile', compressedFile)
         // Convert to base64 
         // })
+        // let mime = video[0].mime.split("/");
+        // let type = mime[1];
+        // let path = video[0].path.replace(/(^\w+:|^)\/\//, '');
         // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
         //   .then((compressedVideo) => {
         //     let compressedPath = compressedVideo.replace('file://', '')
@@ -9410,12 +9437,23 @@ class SurveyBox extends Component {
       RNFetchBlob.fs.exists(uri).then(exist => {
         RNFetchBlob.fs
           .stat(uri)
-          .then(pathRes => {
-            let path = pathRes.path;
-            let mime = pathRes.type.split("/");
-            let type = "mp4";
+          .then(async (pathRes) => {
+            let path = "file://" + pathRes.path;
+            path = path.replace(/ /g, '%20')
+            const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+              (progress) => {
+                console.log('Compression Progress: ', progress);
+              }
+            );
+            let compressedPath = compressedVideo.replace('file://', '')
+            RNFetchBlob.fs.stat(compressedPath).then((pathRes) => {
+              let source = { uri: compressedPath, data: '', type: type };
+              this.addAnswerForSelectedMedia(index, source);
+            });
             // RNCompress.compressVideo(path, "low").then(compressedFile => {
             // });
+            //let mime = pathRes.type.split("/");
+            //let type = "mp4";
             // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
             //   .then((compressedVideo) => {
             //     let compressedPath = compressedVideo.replace('file://', '')

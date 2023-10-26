@@ -22,12 +22,6 @@
 		CD34EB5024FE12DD0055F828 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD34EB4F24FE12DD0055F828 /* LaunchScreen.storyboard */; };
 		CD41656F2833BC7E0033961C /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD41656B2833BC7E0033961C /* AppDelegate.mm */; };
 		CDA79EEF24F7BECE00BA3876 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CDA79EEE24F7BECE00BA3876 /* GoogleService-Info.plist */; };
-		CDA9986625F373AC00672DDD /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA9986525F373AC00672DDD /* CoreMedia.framework */; };
-		CDA9986825F373B900672DDD /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA9986725F373B900672DDD /* CoreVideo.framework */; };
-		CDA9986A25F373C500672DDD /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA9986925F373C500672DDD /* OpenGLES.framework */; };
-		CDA9986C25F373CD00672DDD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA9986B25F373CD00672DDD /* AVFoundation.framework */; };
-		CDA9986E25F373D900672DDD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA9986D25F373D900672DDD /* QuartzCore.framework */; };
-		CDA9987025F373E400672DDD /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA9986F25F373E400672DDD /* MobileCoreServices.framework */; };
 		CDA9987725F3769F00672DDD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA9987625F3769E00672DDD /* File.swift */; };
 		CDEC23762502488600D6489F /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDEC23752502488600D6489F /* UserNotifications.framework */; };
 		E24ED4CCE105486ABA6FF378 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ABB96621FD2B42BDA8693218 /* Roboto-Light.ttf */; };
@@ -93,12 +87,6 @@
 		CD34EB6924FE19210055F828 /* Eolas.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Eolas.entitlements; path = Eolas/Eolas.entitlements; sourceTree = "<group>"; };
 		CD41656B2833BC7E0033961C /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Eolas/AppDelegate.mm; sourceTree = "<group>"; };
 		CDA79EEE24F7BECE00BA3876 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Eolas/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		CDA9986525F373AC00672DDD /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		CDA9986725F373B900672DDD /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		CDA9986925F373C500672DDD /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		CDA9986B25F373CD00672DDD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		CDA9986D25F373D900672DDD /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		CDA9986F25F373E400672DDD /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		CDA9987625F3769E00672DDD /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		CDA9987825F376C600672DDD /* Eolas-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Eolas-Bridging-Header.h"; sourceTree = "<group>"; };
 		CDEC23752502488600D6489F /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -118,14 +106,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDA9986A25F373C500672DDD /* OpenGLES.framework in Frameworks */,
-				CDA9986625F373AC00672DDD /* CoreMedia.framework in Frameworks */,
-				CDA9986E25F373D900672DDD /* QuartzCore.framework in Frameworks */,
-				CDA9986C25F373CD00672DDD /* AVFoundation.framework in Frameworks */,
 				CDEC23762502488600D6489F /* UserNotifications.framework in Frameworks */,
-				CDA9987025F373E400672DDD /* MobileCoreServices.framework in Frameworks */,
 				40E8D6C656852E4E27A1C304 /* libPods-Eolas.a in Frameworks */,
-				CDA9986825F373B900672DDD /* CoreVideo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,12 +165,6 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CDA9986F25F373E400672DDD /* MobileCoreServices.framework */,
-				CDA9986D25F373D900672DDD /* QuartzCore.framework */,
-				CDA9986B25F373CD00672DDD /* AVFoundation.framework */,
-				CDA9986925F373C500672DDD /* OpenGLES.framework */,
-				CDA9986725F373B900672DDD /* CoreVideo.framework */,
-				CDA9986525F373AC00672DDD /* CoreMedia.framework */,
 				CDEC23752502488600D6489F /* UserNotifications.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				B4D7CF70002D4D08AADC8FAD /* libPods-Eolas.a */,
@@ -268,7 +244,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				B2FEC090A43183AAB31C4DEA /* [CP] Copy Pods Resources */,
-				F7B8DD3B64EC6C0DB05C70C5 /* [CP] Embed Pods Frameworks */,
+				D98426F7B5E821997408EF8B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -292,8 +268,8 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				0DE2CA3E5787789E8EA98E5B /* [CP] Copy Pods Resources */,
 				CDA9987325F373F400672DDD /* Embed Frameworks */,
-				880E485BD781BA04A4929651 /* [CP] Embed Pods Frameworks */,
 				00CF7088A80CAF01787721A0 /* [CP-User] [RNFB] Core Configuration */,
+				B397F6583C725D35B8BAAEBC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -520,24 +496,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		880E485BD781BA04A4929651 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Eolas/Pods-Eolas-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eolas/Pods-Eolas-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		ABD82B861EB40F5783CAA1E4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -580,17 +538,47 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eolas-EolasTests/Pods-Eolas-EolasTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F7B8DD3B64EC6C0DB05C70C5 /* [CP] Embed Pods Frameworks */ = {
+		B397F6583C725D35B8BAAEBC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Eolas/Pods-Eolas-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Eolas/Pods-Eolas-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D98426F7B5E821997408EF8B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Eolas-EolasTests/Pods-Eolas-EolasTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
