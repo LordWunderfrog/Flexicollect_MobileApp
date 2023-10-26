@@ -77,7 +77,7 @@ import Orientation from "react-native-orientation-locker";
 import cloneDeep from 'lodash/cloneDeep';
 //import * as ImagePickerCrop from './ImagePicker';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { RNFFmpeg } from 'react-native-ffmpeg';
+//import { RNFFmpeg } from 'react-native-ffmpeg';
 // import HTMLView from "react-native-render-html";
 import RenderHtml from 'react-native-render-html';
 import DropDownPicker from '../../components/DropDownPicker'
@@ -8125,29 +8125,45 @@ class SurveyBox extends Component {
         mediaType: 'video',
         noData: false
 
-      }, (res) => {
+      }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           this.setState({ videoProcessing: true });
           let videoRes = res.assets[0]
           let path = videoRes.uri;
-          let ext = videoRes.type.split("/")
-          let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
-          let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+          const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+            (progress) => {
+              console.log('Compression Progress: ', progress);
+            }
+          );
+          let source = {
+            uri: compressedVideo,
+            data: "",
+            type: 'mp4'
+          };
+          questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          this.addAnswerForSelectedMedia(index, source);
 
-          RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
-            .then(result => {
-              let source = {
-                uri: 'file://' + newfile,
-                data: "",
-                type: 'mp4'
-              };
-              questionResponseQue[this.state.questionsArr[index].questionID] = true;
-              this.addAnswerForSelectedMedia(index, source);
 
-            }).catch(e => {
-              //console.log(e);			
-            });
+          // let videoRes = res.assets[0]
+          // let path = videoRes.uri;
+          // let ext = videoRes.type.split("/")
+          // let questionArr = this.state.questionsArr[index];
+          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
+          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+
+          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+          //   .then(result => {
+          //     let source = {
+          //       uri: 'file://' + newfile,
+          //       data: "",
+          //       type: 'mp4'
+          //     };
+          //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          //     this.addAnswerForSelectedMedia(index, source);
+
+          //   }).catch(e => {
+          //     //console.log(e);			
+          //   });
         }
       });
     }
@@ -8456,6 +8472,22 @@ class SurveyBox extends Component {
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           this.setState({ changeImage: true, videoProcessing: true });
+          let videoRes = res.assets[0]
+          let path = videoRes.uri
+          path = path.replace(/ /g, '%20')
+          const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+            (progress) => {
+              console.log('Compression Progress: ', progress);
+            }
+          );
+          let source = {
+            uri: compressedVideo,
+            data: "",
+            type: 'mp4'
+          };
+          questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          this.addAnswerForSelectedMedia(index, source);
+
           // let videoRes = res.assets[0]
           // let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
           // let path = 'file://' + filepath.path;
@@ -8464,29 +8496,29 @@ class SurveyBox extends Component {
           // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + ext;
           // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          let videoRes = res.assets[0]
-          let extn = videoRes.type.split('/')
-          const destPath = `${RNFS.TemporaryDirectoryPath}/${videoRes.fileName}.${extn[extn.length - 1]}`;
-          await RNFS.moveFile(videoRes.uri, destPath);
-          let path = 'file://' + destPath;
-          let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + extn[extn.length - 1];
-          let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+          // let videoRes = res.assets[0]
+          // let extn = videoRes.type.split('/')
+          // const destPath = `${RNFS.TemporaryDirectoryPath}/${videoRes.fileName}.${extn[extn.length - 1]}`;
+          // await RNFS.moveFile(videoRes.uri, destPath);
+          // let path = 'file://' + destPath;
+          // let questionArr = this.state.questionsArr[index];
+          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + extn[extn.length - 1];
+          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
-          RNFFmpeg.executeWithArguments(["-i", path, "-vf", "scale=iw/2:ih/2", newfile])
-            .then(result => {
-              let source = {
-                uri: 'file://' + newfile,
-                data: "",
-                type: 'mp4'
-              };
-              questionResponseQue[this.state.questionsArr[index].questionID] = true;
-              this.addAnswerForSelectedMedia(index, source);
+          // // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+          // RNFFmpeg.executeWithArguments(["-i", path, "-vf", "scale=iw/2:ih/2", newfile])
+          //   .then(result => {
+          //     let source = {
+          //       uri: 'file://' + newfile,
+          //       data: "",
+          //       type: 'mp4'
+          //     };
+          //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          //     this.addAnswerForSelectedMedia(index, source);
 
-            }).catch(e => {
-              //console.log(e);			
-            });
+          //   }).catch(e => {
+          //     //console.log(e);			
+          //   });
         }
       })
         .catch(e => {

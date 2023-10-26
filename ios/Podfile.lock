@@ -188,7 +188,6 @@ PODS:
     - hermes-engine/Pre-built (= 0.72.6)
   - hermes-engine/Pre-built (0.72.6)
   - libevent (2.1.12)
-  - mobile-ffmpeg-https (4.4.LTS)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
@@ -511,9 +510,6 @@ PODS:
     - React-Core
   - react-native-document-picker (9.0.1):
     - React-Core
-  - react-native-ffmpeg/https-lts (0.5.2):
-    - mobile-ffmpeg-https (= 4.4.LTS)
-    - React
   - react-native-geolocation (3.1.0):
     - React-Core
   - react-native-geolocation-service (5.3.1):
@@ -812,7 +808,6 @@ DEPENDENCIES:
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-compressor (from `../node_modules/react-native-compressor`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
-  - react-native-ffmpeg/https-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -893,7 +888,6 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - libevent
-    - mobile-ffmpeg-https
     - nanopb
     - NextLevelSessionExporter
     - OpenSSL-Universal
@@ -953,8 +947,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-compressor"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
-  react-native-ffmpeg:
-    :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-geolocation-service:
@@ -1095,7 +1087,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   hermes-engine: 8057e75cfc1437b178ac86c8654b24e7fead7f60
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  mobile-ffmpeg-https: 7ec3461d626f2d86be1e904bcfb29ed0be8cad7a
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   NextLevelSessionExporter: 4d8aa5e617f1c709724f2453efe5d4628480f65a
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -1118,7 +1109,6 @@ SPEC CHECKSUMS:
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-compressor: 31281c7b026dc2d9faa61ff952ea184f5c9d059d
   react-native-document-picker: 2b8f18667caee73a96708a82b284a4f40b30a156
-  react-native-ffmpeg: 587fa045f985d775107f4b8cbb6c79df0ad68e63
   react-native-geolocation: ef66fb798d96284c6043f0b16c15d9d1d4955db4
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-image-picker: 1569cfade34b3a011191ce262423e6ce2f8db5a1
@@ -1179,6 +1169,6 @@ SPEC CHECKSUMS:
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: d69d1f0b6593fb67fec3abadf23570521ec2600d
+PODFILE CHECKSUM: 21439617dc9615a4d31f2340f9ed930522229ae2
 
 COCOAPODS: 1.11.3

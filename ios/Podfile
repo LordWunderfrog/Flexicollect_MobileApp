@@ -44,7 +44,7 @@ end
 target 'Eolas' do
   # Pods for Eolas
  
-  pod 'react-native-ffmpeg/https-lts', :podspec => '../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec'
+  # pod 'react-native-ffmpeg/https-lts', :podspec => '../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec'
 
   config = use_native_modules!
   # Flags change depending on the env values.

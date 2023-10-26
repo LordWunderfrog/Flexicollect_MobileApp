@@ -6255,11 +6255,6 @@ react-native-document-picker@^9.0.1:
   dependencies:
     invariant "^2.2.4"
 
-react-native-ffmpeg@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/react-native-ffmpeg/-/react-native-ffmpeg-0.5.2.tgz#4c60fa4e773ae82ed59628a5f23dd86f74f1c8f5"
-  integrity sha512-YxKWI9kPo4nDtAzNO+MIMIu56rfaixJrviQBKvdvmFD09oWH0GhKurJ+uJOvTbN3T7eEYCE0kUzK1puPDsniAA==
-
 react-native-fs@^2.20.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.20.0.tgz#05a9362b473bfc0910772c0acbb73a78dbc810f6"
