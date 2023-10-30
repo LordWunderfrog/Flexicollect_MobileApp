@@ -8130,6 +8130,7 @@ class SurveyBox extends Component {
           this.setState({ videoProcessing: true });
           let videoRes = res.assets[0]
           let path = videoRes.uri;
+          path = path.replace(/ /g, '%20')
           const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
             (progress) => {
               console.log('Compression Progress: ', progress);
