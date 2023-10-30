@@ -82,6 +82,7 @@ import RenderHtml from 'react-native-render-html';
 import DropDownPicker from '../../components/DropDownPicker'
 import { measureConnectionSpeed } from '../../components/GetNetworkSpeed';
 import Mailer from 'react-native-mail';
+import DatePicker from 'react-native-date-picker'
 
 const videoCompressOptions = {
   //width: 720,
@@ -396,7 +397,9 @@ class SurveyBox extends Component {
       scrollArrow: 'none',
       screenTime: 0,
       isSubmitDisable: false,
-      isSlowNetwork: false
+      isSlowNetwork: false,
+      selectedDate: new Date(),
+      isOpenDatePicker: false
     };
     this.sliderEditing = false;
     this.audioRecorderPlayer = new AudioRecorderPlayer();
@@ -6006,7 +6009,7 @@ class SurveyBox extends Component {
 
       //check for text input limit validation
       if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("limitchar") &&
-        questionsArray[currentQuesIndx].properties.limitchar === 1) {
+        questionsArray[currentQuesIndx].properties.limitchar === 1 && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
 
         let limit_check = this.limitCharValidation(questionsArray[currentQuesIndx], questionsArray[currentQuesIndx].answer);
         if (
@@ -6018,7 +6021,8 @@ class SurveyBox extends Component {
       }
 
       /** Check text input content type validation */
-      if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type")) {
+      if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type")
+        && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
         let answerText = questionsArray[currentQuesIndx].answer.text
         if (answerText && answerText.trim()) {
           if (!this.inputElementValidation(answerText, questionsArray[currentQuesIndx].properties.content_type)) {
@@ -7208,7 +7212,6 @@ class SurveyBox extends Component {
 
   /** As per the content type - restrict the input text validation */
   inputElementValidation(text, contentType) {
-    console.log('text inside validation', text)
     if (contentType == "number") {
       let regNumber = /^[0-9.]+$/
       if (regNumber.test(text)) {
@@ -7939,18 +7942,50 @@ class SurveyBox extends Component {
   layoutTextInputType(questionArray, parentIndex) {
     return (
       <View>
-        <View style={styles.textBox}>
-          <TextInput
-            style={styles.InputText}
-            value={this.setAnswerForInput(questionArray)}
-            keyboardType={this.inputType(questionArray.properties.content_type)}
-            multiline={true}
-            onChangeText={answer =>
-              this.updateTextInput(questionArray, answer, parentIndex)
-            }
-            underlineColorAndroid={Color.colorWhite}
-          />
-        </View>
+        {questionArray.properties.hasOwnProperty('datePickerOn') && questionArray.properties.datePickerOn == 1 ?
+          /** text input with date picker */
+          <View style={styles.textBox}>
+            <TouchableOpacity onPress={() => this.openDatePickerFunction()}>
+              <TextInput
+                style={styles.InputText}
+                editable={false}
+                pointerEvents='none'
+                placeholder={this.state.translation[this.state.Language].SelectDate}
+                value={this.setAnswerForInput(questionArray)}
+                keyboardType={this.inputType(questionArray.properties.content_type)}
+                multiline={true}
+                onChangeText={answer =>
+                  this.updateTextInput(questionArray, answer, parentIndex)
+                }
+                underlineColorAndroid={Color.colorWhite}
+              />
+            </TouchableOpacity>
+            <DatePicker
+              modal
+              mode={'date'}
+              title={null}
+              confirmText={this.state.translation[this.state.Language].Confirm}
+              cancelText={this.state.translation[this.state.Language].Cancel}
+              open={this.state.isOpenDatePicker}
+              date={this.state.selectedDate}
+              onConfirm={(date) => { this.onConfirmDateSelection(date, questionArray, parentIndex) }}
+              onCancel={() => { this.oncancelDatePicker() }}
+            />
+          </View> :
+          <View style={styles.textBox}>
+            {/** normal text input */}
+            <TextInput
+              style={styles.InputText}
+              value={this.setAnswerForInput(questionArray)}
+              keyboardType={this.inputType(questionArray.properties.content_type)}
+              multiline={true}
+              onChangeText={answer =>
+                this.updateTextInput(questionArray, answer, parentIndex)
+              }
+              underlineColorAndroid={Color.colorWhite}
+            />
+          </View>
+        }
         {/* <Text style={styles.hintText}>{questionArray.properties.sublabel}</Text> */}
         {questionArray.properties.hasOwnProperty("sublabel") && questionArray.properties.sublabel.length > 0 ?
           <RenderHtml
@@ -7966,6 +8001,32 @@ class SurveyBox extends Component {
     );
   }
 
+  openDatePickerFunction() {
+    this.setState({ isOpenDatePicker: true })
+  }
+  onConfirmDateSelection(date, questionArray, parentIndex) {
+    let formatedDate = this.formateSelectedDate(date)
+    this.setState({ selectedDate: date, isOpenDatePicker: false }, () => {
+      this.updateTextInput(questionArray, formatedDate ? formatedDate.toString() : "", parentIndex)
+      this.setAnswerForInput(questionArray)
+    })
+  }
+  oncancelDatePicker() {
+    this.setState({ isOpenDatePicker: false })
+  }
+  formateSelectedDate(dateInput) {
+    if (dateInput) {
+      var dateIs = new Date(dateInput)
+      var formatedDate = (
+        (('0' + dateIs.getDate()).slice(-2))
+        + "-" +
+        (("0" + (dateIs.getMonth() + 1)).slice(-2))
+        + "-" +
+        dateIs.getFullYear()
+      )
+      return formatedDate
+    }
+  }
   /**
    * Capture type question render method
    * @param questionArray - currnt survey question array
@@ -12224,7 +12285,7 @@ class SurveyBox extends Component {
 
     //check for text input limit validation
     if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("limitchar") &&
-      questionsArray[currentQuesIndx].properties.limitchar === 1) {
+      questionsArray[currentQuesIndx].properties.limitchar === 1 && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
 
       let limit_check = this.limitCharValidation(questionsArray[currentQuesIndx], questionsArray[currentQuesIndx].answer);
       if (
@@ -12235,7 +12296,8 @@ class SurveyBox extends Component {
       }
     }
     /** Check text input content type validation */
-    if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type")) {
+    if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type") &&
+      (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
       let answerText = questionsArray[currentQuesIndx].answer.text
       if (answerText && answerText.trim()) {
         if (!this.inputElementValidation(answerText, questionsArray[currentQuesIndx].properties.content_type)) {
