@@ -70,13 +70,14 @@ import DeviceInfo from "react-native-device-info";
 //import RNCompress from "react-native-compress";
 import { RNCamera } from "react-native-camera";
 // Commen the below line for IOS build - The support for 4.2 Swift is not available yet.
-import { ProcessingManager } from "react-native-video-processing";
+//import { ProcessingManager } from "react-native-video-processing";
+import { Video } from 'react-native-compressor';
 //import Orientation from 'react-native-orientation';
 import Orientation from "react-native-orientation-locker";
 import cloneDeep from 'lodash/cloneDeep';
 //import * as ImagePickerCrop from './ImagePicker';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { RNFFmpeg } from 'react-native-ffmpeg';
+//import { RNFFmpeg } from 'react-native-ffmpeg';
 // import HTMLView from "react-native-render-html";
 import RenderHtml from 'react-native-render-html';
 import DropDownPicker from '../../components/DropDownPicker'
@@ -8147,21 +8148,32 @@ class SurveyBox extends Component {
         compressQuality: CAMERASTYLE.COMPRESS_QUALITY,
         cropping: false,
         isVideo: true
-      }).then(video => {
+      }).then(async (video) => {
         this.setState({ videoProcessing: true });
-        let mime = video.mime.split("/");
-        let type = mime[1];
-        let path = video.path.replace(/(^\w+:|^)\/\//, '');
-        //         RNCompress.compressVideo(path, "medium").then(compressedFile => {
+        let path = "file://" + video.path
+        path = path.replace(/ /g, '%20')
+        const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+          (progress) => {
+            console.log('Compression Progress: ', progress);
+          }
+        );
+        let compressedPath = compressedVideo.replace('file://', '')
+        let source = { uri: compressedPath, data: '', type: 'mp4' };
+        this.addAnswerForSelectedMedia(index, source);
+
+        // RNCompress.compressVideo(path, "medium").then(compressedFile => {
         // let source = { uri: compressedFile.path, data: '', type: 'mp4' };
         //             this.addAnswerForSelectedMedia(index, source);
         //     })
-        ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
-          .then((compressedVideo) => {
-            let compressedPath = compressedVideo.replace('file://', '')
-            let source = { uri: compressedPath, data: '', type: 'mp4' };
-            this.addAnswerForSelectedMedia(index, source);
-          })
+        //let path = video.path.replace(/(^\w+:|^)\/\//, '');
+        //let mime = video.mime.split("/");
+        //let type = mime[1];
+        // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
+        //   .then((compressedVideo) => {
+        //     let compressedPath = compressedVideo.replace('file://', '')
+        //     let source = { uri: compressedPath, data: '', type: 'mp4' };
+        //     this.addAnswerForSelectedMedia(index, source);
+        //   })
       });
     }
     else {
@@ -8174,29 +8186,46 @@ class SurveyBox extends Component {
         mediaType: 'video',
         noData: false
 
-      }, (res) => {
+      }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           this.setState({ videoProcessing: true });
           let videoRes = res.assets[0]
           let path = videoRes.uri;
-          let ext = videoRes.type.split("/")
-          let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
-          let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+          path = path.replace(/ /g, '%20')
+          const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+            (progress) => {
+              console.log('Compression Progress: ', progress);
+            }
+          );
+          let source = {
+            uri: compressedVideo,
+            data: "",
+            type: 'mp4'
+          };
+          questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          this.addAnswerForSelectedMedia(index, source);
 
-          RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
-            .then(result => {
-              let source = {
-                uri: 'file://' + newfile,
-                data: "",
-                type: 'mp4'
-              };
-              questionResponseQue[this.state.questionsArr[index].questionID] = true;
-              this.addAnswerForSelectedMedia(index, source);
 
-            }).catch(e => {
-              //console.log(e);			
-            });
+          // let videoRes = res.assets[0]
+          // let path = videoRes.uri;
+          // let ext = videoRes.type.split("/")
+          // let questionArr = this.state.questionsArr[index];
+          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
+          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+
+          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+          //   .then(result => {
+          //     let source = {
+          //       uri: 'file://' + newfile,
+          //       data: "",
+          //       type: 'mp4'
+          //     };
+          //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          //     this.addAnswerForSelectedMedia(index, source);
+
+          //   }).catch(e => {
+          //     //console.log(e);			
+          //   });
         }
       });
     }
@@ -8449,51 +8478,6 @@ class SurveyBox extends Component {
         });
     }
   }
-  /**
-   * Take video from gallery
-   * @param {Number} index Currenet question array element position
-   */
-  /* videoFromGallery(index) {
-    ImagePicker.openPicker({
-      compressQuality: CAMERASTYLE.COMPRESS_QUALITY,
-      includeBase64: true,
-      isVideo: true
-    })
-      .then(video => {
-        this.setState({ changeImage: true, videoProcessing: true });
-        if (Platform.Version == 29) {
-          video.map(res => {
-            let mime = res.mime.split("/");
-            let type = mime[1];
-         
-            RNCompress.compressVideo(res.path, "low").then(compressedFile => {
-             let source = { uri: compressedFile.path, data: "", type: type };
-             this.addAnswerForSelectedMedia(index, source);  
-          }).catch(e => {
-             // console.log(e);
-          });
-     
-          });
-        }
-    else{
-      video.map(res => {
-            let mime = res.mime.split("/");
-            let type = mime[1];
-         
-           ProcessingManager.compress(res.path, videoCompressOptions) // compress options
-              .then(compressedVideo => {
-             let source = { uri: compressedVideo.source, data: "", type: type };
-             this.addAnswerForSelectedMedia(index, source);  
-          }).catch(e => {
-             // console.log(e);
-          });
-          });
-    }
-      })
-      .catch(e => {
-        //console.log(e);
-      });
-  } */
 
   /**
    * Take video from gallery
@@ -8505,25 +8489,40 @@ class SurveyBox extends Component {
         compressQuality: CAMERASTYLE.COMPRESS_QUALITY,
         includeBase64: true,
         isVideo: true
-      }).then(video => {
+      }).then(async (video) => {
         this.setState({ changeImage: true, videoProcessing: true });
-        let mime = video[0].mime.split("/");
-        let type = mime[1];
-        let path = video[0].path.replace(/(^\w+:|^)\/\//, '');
+        let path = "file://" + video[0].path
+        path = path.replace(/ /g, '%20')
+        const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+          (progress) => {
+            console.log('Compression Progress: ', progress);
+          }
+        );
+        let compressedPath = compressedVideo.replace('file://', '')
+        RNFetchBlob.fs.readFile(compressedPath, 'base64')
+          .then((data) => {
+            let base64 = data;
+            let source = { uri: compressedPath, data: base64, type: 'mp4' };
+            this.addAnswerForSelectedMedia(index, source);
+          })
+
         // RNCompress.compressVideo(path, "medium").then(compressedFile => {
         //   console.log('compressedFile', compressedFile)
         // Convert to base64 
         // })
-        ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
-          .then((compressedVideo) => {
-            let compressedPath = compressedVideo.replace('file://', '')
-            RNFetchBlob.fs.readFile(compressedPath, 'base64')
-              .then((data) => {
-                let base64 = data;
-                let source = { uri: compressedPath, data: base64, type: 'mp4' };
-                this.addAnswerForSelectedMedia(index, source);
-              })
-          })
+        // let mime = video[0].mime.split("/");
+        // let type = mime[1];
+        // let path = video[0].path.replace(/(^\w+:|^)\/\//, '');
+        // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
+        //   .then((compressedVideo) => {
+        //     let compressedPath = compressedVideo.replace('file://', '')
+        //     RNFetchBlob.fs.readFile(compressedPath, 'base64')
+        //       .then((data) => {
+        //         let base64 = data;
+        //         let source = { uri: compressedPath, data: base64, type: 'mp4' };
+        //         this.addAnswerForSelectedMedia(index, source);
+        //       })
+        //   })
       }).catch(e => {
         //console.log(e);
       });
@@ -8535,6 +8534,22 @@ class SurveyBox extends Component {
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           this.setState({ changeImage: true, videoProcessing: true });
+          let videoRes = res.assets[0]
+          let path = videoRes.uri
+          path = path.replace(/ /g, '%20')
+          const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+            (progress) => {
+              console.log('Compression Progress: ', progress);
+            }
+          );
+          let source = {
+            uri: compressedVideo,
+            data: "",
+            type: 'mp4'
+          };
+          questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          this.addAnswerForSelectedMedia(index, source);
+
           // let videoRes = res.assets[0]
           // let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
           // let path = 'file://' + filepath.path;
@@ -8543,29 +8558,29 @@ class SurveyBox extends Component {
           // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + ext;
           // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          let videoRes = res.assets[0]
-          let extn = videoRes.type.split('/')
-          const destPath = `${RNFS.TemporaryDirectoryPath}/${videoRes.fileName}.${extn[extn.length - 1]}`;
-          await RNFS.moveFile(videoRes.uri, destPath);
-          let path = 'file://' + destPath;
-          let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + extn[extn.length - 1];
-          let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+          // let videoRes = res.assets[0]
+          // let extn = videoRes.type.split('/')
+          // const destPath = `${RNFS.TemporaryDirectoryPath}/${videoRes.fileName}.${extn[extn.length - 1]}`;
+          // await RNFS.moveFile(videoRes.uri, destPath);
+          // let path = 'file://' + destPath;
+          // let questionArr = this.state.questionsArr[index];
+          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + extn[extn.length - 1];
+          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
-          RNFFmpeg.executeWithArguments(["-i", path, "-vf", "scale=iw/2:ih/2", newfile])
-            .then(result => {
-              let source = {
-                uri: 'file://' + newfile,
-                data: "",
-                type: 'mp4'
-              };
-              questionResponseQue[this.state.questionsArr[index].questionID] = true;
-              this.addAnswerForSelectedMedia(index, source);
+          // // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+          // RNFFmpeg.executeWithArguments(["-i", path, "-vf", "scale=iw/2:ih/2", newfile])
+          //   .then(result => {
+          //     let source = {
+          //       uri: 'file://' + newfile,
+          //       data: "",
+          //       type: 'mp4'
+          //     };
+          //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          //     this.addAnswerForSelectedMedia(index, source);
 
-            }).catch(e => {
-              //console.log(e);			
-            });
+          //   }).catch(e => {
+          //     //console.log(e);			
+          //   });
         }
       })
         .catch(e => {
@@ -9516,20 +9531,31 @@ class SurveyBox extends Component {
       RNFetchBlob.fs.exists(uri).then(exist => {
         RNFetchBlob.fs
           .stat(uri)
-          .then(pathRes => {
-            let path = pathRes.path;
-            let mime = pathRes.type.split("/");
-            let type = "mp4";
+          .then(async (pathRes) => {
+            let path = "file://" + pathRes.path;
+            path = path.replace(/ /g, '%20')
+            const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+              (progress) => {
+                console.log('Compression Progress: ', progress);
+              }
+            );
+            let compressedPath = compressedVideo.replace('file://', '')
+            RNFetchBlob.fs.stat(compressedPath).then((pathRes) => {
+              let source = { uri: compressedPath, data: '', type: type };
+              this.addAnswerForSelectedMedia(index, source);
+            });
             // RNCompress.compressVideo(path, "low").then(compressedFile => {
             // });
-            ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
-              .then((compressedVideo) => {
-                let compressedPath = compressedVideo.replace('file://', '')
-                RNFetchBlob.fs.stat(compressedPath).then((pathRes) => {
-                  let source = { uri: compressedPath, data: '', type: type };
-                  this.addAnswerForSelectedMedia(index, source);
-                });
-              })
+            //let mime = pathRes.type.split("/");
+            //let type = "mp4";
+            // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
+            //   .then((compressedVideo) => {
+            //     let compressedPath = compressedVideo.replace('file://', '')
+            //     RNFetchBlob.fs.stat(compressedPath).then((pathRes) => {
+            //       let source = { uri: compressedPath, data: '', type: type };
+            //       this.addAnswerForSelectedMedia(index, source);
+            //     });
+            //   })
           })
           .catch(e => {
             //console.log(e);

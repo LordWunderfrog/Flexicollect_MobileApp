@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, ViewPropTypes, Image, Text, TouchableOpacity } from 'react-native'
+import { View, Image, Text, TouchableOpacity } from 'react-native'
 import IndicatorViewPager from './IndicatorViewPager'
 import * as Dimension from "../../style/Dimensions";
 import * as color from "../../style/Colors";
 import * as Font from "../../style/Fonts";
 import { ScaledSheet } from 'react-native-size-matters';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 /** Pager tab indicator for managing tab  */
 export default class PagerTabIndicator extends Component {

@@ -27,6 +27,7 @@ import * as String from '../../style/Strings';
 import { CommonActions } from '@react-navigation/native';
 import RNFS from "react-native-fs";
 import { measureConnectionSpeed } from '../../components/GetNetworkSpeed';
+import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions';
 
 let status;
 let totalPoint;
@@ -904,6 +905,17 @@ class Mission extends Component {
 		// 				});
 		// 		}
 		// 	});
+		if (Platform.OS === 'android' && Platform.Version >= 33) {
+			const res = await check(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+			console.log('Resournce is for permission', res)
+			if (res) {
+				if (res === RESULTS.GRANTED) {
+				} else if (res === RESULTS.DENIED) {
+					await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+				}
+			}
+		}
+
 		const hasPermission = await messaging().hasPermission();
 		const enabled = hasPermission === messaging.AuthorizationStatus.AUTHORIZED || hasPermission === messaging.AuthorizationStatus.PROVISIONAL;
 		if (hasPermission === messaging.AuthorizationStatus.AUTHORIZED || hasPermission === messaging.AuthorizationStatus.PROVISIONAL) {
