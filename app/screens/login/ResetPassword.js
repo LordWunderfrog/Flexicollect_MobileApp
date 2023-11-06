@@ -194,7 +194,8 @@ class ResetPassword extends Component {
                     if (response.data.status === 200) {
                         this.setState({ isLoading: false })
                         Constants.showSnack(this.state.translation[this.state.Language].Password_Changed_MSg)
-                        this.resetStack()
+                        this.props.navigation.goBack()
+                        //this.resetStack()
                     }
 
                 }).catch((error) => {

@@ -632,16 +632,14 @@ class SignIn extends Component {
             axios.get(url).then(response => {
                 if (response.data.status === 200) {
                     Constants.showSnack('Email is verified successfully. Please change your password.');
-                    // const resetAction = StackActions.reset({
+                    this.props.navigation.navigate({ name: 'ResetPassword', params: { email: email } })
+
+                    // const resetAction = CommonActions.reset({
                     //     index: 0,
-                    //     actions: [NavigationActions.navigate({ routeName: 'ResetPassword', params: { email: email } })],
+                    //     routes: [{ name: 'ResetPassword', params: { email: email } }],
                     // });
                     // this.props.navigation.dispatch(resetAction);
-                    const resetAction = CommonActions.reset({
-                        index: 0,
-                        routes: [{ name: 'ResetPassword', params: { email: email } }],
-                    });
-                    this.props.navigation.dispatch(resetAction);
+
                 } else {
                     Constants.showSnack(response.data.message)
                 }

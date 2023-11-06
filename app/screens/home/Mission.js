@@ -28,6 +28,7 @@ import { CommonActions } from '@react-navigation/native';
 import RNFS from "react-native-fs";
 import { measureConnectionSpeed } from '../../components/GetNetworkSpeed';
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions';
+//import notifee, { TriggerType } from '@notifee/react-native';
 
 let status;
 let totalPoint;
@@ -968,6 +969,34 @@ class Mission extends Component {
 		}
 	}
 
+	// onClickNotification = async () => {
+	// 	// Request permissions (required for iOS)
+	// 	await notifee.requestPermission()
+	// 	// Create a channel (required for Android)
+	// 	const channelId = await notifee.createChannel({
+	// 		id: 'default',
+	// 		name: 'Default Channel',
+	// 	});
+	// 	const date = new Date(Date.now());
+	// 	date.setHours(16);
+	// 	date.setMinutes(1);
+	// 	// Create a time-based trigger
+	// 	const trigger = {
+	// 		type: TriggerType.TIMESTAMP,
+	// 		timestamp: date.getTime(),
+	// 	};
+	// 	await notifee.createTriggerNotification(
+	// 		{
+	// 			title: 'Reminder',
+	// 			body: 'Your survey is still in progress. Please check it and submit it',
+	// 			android: {
+	// 				channelId: channelId,
+	// 			},
+	// 		},
+	// 		trigger,
+	// 	);
+	// }
+
 	/**
 	 * get mission data from local storage
 	 * */
@@ -1414,7 +1443,11 @@ class Mission extends Component {
 					</View>
 				)}
 
-
+				{/* <TouchableOpacity onPress={this.onClickNotification} >
+					<View style={{ padding: 20, backgroundColor: 'red', position: 'absolute', bottom: 20, alignSelf: 'center' }}>
+						<Text>Send Notification</Text>
+					</View>
+				</TouchableOpacity> */}
 			</View>
 		)
 	}

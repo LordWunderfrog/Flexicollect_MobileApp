@@ -444,20 +444,19 @@ PODS:
     - React-Core
   - react-native-camera/RN (4.2.1):
     - React-Core
-  - react-native-date-picker (4.2.13):
-    - React-Core
-  - react-native-document-picker (8.1.0):
   - react-native-compressor (1.8.12):
     - NextLevelSessionExporter
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - react-native-document-picker (9.0.1):
+  - react-native-date-picker (4.3.3):
+    - React-Core
+  - react-native-document-picker (8.2.1):
     - React-Core
   - react-native-geolocation (3.1.0):
     - React-Core
   - react-native-geolocation-service (5.3.1):
     - React
-  - react-native-image-picker (7.0.1):
+  - react-native-image-picker (7.0.2):
     - React-Core
   - react-native-image-resizer (1.4.5):
     - React-Core
@@ -473,7 +472,7 @@ PODS:
     - React-Core
   - react-native-render-html (6.3.4):
     - React-Core
-  - react-native-safe-area-context (4.7.3):
+  - react-native-safe-area-context (4.7.4):
     - React-Core
   - react-native-slider (4.4.3):
     - React-Core
@@ -611,33 +610,38 @@ PODS:
   - RNCustomizedImagePicker (1.3.4):
     - React
     - TZImagePickerController
-  - RNDeviceInfo (10.11.0):
+  - RNDeviceInfo (8.7.1):
     - React-Core
-  - RNFBAnalytics (18.5.0):
+  - RNFBAnalytics (18.6.0):
     - Firebase/Analytics (= 10.15.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (18.5.0):
+  - RNFBApp (18.6.0):
     - Firebase/CoreOnly (= 10.15.0)
     - React-Core
-  - RNFBDynamicLinks (18.5.0):
+  - RNFBDynamicLinks (18.6.0):
     - Firebase/DynamicLinks (= 10.15.0)
     - GoogleUtilities/AppDelegateSwizzler
     - React-Core
     - RNFBApp
-  - RNFBMessaging (18.5.0):
+  - RNFBMessaging (18.6.0):
     - Firebase/Messaging (= 10.15.0)
     - FirebaseCoreExtension (= 10.15.0)
     - React-Core
     - RNFBApp
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.13.3):
+  - RNGestureHandler (2.13.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNLocalize (3.0.2):
     - React-Core
-  - RNPermissions (3.10.0):
+  - RNNotifee (7.8.0):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 7.8.0)
+  - RNNotifee/NotifeeCore (7.8.0):
+    - React-Core
+  - RNPermissions (3.10.1):
     - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
@@ -668,7 +672,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.26.0):
+  - RNScreens (3.27.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNSnackbar (2.6.2):
@@ -725,8 +729,8 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-camera (from `../node_modules/react-native-camera`)
-  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-compressor (from `../node_modules/react-native-compressor`)
+  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
@@ -775,6 +779,7 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -852,10 +857,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
-  react-native-date-picker:
-    :path: "../node_modules/react-native-date-picker"
   react-native-compressor:
     :path: "../node_modules/react-native-compressor"
+  react-native-date-picker:
+    :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-geolocation:
@@ -952,6 +957,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNReanimated:
@@ -1008,12 +1015,12 @@ SPEC CHECKSUMS:
   React-jsinspector: 194e32c6aab382d88713ad3dd0025c5f5c4ee072
   React-logger: cebf22b6cf43434e471dc561e5911b40ac01d289
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
-  react-native-date-picker: 04e866ba4e7857f83abd504ad42e787f0f02ae00
   react-native-compressor: 31281c7b026dc2d9faa61ff952ea184f5c9d059d
-  react-native-document-picker: 2b8f18667caee73a96708a82b284a4f40b30a156
+  react-native-date-picker: 1d61c76315098a6ad4c643a356f005916c7d4875
+  react-native-document-picker: 69ca2094d8780cfc1e7e613894d15290fdc54bba
   react-native-geolocation: ef66fb798d96284c6043f0b16c15d9d1d4955db4
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
-  react-native-image-picker: 1569cfade34b3a011191ce262423e6ce2f8db5a1
+  react-native-image-picker: 2e2e82aba9b6a91a7c78f7d9afde341a2659c7b8
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-maps: f699e0753c22c4d5c3a44d03895b193a4dbca6c2
@@ -1021,7 +1028,7 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: 851f6510d8046ea2f14aa169b1e01fcd309a94ba
   react-native-pager-view: 02a5c4962530f7efc10dd51ee9cdabeff5e6c631
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
-  react-native-safe-area-context: 238cd8b619e05cb904ccad97ef42e84d1b5ae6ec
+  react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-slider: 1cdd6ba29675df21f30544253bf7351d3c2d68c4
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
   react-native-view-shot: 6b7ed61d77d88580fed10954d45fad0eb2d47688
@@ -1050,17 +1057,18 @@ SPEC CHECKSUMS:
   RNCMaskedView: f7c74478c83c4fdfc5cf4df51f80c0dd5cf125c6
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
   RNCustomizedImagePicker: effe2899ab17a154ab15e689711b999652222009
-  RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
-  RNFBAnalytics: 30184f205f17c114a9e426806925331b9110f749
-  RNFBApp: cc9384746945ac0eedd4759171a8abb4c4c5309d
-  RNFBDynamicLinks: 2ff61f26cf60a88bebbcd73e7e997527c6121430
-  RNFBMessaging: 3c573398dced30f6cbaf55a195080916ea23f819
+  RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
+  RNFBAnalytics: 468af995e05d72cd13dae34262514b2b41ea48ba
+  RNFBApp: 5e457a31687a849c91ca96af024ec90e2cdb9e6c
+  RNFBDynamicLinks: 56d456016840cb880c8a31036ee55a7d235f6256
+  RNFBMessaging: 9b2b79eab3cd1c746a041c1bcd109be6aa385f32
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: fa40ab6b6cafaa7609294d31f8e8fbbd0cce8ea6
+  RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
-  RNPermissions: 3161aacf397c0a5a2b9aa5414bb13c595b2d5bf6
+  RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
+  RNPermissions: 153dc8d53aa81692064a72f3a6578dec40d565b1
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
-  RNScreens: 2a28f2973f4d0d4623e18629ebfc2c4adaceb39a
+  RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
   RNSnackbar: 3727b42bf6c4314a53c18185b5203e915a4ab020
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
@@ -1070,6 +1078,6 @@ SPEC CHECKSUMS:
   TZImagePickerController: e9909edbadf7381140efc5b5c9f5bdbfd630f7d4
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
 
-PODFILE CHECKSUM: 21439617dc9615a4d31f2340f9ed930522229ae2
+PODFILE CHECKSUM: 209c20369f4c01951a25e7146786967c85cf9a3e
 
 COCOAPODS: 1.11.3
