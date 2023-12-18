@@ -733,7 +733,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HJZ3L2XA4R;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HJZ3L2XA4R;
@@ -770,7 +770,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HJZ3L2XA4R;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HJZ3L2XA4R;
 				ENABLE_BITCODE = NO;
