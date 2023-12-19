@@ -445,6 +445,22 @@ class OfflineSurveyList extends Component {
                         )
                     }
                 }
+                else if (item.answer.scale_type == 'maxdiff') {
+                    let selectedmaxDiffOpt = ''
+                    item.answer.selected_option && item.answer.selected_option.map((obj, index) => {
+                        if (selectedmaxDiffOpt) {
+                            selectedmaxDiffOpt = selectedmaxDiffOpt + ",  " + (obj.isLeastCheck && obj.isLeastCheck == true ? "L:" : "M:") + obj.label
+                        }
+                        else {
+                            selectedmaxDiffOpt = (obj.isLeastCheck && obj.isLeastCheck == true ? "L:" : "M:") + obj.label
+                        }
+                    })
+                    return (
+                        < View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.answerTextstyle}>{selectedmaxDiffOpt}</Text>
+                        </View>
+                    )
+                }
             }
             else {
                 return (

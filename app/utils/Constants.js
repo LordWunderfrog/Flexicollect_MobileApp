@@ -3826,6 +3826,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas benodig toegang tot jou klankopnemer om klank op te neem",
       "Cancel": "Kanselleer",
       "OK": "OK",
+      "Confirm": "Bevestig",
       "GoBack": "Gaan terug",
       "Survey_NotAvailable_For_Offline": "Hierdie opname is nie beskikbaar nie. Sluit asseblief hierdie opname en maak verbinding met die internet om dit af te laai. Sodra dit afgelaai is, sal dit aflyn beskikbaar wees",
       "Survey_Submitting_Error": "Dit lyk asof daar 'n probleem is met die indiening van hierdie opname. Gebruik asseblief die ondersteuningsknoppie op die tuistesblad om ons hieroor te kontak",
@@ -3845,7 +3846,8 @@ module.exports = {
       "of": "van",
       "Least": "Minste",
       "Most": "Meeste",
-      "MaxDiffSelectMsg": "Kies asseblief die minste en meeste item vir elke stel van vrae"
+      "MaxDiffSelectMsg": "Kies asseblief die minste en meeste item vir elke stel van vrae",
+      "SelectDate": "Kies asseblief datum"
     },
     "Arabic": {
       "Loading_Questions": "تحميل الأسئلة",
@@ -3869,6 +3871,7 @@ module.exports = {
       "Audio_Recorder_Permission": "يحتاج Eolas إلى الوصول إلى مسجل الصوت لتسجيل الصوت",
       "Cancel": "إلغاء",
       "OK": "موافق",
+      "Confirm": "تأكيد",
       "GoBack": "عُد",
       "Survey_NotAvailable_For_Offline": "هذا الاستطلاع غير متوفر. يرجى إغلاق الاستطلاع والاتصال بالإنترنت لتنزيله. بمجرد التنزيل، سيكون متاحًا حالة عدم الاتصال بالإنترنت",
       "Survey_Submitting_Error": "يبدو أن هناك مشكلة في إرسال هذا الاستطلاع. يرجى استخدام زر الدعم في الصفحة الرئيسية للتواصل معنا بشأن هذا الموضوع",
@@ -3888,7 +3891,8 @@ module.exports = {
       "of": "من",
       "Least": "الأدنى",
       "Most": "الأكثر",
-      "MaxDiffSelectMsg": "يرجى اختيار العنصر الأقل والأكثر لكل مجموعة من الأسئلة"
+      "MaxDiffSelectMsg": "يرجى اختيار العنصر الأقل والأكثر لكل مجموعة من الأسئلة",
+      "SelectDate": "الرجاء تحديد التاريخ"
     },
     "Chinese": {
       "Loading_Questions": "加载问题",
@@ -3912,6 +3916,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas需要访问您的音频录音器以录制音频",
       "Cancel": "取消",
       "OK": "确定",
+      "Confirm": "确认",
       "GoBack": "回去",
       "Survey_NotAvailable_For_Offline": "此调查报告不可用。请关闭该调查报告并连接到互联网以下载。下载完成后，可离线使用",
       "Survey_Submitting_Error": "提交调查报告时似乎出现问题。请在首页使用支持按钮与我们联系",
@@ -3931,7 +3936,8 @@ module.exports = {
       "of": "的",
       "Least": "最小",
       "Most": "最大",
-      "MaxDiffSelectMsg": "请为所有问题集选择最小和最大项目"
+      "MaxDiffSelectMsg": "请为所有问题集选择最小和最大项目",
+      "SelectDate": "请选择日期",
     },
     "Dutch": {
       "Loading_Questions": "Vragen worden geladen",
@@ -3955,6 +3961,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas heeft toegang tot uw audio-opnametoepassing nodig om audio op te nemen.",
       "Cancel": "Annuleren",
       "OK": "OK",
+      "Confirm": "Bevestigen",
       "GoBack": "Ga terug",
       "Survey_NotAvailable_For_Offline": "Deze enquête is niet beschikbaar. Sluit deze enquête en maak verbinding met internet om deze te downloaden. Eenmaal gedownload, is deze offline beschikbaar.",
       "Survey_Submitting_Error": "Er lijkt een probleem te zijn bij het verzenden van deze enquête. Gebruik de ondersteuningsknop op de startpagina om contact met ons op te nemen over dit probleem.",
@@ -3974,7 +3981,8 @@ module.exports = {
       "of": "van",
       "Least": "Minst",
       "Most": "Meest",
-      "MaxDiffSelectMsg": "Selecteer de minst en meest gekozen items voor alle vragenreeksen."
+      "MaxDiffSelectMsg": "Selecteer de minst en meest gekozen items voor alle vragenreeksen.",
+      "SelectDate": "Selecteer alsjeblieft de datum",
     },
     "English": {
       "Loading_Questions": "Loading Questions",
@@ -3998,6 +4006,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas needs to access your audio recorder to record audio",
       "Cancel": "Cancel",
       "OK": "OK",
+      "Confirm": "Confirm",
       "GoBack": "Go Back",
       "Survey_NotAvailable_For_Offline": "This survey is not available. Please close this survey and connect to the internet to download it. Once downloaded it will be available offline",
       "Survey_Submitting_Error": "There seems to be an issue submitting this survey. Please use the support button on the homepage to contact us about this",
@@ -4017,7 +4026,8 @@ module.exports = {
       "of": "of",
       "Least": "Least",
       "Most": "Most",
-      "MaxDiffSelectMsg": "Please select least and most item for all set of question"
+      "MaxDiffSelectMsg": "Please select least and most item for all set of question",
+      "SelectDate": "Please Select Date"
     },
     "French": {
       "Loading_Questions": "Chargement des questions",
@@ -4041,6 +4051,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas a besoin d'accéder à votre enregistreur audio pour enregistrer de l'audio.",
       "Cancel": "Annuler",
       "OK": "OK",
+      "Confirm": "Confirmer",
       "GoBack": "Retourner",
       "Survey_NotAvailable_For_Offline": "Ce sondage n'est pas disponible. Veuillez fermer ce sondage et vous connecter à internet pour le télécharger. Une fois téléchargé, il sera disponible hors ligne.",
       "Survey_Submitting_Error": "Un problème est survenu lors de la soumission de ce sondage. Veuillez utiliser le bouton de support sur la page d'accueil pour nous contacter à ce sujet.",
@@ -4060,7 +4071,8 @@ module.exports = {
       "of": "de",
       "Least": "Le moins",
       "Most": "Le plus",
-      "MaxDiffSelectMsg": "Veuillez sélectionner l'option la moins et la plus choisie pour chaque ensemble de questions."
+      "MaxDiffSelectMsg": "Veuillez sélectionner l'option la moins et la plus choisie pour chaque ensemble de questions.",
+      "SelectDate": "Veuillez sélectionner une date",
     },
     "German": {
       "Loading_Questions": "Fragen werden hochgeladen",
@@ -4084,6 +4096,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas benötigt Zugriff auf Ihren Audio-Recorder, um Audio aufzuzeichnen.",
       "Cancel": "Abbrechen",
       "OK": "OK",
+      "Confirm": "Bestätigen",
       "GoBack": "Geh zurück",
       "Survey_NotAvailable_For_Offline": "Dieser Fragebogen ist nicht verfügbar. Bitte schließen Sie diesen Fragebogen und stellen Sie eine Verbindung zum Internet her, um ihn herunterzuladen. Sobald er heruntergeladen wurde, steht er offline zur Verfügung.",
       "Survey_Submitting_Error": "Es ist ein Problem beim Übermitteln dieses Fragebogens aufgetreten. Bitte verwenden Sie die Support-Schaltfläche auf der Homepage, um uns diesbezüglich zu kontaktieren.",
@@ -4103,7 +4116,8 @@ module.exports = {
       "of": "von",
       "Least": "Am wenigsten",
       "Most": "Am meisten",
-      "MaxDiffSelectMsg": "Bitte wählen Sie das Element mit der geringsten und der größten Bewertung für alle Fragengruppen."
+      "MaxDiffSelectMsg": "Bitte wählen Sie das Element mit der geringsten und der größten Bewertung für alle Fragengruppen.",
+      "SelectDate": "Bitte Datum auswählen",
     },
     "Hindi": {
       "Loading_Questions": "प्रश्न लोड हो रहे हैं",
@@ -4127,6 +4141,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas को आपके ऑडियो रिकॉर्डर तक पहुंच की आवश्यकता है ऑडियो रिकॉर्ड करने के लिए।",
       "Cancel": "रद्द करें",
       "OK": "ठीक है",
+      "Confirm": "पुष्टि करें",
       "GoBack": "वापस जाओ",
       "Survey_NotAvailable_For_Offline": "यह सर्वेक्षण उपलब्ध नहीं है। कृपया इस सर्वेक्षण को बंद करें और इंटरनेट से डाउनलोड करने के लिए कनेक्ट करें। एक बार डाउनलोड हो जाने के बाद यह ऑफ़लाइन उपलब्ध होगा।",
       "Survey_Submitting_Error": "इस सर्वेक्षण को सबमिट करने में कुछ समस्या है। कृपया होमपेज पर समर्थन बटन का उपयोग करके हमसे संपर्क करें।",
@@ -4146,7 +4161,8 @@ module.exports = {
       "of": "का",
       "Least": "सबसे कम",
       "Most": "सबसे अधिक",
-      "MaxDiffSelectMsg": "कृपया सभी सेट के प्रश्न के लिए सबसे कम और सबसे अधिक आइटम का चयन करें"
+      "MaxDiffSelectMsg": "कृपया सभी सेट के प्रश्न के लिए सबसे कम और सबसे अधिक आइटम का चयन करें",
+      "SelectDate": "कृपया दिनांक चुनें",
     },
     "Indonesian": {
       "Loading_Questions": "Memuat pertanyaan",
@@ -4170,6 +4186,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas perlu mengakses perekam audio Anda untuk merekam audio",
       "Cancel": "Batal",
       "OK": "OK",
+      "Confirm": "Konfirmasi",
       "GoBack": "Kembali",
       "Survey_NotAvailable_For_Offline": "Survei ini tidak tersedia. Silakan tutup survei ini dan hubungkan ke internet untuk mengunduhnya. Setelah diunduh, survei akan tersedia secara offline",
       "Survey_Submitting_Error": "Terdapat masalah dalam mengirimkan survei ini. Harap gunakan tombol dukungan di halaman utama untuk menghubungi kami mengenai hal ini",
@@ -4189,7 +4206,8 @@ module.exports = {
       "of": "dari",
       "Least": "Paling Sedikit",
       "Most": "Paling Banyak",
-      "MaxDiffSelectMsg": "Silakan pilih item paling sedikit dan paling banyak untuk semua set pertanyaan"
+      "MaxDiffSelectMsg": "Silakan pilih item paling sedikit dan paling banyak untuk semua set pertanyaan",
+      "SelectDate": "Silakan Pilih Tanggal",
     },
     "Italian": {
       "Loading_Questions": "Caricamento domande",
@@ -4213,6 +4231,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas ha bisogno di accedere al tuo registratore audio per registrare l'audio",
       "Cancel": "Annulla",
       "OK": "OK",
+      "Confirm": "Conferma",
       "GoBack": "Torna indietro",
       "Survey_NotAvailable_For_Offline": "Questo questionario non è disponibile. Si prega di chiudere il questionario e connettersi a internet per scaricarlo. Una volta scaricato, sarà disponibile offline",
       "Survey_Submitting_Error": "Si è verificato un problema durante l'invio di questo questionario. Si prega di utilizzare il pulsante di supporto sulla homepage per contattarci in merito",
@@ -4232,7 +4251,8 @@ module.exports = {
       "of": "di",
       "Least": "Minimo",
       "Most": "Massimo",
-      "MaxDiffSelectMsg": "Seleziona l'elemento minimo e massimo per tutti i set di domande"
+      "MaxDiffSelectMsg": "Seleziona l'elemento minimo e massimo per tutti i set di domande",
+      "SelectDate": "Seleziona la data",
     },
     "Japanese": {
       "Loading_Questions": "質問の誤謬",
@@ -4256,6 +4276,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolasはオーディオレコーダーへのアクセスが必要です",
       "Cancel": "キャンセル",
       "OK": "OK",
+      "Confirm": "確認",
       "GoBack": "戻る",
       "Survey_NotAvailable_For_Offline": "この調査は利用できません。調査を閉じ、インターネットに接続してダウンロードしてください。ダウンロード後はオフラインで利用できます",
       "Survey_Submitting_Error": "この調査の送信に問題が発生しています。この問題については、ホームページのサポートボタンを使用してお問い合わせください",
@@ -4275,7 +4296,8 @@ module.exports = {
       "of": "の",
       "Least": "最低",
       "Most": "最高",
-      "MaxDiffSelectMsg": "すべてのセットの質問について、最低と最高のアイテムを選択してください"
+      "MaxDiffSelectMsg": "すべてのセットの質問について、最低と最高のアイテムを選択してください",
+      "SelectDate": "日付を選択してください",
     },
     "Malay": {
       "Loading_Questions": "Memuat naik  soalan",
@@ -4299,6 +4321,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas perlu mengakses perekam audio anda untuk merakam audio",
       "Cancel": "Batal",
       "OK": "OK",
+      "Confirm": "Konfirmasi",
       "GoBack": "Pergi balik",
       "Survey_NotAvailable_For_Offline": "Kaji selidik ini tidak tersedia. Sila tutup kaji selidik ini dan sambungkan ke internet untuk memuat turunnya. Setelah dimuat turun, ia akan tersedia secara luar talian",
       "Survey_Submitting_Error": "Nampaknya terdapat masalah dalam menghantar kaji selidik ini. Sila gunakan butang sokongan di laman utama untuk menghubungi kami mengenainya",
@@ -4318,7 +4341,8 @@ module.exports = {
       "of": "daripada",
       "Least": "Terendah",
       "Most": "Tertinggi",
-      "MaxDiffSelectMsg": "Sila pilih item terendah dan tertinggi untuk semua set soalan"
+      "MaxDiffSelectMsg": "Sila pilih item terendah dan tertinggi untuk semua set soalan",
+      "SelectDate": "Sila pilih tarikh",
     },
     "Polish": {
       "Loading_Questions": "Ładowanie pytań",
@@ -4342,6 +4366,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas needs to access your audio recorder to record audio",
       "Cancel": "Anuluj",
       "OK": "OK",
+      "Confirm": "Potwierdź",
       "GoBack": "Wróć",
       "Survey_NotAvailable_For_Offline": "Ta ankieta jest niedostępna. Zamknij tę ankietę i połącz się z internetem, aby ją pobrać. Po pobraniu będzie dostępna w trybie offline",
       "Survey_Submitting_Error": "Wystąpił problem z przesłaniem tej ankiety. Proszę skorzystać z przycisku wsparcia na stronie głównej, aby skontaktować się z nami w tej sprawie",
@@ -4361,7 +4386,8 @@ module.exports = {
       "of": "z",
       "Least": "Najmniej",
       "Most": "Najwięcej",
-      "MaxDiffSelectMsg": "Proszę wybrać najmniej i najwięcej element dla wszystkich zestawów pytań"
+      "MaxDiffSelectMsg": "Proszę wybrać najmniej i najwięcej element dla wszystkich zestawów pytań",
+      "SelectDate": "Proszę wybrać datę",
     },
     "Portuguese": {
       "Loading_Questions": "Carregando perguntas",
@@ -4385,6 +4411,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas precisa acessar seu gravador de áudio para gravar áudio",
       "Cancel": "Cancelar",
       "OK": "OK",
+      "Confirm": "Confirmar",
       "GoBack": "Volte",
       "Survey_NotAvailable_For_Offline": "Esta pesquisa não está disponível. Por favor, feche esta pesquisa e conecte-se à internet para baixá-la. Depois de baixada, estará disponível offline",
       "Survey_Submitting_Error": "Houve um problema ao enviar esta pesquisa. Por favor, use o botão de suporte na página inicial para entrar em contato conosco sobre isso",
@@ -4404,7 +4431,8 @@ module.exports = {
       "of": "de",
       "Least": "Mínimo",
       "Most": "Máximo",
-      "MaxDiffSelectMsg": "Por favor, selecione o item mínimo e máximo para todos os conjuntos de perguntas"
+      "MaxDiffSelectMsg": "Por favor, selecione o item mínimo e máximo para todos os conjuntos de perguntas",
+      "SelectDate": "Selecione a data",
     },
     "Russian": {
       "Loading_Questions": "Вопросы загружаются",
@@ -4428,6 +4456,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas нужен доступ к записывающему устройству для записи аудио",
       "Cancel": "Отмена",
       "OK": "ОК",
+      "Confirm": "Подтвердить",
       "GoBack": "Возвращаться",
       "Survey_NotAvailable_For_Offline": "Этот опрос недоступен. Пожалуйста, закройте его и подключитесь к Интернету для загрузки. После загрузки он будет доступен в автономном режиме",
       "Survey_Submitting_Error": "При отправке этого опроса возникла проблема. Используйте кнопку поддержки на главной странице, чтобы связаться с нами по этому поводу",
@@ -4447,7 +4476,8 @@ module.exports = {
       "of": "из",
       "Least": "Наименьшее",
       "Most": "Наибольшее",
-      "MaxDiffSelectMsg": "Пожалуйста, выберите наименьший и наибольший элементы для всех наборов вопросов"
+      "MaxDiffSelectMsg": "Пожалуйста, выберите наименьший и наибольший элементы для всех наборов вопросов",
+      "SelectDate": "Пожалуйста, выберите дату",
     },
     "Spanish": {
       "Loading_Questions": "Cargando preguntas",
@@ -4471,6 +4501,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas necesita acceder a tu grabadora de audio para grabar audio",
       "Cancel": "Cancelar",
       "OK": "Aceptar",
+      "Confirm": "Confirmar",
       "GoBack": "Regresa",
       "Survey_NotAvailable_For_Offline": "Esta encuesta no está disponible. Por favor, cierra esta encuesta y conéctate a internet para descargarla. Una vez descargada, estará disponible sin conexión.",
       "Survey_Submitting_Error": "Parece que hay un problema al enviar esta encuesta. Utiliza el botón de soporte en la página de inicio para contactarnos al respecto.",
@@ -4490,7 +4521,8 @@ module.exports = {
       "of": "de",
       "Least": "Menor",
       "Most": "Mayor",
-      "MaxDiffSelectMsg": "Por favor selecciona el elemento más pequeño y más grande para todos los conjuntos de preguntas"
+      "MaxDiffSelectMsg": "Por favor selecciona el elemento más pequeño y más grande para todos los conjuntos de preguntas",
+      "SelectDate": "Por favor seleccione fecha",
     },
     "Tagalog": {
       "Loading_Questions": "Naglo-load ng mga Katanungan",
@@ -4514,6 +4546,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Kinakailangan ng Eolas ang access sa iyong audio recorder upang i-record ang audio",
       "Cancel": "Kanselahin",
       "OK": "OK",
+      "Confirm": "Kumpirmahin",
       "GoBack": "Bumalik ka",
       "Survey_NotAvailable_For_Offline": "Ang survey na ito ay hindi available. Mangyaring isara ang survey na ito at ikonekta sa internet upang i-download ito. Kapag na-download na, magiging available ito sa offline",
       "Survey_Submitting_Error": "May problema sa pagsusumite ng survey na ito. Mangyaring gamitin ang button ng suporta sa homepage upang makipag-ugnayan sa amin tungkol dito",
@@ -4533,7 +4566,8 @@ module.exports = {
       "of": "ng",
       "Least": "Pinakamababa",
       "Most": "Pinakamataas",
-      "MaxDiffSelectMsg": "Mangyaring pumili ng pinakamababa at pinakamataas na item para sa lahat ng set ng tanong"
+      "MaxDiffSelectMsg": "Mangyaring pumili ng pinakamababa at pinakamataas na item para sa lahat ng set ng tanong",
+      "SelectDate": "Mangyaring pumili ng petsa",
     },
     "Thai": {
       "Loading_Questions": "กำลังโหลดคำถาม",
@@ -4557,6 +4591,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas ต้องการเข้าถึงบันทึกเสียงของคุณเพื่อบันทึกเสียง",
       "Cancel": "ยกเลิก",
       "OK": "ตกลง",
+      "Confirm": "ยืนยัน",
       "GoBack": "กลับไป",
       "Survey_NotAvailable_For_Offline": "แบบสำรวจนี้ไม่สามารถใช้ได้ โปรดปิดแบบสำรวจนี้และเชื่อมต่อกับอินเทอร์เน็ตเพื่อดาวน์โหลด หลังจากดาวน์โหลดแล้ว แบบสำรวจจะสามารถใช้งานได้แบบออฟไลน์",
       "Survey_Submitting_Error": "ดูเหมือนว่ามีปัญหาในการส่งแบบสำรวจนี้ โปรดใช้ปุ่มสนับสนุนบนหน้าหลักเพื่อติดต่อเราเกี่ยวกับปัญหานี้",
@@ -4576,7 +4611,8 @@ module.exports = {
       "of": "ของ",
       "Least": "น้อยที่สุด",
       "Most": "มากที่สุด",
-      "MaxDiffSelectMsg": "โปรดเลือกรายการน้อยที่สุดและมากที่สุดสำหรับชุดคำถามทั้งหมด"
+      "MaxDiffSelectMsg": "โปรดเลือกรายการน้อยที่สุดและมากที่สุดสำหรับชุดคำถามทั้งหมด",
+      "SelectDate": "กรุณาเลือกวันที่",
     },
     "Vietnamese": {
       "Loading_Questions": "Đang tải câu hỏi",
@@ -4600,6 +4636,7 @@ module.exports = {
       "Audio_Recorder_Permission": "Eolas cần truy cập máy ghi âm của bạn để ghi âm",
       "Cancel": "Hủy bỏ",
       "OK": "Đồng ý",
+      "Confirm": "Xác nhận",
       "GoBack": "Quay lại",
       "Survey_NotAvailable_For_Offline": "Khảo sát này không khả dụng. Vui lòng đóng khảo sát này và kết nối với internet để tải xuống. Sau khi tải xuống, khảo sát sẽ khả dụng ngoại tuyến",
       "Survey_Submitting_Error": "Có vẻ như đã xảy ra sự cố khi gửi khảo sát này. Vui lòng sử dụng nút hỗ trợ trên trang chủ để liên hệ với chúng tôi",
@@ -4619,7 +4656,8 @@ module.exports = {
       "of": "của",
       "Least": "Ít nhất",
       "Most": "Nhiều nhất",
-      "MaxDiffSelectMsg": "Vui lòng chọn mục ít nhất và nhiều nhất cho tất cả các bộ câu hỏi"
+      "MaxDiffSelectMsg": "Vui lòng chọn mục ít nhất và nhiều nhất cho tất cả các bộ câu hỏi",
+      "SelectDate": "Vui lòng chọn ngày",
     },
     "Urdu": {
       "Loading_Questions": "سوالات لوڈ ہو رہے ہیں",
@@ -4643,6 +4681,7 @@ module.exports = {
       "Audio_Recorder_Permission": "آؤلاس کو آپ کے آڈیو ریکارڈر تک رسائی کی ضرورت ہوتی ہے تاکہ آڈیو ریکارڈ کی جاسکے",
       "Cancel": "منسوخ کریں",
       "OK": "ٹھیک ہے",
+      "Confirm": "تصدیق کریں",
       "GoBack": "واپس جاو",
       "Survey_NotAvailable_For_Offline": "یہ سروے دستیاب نہیں ہے۔ براہ کرم اس سروے کو بند کریں اور انٹرنیٹ سے جڑنے کے لئے ڈاؤن لوڈ کریں۔ ڈاؤن لوڈ کرنے کے بعد یہ آف لائن دستیاب ہوگا",
       "Survey_Submitting_Error": "معذرت ، اس سروے کو جمع کرانے میں کچھ مسئلہ ہو رہا ہے۔ براہ کرم ہوم پیج پر دیئے گئے سپورٹ بٹن کا استعمال کریں تاکہ ہم سے اس بارے میں رابطہ کریں",
@@ -4662,7 +4701,8 @@ module.exports = {
       "of": "کا",
       "Least": "کمترین",
       "Most": "زیادہ سے زیادہ",
-      "MaxDiffSelectMsg": "براہ کرم ہر سیٹ کے سوال کے لئے کمترین اور زیادہ سے زیادہ آئٹم منتخب کریں"
+      "MaxDiffSelectMsg": "براہ کرم ہر سیٹ کے سوال کے لئے کمترین اور زیادہ سے زیادہ آئٹم منتخب کریں",
+      "SelectDate": "براہ کرم تاریخ منتخب کریں۔",
     },
   },
   common_text: {

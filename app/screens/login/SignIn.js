@@ -632,16 +632,14 @@ class SignIn extends Component {
             axios.get(url).then(response => {
                 if (response.data.status === 200) {
                     Constants.showSnack('Email is verified successfully. Please change your password.');
-                    // const resetAction = StackActions.reset({
+                    this.props.navigation.navigate({ name: 'ResetPassword', params: { email: email } })
+
+                    // const resetAction = CommonActions.reset({
                     //     index: 0,
-                    //     actions: [NavigationActions.navigate({ routeName: 'ResetPassword', params: { email: email } })],
+                    //     routes: [{ name: 'ResetPassword', params: { email: email } }],
                     // });
                     // this.props.navigation.dispatch(resetAction);
-                    const resetAction = CommonActions.reset({
-                        index: 0,
-                        routes: [{ name: 'ResetPassword', params: { email: email } }],
-                    });
-                    this.props.navigation.dispatch(resetAction);
+
                 } else {
                     Constants.showSnack(response.data.message)
                 }
@@ -1163,7 +1161,44 @@ class SignIn extends Component {
                                 </TouchableOpacity>
 
                                 {/* Language select */}
-                                {Platform.OS == 'ios' ?
+                                <View style={{ marginTop: 16 }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        {Platform.OS == 'ios' ? <RNPickerSelect
+                                            items={languagelist}
+                                            onValueChange={(Language) => this.selectlanguage(Language)}
+                                            placeholder={{
+                                                label: 'Language',
+                                                value: '',
+                                            }}
+                                            hideIcon={true}
+                                            style={{ ...pickerSelectStylesConditions }}
+                                            value={(Language)}
+                                            ref={el => {
+                                                this.Refs.languageIOSPicker = el;
+                                            }}
+                                        /> :
+                                            <Picker
+                                                ref={e => this.picker = e}
+                                                mode={'dialog'}
+                                                selectedValue={this.state.Language}
+                                                style={styles.language}
+                                                onValueChange={(lan, itemIndex) => this.selectlanguage(lan)}>
+                                                {this.state.languagelist.map(l => (
+                                                    <Picker.Item label={l} value={l} />
+                                                ))}
+                                            </Picker>}
+
+                                        <TouchableOpacity
+                                            onPress={() => Platform.OS == 'ios' && this.Refs.languageIOSPicker.togglePicker()}
+                                            activeOpacity={activeOpacityForIOSPicker}>
+                                            <Image
+                                                source={Downarrow}
+                                                style={styles.dayDownArrow} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                {/* {Platform.OS == 'ios' ?
                                     <TouchableOpacity style={[styles.pickerFullViewIos]} onPress={() => this.Refs.languageIOSPicker.togglePicker()} activeOpacity={activeOpacityForIOSPicker}>
                                         <View flex={1}>
                                             <RNPickerSelect
@@ -1211,18 +1246,18 @@ class SignIn extends Component {
                                         </TouchableOpacity>
 
 
-                                    </View>}
+                                    </View>} */}
 
 
                                 {/*bottomView*/}
                                 <View style={styles.overlay}>
                                     <Text style={styles.termsOfServiceText}>{this.state.translation[this.state.Language].Eolas_International}</Text>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                        <TouchableOpacity onPress={() => this.goToTermsAndPolicyScreen('terms')}><Text
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                        <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }} onPress={() => this.goToTermsAndPolicyScreen('terms')}><Text
                                             style={styles.termsOfServiceText}>{this.state.translation[this.state.Language].Terms_of_service}</Text></TouchableOpacity>
                                         <Text
-                                            style={styles.termsOfServiceText}>{String.termsOfServiceVertitcal}</Text>
-                                        <TouchableOpacity onPress={() => this.goToTermsAndPolicyScreen('policy')}><Text
+                                            style={[styles.termsOfServiceText, { alignSelf: 'center' }]}>{String.termsOfServiceVertitcal}</Text>
+                                        <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start' }} onPress={() => this.goToTermsAndPolicyScreen('policy')}><Text
                                             style={styles.termsOfServiceText}>{this.state.translation[this.state.Language].Privacy_Policy}</Text></TouchableOpacity>
                                     </View>
                                 </View>
@@ -1258,7 +1293,7 @@ const styles = ScaledSheet.create({
         // height: 74.5,
         width: '60%',
         height: 100,
-        marginTop: 60,
+        marginTop: 50,
         marginBottom: 50
     },
 
@@ -1335,21 +1370,21 @@ const styles = ScaledSheet.create({
     },
     //bottomView
     overlay: {
-        width: '90%',
+        width: '98%',
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: Dimension.marginTwenty,
-        marginTop: 60
+        marginTop: 60,
     },
     termsOfServiceText: {
         color: Color.colorWhite,
         fontSize: Dimension.normalText,
-        alignSelf: 'center',
+        //alignSelf: 'center',
     },
     language: {
-        width: '100%',
-        marginLeft: '5%',
+        width: 150,
+        //marginLeft: '5%',
         color: Color.colorWhite,
         fontSize: Dimension.smallText,
         backgroundColor: 'transparent'
@@ -1366,19 +1401,21 @@ const styles = ScaledSheet.create({
         position: 'absolute',
     },
     pickerFullViewIos: {
-        marginTop: 16,
-        width: '30%',
-        marginLeft: '20%',
-        flex: 1,
+        // marginTop: 16,
+        // width: '30%',
+        // marginLeft: '20%',
+        // flex: 1,
     },
     dayDownArrow: {
-        position: 'absolute',
+        //position: 'absolute',
         width: 10,
         height: 10,
-        marginRight: 8,
-        alignSelf: 'flex-end',
-        marginTop: 5,
-        right: 35,
+        marginLeft: 5,
+        marginTop: 2
+        // marginRight: 8,
+        // alignSelf: 'flex-end',
+        // marginTop: 5,
+        // right: 35,
     }
 
 })

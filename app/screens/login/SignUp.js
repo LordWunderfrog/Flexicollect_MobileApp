@@ -1182,7 +1182,41 @@ class SignUp extends Component {
                                 </TouchableOpacity>
 
                                 {/* Language select */}
-                                {Platform.OS == 'ios' ? <TouchableOpacity style={[styles.pickerFullViewIoslanguage]} onPress={() => this.Refs.languageIOSPicker.togglePicker()} activeOpacity={activeOpacityForIOSPicker}>
+                                <View style={{ marginTop: 16 }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        {Platform.OS == 'ios' ? <RNPickerSelect
+                                            items={languagelist}
+                                            onValueChange={(Language) => this.selectlanguage(Language)}
+                                            placeholder={{
+                                                label: 'Language',
+                                                value: '',
+                                            }}
+                                            hideIcon={true}
+                                            style={{ ...pickerSelectLanguage }}
+                                            value={(Language)}
+                                            ref={el => {
+                                                this.Refs.languageIOSPicker = el;
+                                            }}
+                                        /> : <Picker
+                                            ref={e => this.picker = e}
+                                            mode={'dialog'}
+                                            selectedValue={this.state.Language}
+                                            style={styles.language}
+                                            onValueChange={(lan, itemIndex) => this.selectlanguage(lan)}>
+                                            {this.state.languagelist.map(l => (
+                                                <Picker.Item label={l} value={l} />
+                                            ))}
+                                        </Picker>}
+                                        <TouchableOpacity
+                                            onPress={() => Platform.OS == 'ios' && this.Refs.languageIOSPicker.togglePicker()}
+                                            activeOpacity={activeOpacityForIOSPicker}>
+                                            <Image
+                                                source={Downarrow}
+                                                style={styles.dayDownArrowLanguage} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                {/* {Platform.OS == 'ios' ? <TouchableOpacity style={[styles.pickerFullViewIoslanguage]} onPress={() => this.Refs.languageIOSPicker.togglePicker()} activeOpacity={activeOpacityForIOSPicker}>
                                     <View flex={1}>
                                         <RNPickerSelect
                                             items={languagelist}
@@ -1228,7 +1262,7 @@ class SignUp extends Component {
                                         </TouchableOpacity>
 
 
-                                    </View>}
+                                    </View>} */}
 
                                 {/*bottomView*/}
                                 <View style={styles.border} />
@@ -1445,8 +1479,8 @@ const styles = ScaledSheet.create(
             paddingLeft: 5,
         },
         language: {
-            width: '100%',
-            marginLeft: '5%',
+            width: 150, // '100%',
+            //marginLeft: '5%',
             color: Color.colorWhite,
             fontSize: Dimension.smallText,
             backgroundColor: 'transparent'
@@ -1484,6 +1518,12 @@ const styles = ScaledSheet.create(
             alignSelf: 'flex-end',
             marginTop: 5,
             right: 35,
+        },
+        dayDownArrowLanguage: {
+            width: 10,
+            height: 10,
+            marginLeft: 5,
+            marginTop: 2
         }
     }
 );

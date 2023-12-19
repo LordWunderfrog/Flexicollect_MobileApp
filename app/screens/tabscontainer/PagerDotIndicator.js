@@ -5,8 +5,9 @@
 'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, ViewPropTypes } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import IndicatorViewPager from './IndicatorViewPager'
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 const DEFAULT_DOT_RADIUS = 6
 

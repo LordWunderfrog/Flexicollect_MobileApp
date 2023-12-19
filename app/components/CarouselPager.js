@@ -1,3 +1,4 @@
+//react-native-carousel-pager
 import React, { Component } from 'react';
 import {
     View,

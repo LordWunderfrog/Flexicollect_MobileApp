@@ -131,9 +131,11 @@ class ResetPassword extends Component {
     * @param {array} lan - Handle Language change 
     */
     selectlanguage(lan) {
-        this.setState({ Language: lan })
-        global.language = lan;
-        Constants.saveKey('Language', lan)
+        if (lan) {
+            this.setState({ Language: lan })
+            global.language = lan;
+            Constants.saveKey('Language', lan)
+        }
     }
 
 
@@ -192,7 +194,8 @@ class ResetPassword extends Component {
                     if (response.data.status === 200) {
                         this.setState({ isLoading: false })
                         Constants.showSnack(this.state.translation[this.state.Language].Password_Changed_MSg)
-                        this.resetStack()
+                        this.props.navigation.goBack()
+                        //this.resetStack()
                     }
 
                 }).catch((error) => {
@@ -267,7 +270,7 @@ class ResetPassword extends Component {
 
         return (
             <SafeAreaView style={Style.styles.safeAreaWhite}
-                edges={['right', 'top', 'left']}
+                edges={['right', 'left']}
                 forceInset={{ bottom: 'never', top: Platform.OS === 'ios' ? height === 812 ? 0 : 0 : 0 }}>
                 <StatusBar
                     barStyle={Platform.OS === 'android' ? 'light-content' : 'dark-content'}
@@ -285,6 +288,7 @@ class ResetPassword extends Component {
                                 <Image
                                     style={styles.logo}
                                     source={eolasLogo}
+                                    resizeMode='contain'
                                 />
 
                                 {/*Title*/}
@@ -385,7 +389,41 @@ class ResetPassword extends Component {
                                 </TouchableOpacity>
 
                                 {/* Language select */}
-                                {Platform.OS == 'ios' ?
+                                <View style={{ marginTop: 16 }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        {Platform.OS == 'ios' ? <RNPickerSelect
+                                            items={languagelist}
+                                            onValueChange={(Language) => this.selectlanguage(Language)}
+                                            placeholder={{
+                                                label: 'Language',
+                                                value: '',
+                                            }}
+                                            hideIcon={true}
+                                            style={{ ...pickerSelectStylesConditions }}
+                                            value={(Language)}
+                                            ref={el => {
+                                                this.Refs.languageIOSPicker = el;
+                                            }}
+                                        /> : <Picker
+                                            ref={e => this.picker = e}
+                                            mode={'dialog'}
+                                            selectedValue={this.state.Language}
+                                            style={styles.language}
+                                            onValueChange={(lan, itemIndex) => this.selectlanguage(lan)}>
+                                            {this.state.languagelist.map(l => (
+                                                <Picker.Item label={l} value={l} />
+                                            ))}
+                                        </Picker>}
+                                        <TouchableOpacity
+                                            onPress={() => Platform.OS == 'ios' && this.Refs.languageIOSPicker.togglePicker()}
+                                            activeOpacity={activeOpacityForIOSPicker}>
+                                            <Image
+                                                source={Downarrow}
+                                                style={styles.dayDownArrow} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                {/* {Platform.OS == 'ios' ?
                                     <TouchableOpacity style={[styles.pickerFullViewIos]} onPress={() => this.Refs.languageIOSPicker.togglePicker()} activeOpacity={activeOpacityForIOSPicker}>
                                         <View flex={1}>
                                             <RNPickerSelect
@@ -434,18 +472,18 @@ class ResetPassword extends Component {
                                         </TouchableOpacity>
 
 
-                                    </View>}
+                                    </View>} */}
 
 
                                 {/*bottomView*/}
                                 <View style={styles.overlay}>
                                     <Text style={styles.termsOfServiceText}>{this.state.translation[this.state.Language].Eolas_International}</Text>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                        <TouchableOpacity onPress={() => this.goToTermsAndPolicyScreen('terms')}><Text
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                        <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }} onPress={() => this.goToTermsAndPolicyScreen('terms')}><Text
                                             style={styles.termsOfServiceText}>{this.state.translation[this.state.Language].Terms_of_service}</Text></TouchableOpacity>
                                         <Text
-                                            style={styles.termsOfServiceText}>{String.termsOfServiceVertitcal}</Text>
-                                        <TouchableOpacity onPress={() => this.goToTermsAndPolicyScreen('policy')}><Text
+                                            style={[styles.termsOfServiceText, { alignSelf: 'center' }]}>{String.termsOfServiceVertitcal}</Text>
+                                        <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start' }} onPress={() => this.goToTermsAndPolicyScreen('policy')}><Text
                                             style={styles.termsOfServiceText}>{this.state.translation[this.state.Language].Privacy_Policy}</Text></TouchableOpacity>
                                     </View>
                                 </View>
@@ -478,8 +516,10 @@ const styles = ScaledSheet.create({
     //logo
     logo: {
         alignSelf: 'center',
-        width: 152.8,
-        height: 74.5,
+        // width: 152.8,
+        // height: 74.5,
+        width: '60%',
+        height: 100,
         marginTop: 50,
         marginBottom: 50
     },
@@ -554,19 +594,21 @@ const styles = ScaledSheet.create({
     },
     //bottomView
     overlay: {
+        width: '98%',
+        overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: Dimension.marginTwenty,
-        marginTop: 70
+        marginTop: 60
     },
     termsOfServiceText: {
         color: Color.colorWhite,
         fontSize: Dimension.normalText,
-        alignSelf: 'center',
+        //alignSelf: 'center',
     },
     language: {
-        width: '100%',
-        marginLeft: '25%',
+        width: 150, // '100%',
+        //marginLeft: '25%',
         color: Color.colorWhite,
         fontSize: Dimension.smallText,
         backgroundColor: 'transparent'
@@ -582,19 +624,21 @@ const styles = ScaledSheet.create({
         position: 'absolute',
     },
     pickerFullViewIos: {
-        marginTop: 16,
-        width: '30%',
-        marginLeft: '20%',
-        flex: 1,
+        // marginTop: 16,
+        // width: '30%',
+        // marginLeft: '20%',
+        // flex: 1,
     },
     dayDownArrow: {
-        position: 'absolute',
+        //position: 'absolute',
         width: 10,
         height: 10,
-        marginRight: 8,
-        alignSelf: 'flex-end',
-        marginTop: 5,
-        right: 35,
+        marginLeft: 5,
+        marginTop: 2
+        // marginRight: 8,
+        // alignSelf: 'flex-end',
+        // marginTop: 5,
+        // right: 35,
     }
 
 })

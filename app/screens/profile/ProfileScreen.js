@@ -2464,8 +2464,8 @@ const styles = ScaledSheet.create({
         flexDirection: 'row',
         alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center',
         justifyContent: 'flex-start',
-        height: Platform.OS === 'ios' ? 56 : 70 - 14,
-        marginTop: Platform.OS === 'ios' ? 25 : 0
+        height: 56,
+        marginTop: 25
     },
     textContainer: {
         top: Platform.OS === 'ios' ? 0 : 0,

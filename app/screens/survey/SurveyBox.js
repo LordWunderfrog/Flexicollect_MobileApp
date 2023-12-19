@@ -70,18 +70,20 @@ import DeviceInfo from "react-native-device-info";
 //import RNCompress from "react-native-compress";
 import { RNCamera } from "react-native-camera";
 // Commen the below line for IOS build - The support for 4.2 Swift is not available yet.
-import { ProcessingManager } from "react-native-video-processing";
+//import { ProcessingManager } from "react-native-video-processing";
+import { Video } from 'react-native-compressor';
 //import Orientation from 'react-native-orientation';
 import Orientation from "react-native-orientation-locker";
 import cloneDeep from 'lodash/cloneDeep';
 //import * as ImagePickerCrop from './ImagePicker';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { RNFFmpeg } from 'react-native-ffmpeg';
+//import { RNFFmpeg } from 'react-native-ffmpeg';
 // import HTMLView from "react-native-render-html";
 import RenderHtml from 'react-native-render-html';
 import DropDownPicker from '../../components/DropDownPicker'
 import { measureConnectionSpeed } from '../../components/GetNetworkSpeed';
 import Mailer from 'react-native-mail';
+import DatePicker from 'react-native-date-picker'
 
 const videoCompressOptions = {
   //width: 720,
@@ -396,7 +398,9 @@ class SurveyBox extends Component {
       scrollArrow: 'none',
       screenTime: 0,
       isSubmitDisable: false,
-      isSlowNetwork: false
+      isSlowNetwork: false,
+      selectedDate: new Date(),
+      isOpenDatePicker: false
     };
     this.sliderEditing = false;
     this.audioRecorderPlayer = new AudioRecorderPlayer();
@@ -6006,7 +6010,7 @@ class SurveyBox extends Component {
 
       //check for text input limit validation
       if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("limitchar") &&
-        questionsArray[currentQuesIndx].properties.limitchar === 1) {
+        questionsArray[currentQuesIndx].properties.limitchar === 1 && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
 
         let limit_check = this.limitCharValidation(questionsArray[currentQuesIndx], questionsArray[currentQuesIndx].answer);
         if (
@@ -6014,6 +6018,17 @@ class SurveyBox extends Component {
         ) {
           Constants.showSnack(limit_check.limitMessage);
           return;
+        }
+      }
+
+      /** Check text input content type validation */
+      if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type")
+        && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
+        let answerText = questionsArray[currentQuesIndx].answer.text
+        if (answerText && answerText.trim()) {
+          if (!this.inputElementValidation(answerText, questionsArray[currentQuesIndx].properties.content_type)) {
+            return;
+          }
         }
       }
 
@@ -6779,12 +6794,14 @@ class SurveyBox extends Component {
       ) {
         questions.push(questionsArray[i])
       }
-      else if (aviMultifiled && aviMultifiled.some(obj => obj.value === handlerData)) {
-        /** condition added for if hide element is contain by any other looping question then not hide that element
-         *  to solve error hide element out side looping is also hiding in loop question so added this condition
-        */
-        questions.push(questionsArray[i])
-      }
+      // else if (aviMultifiled && aviMultifiled.some(obj => obj.value === handlerData)) {
+      //   /** condition added for if hide element is contain by any other looping question then not hide that element
+      //    *  to solve error hide element out side looping is also hiding in loop question so added this condition
+      //   */
+      //   questions.push(questionsArray[i])
+      // }
+
+
       // else if (questionsArray[i].conditions && questionsArray[i].conditions.length > 0) {
       //   /** condition added for if hide element is contain any condtion then not hide that element 
       //    *  to solve error hide element out side looping is also hiding in loop question so added this condition
@@ -7192,6 +7209,43 @@ class SurveyBox extends Component {
       type = "default";
     }
     return type;
+  }
+
+  /** As per the content type - restrict the input text validation */
+  inputElementValidation(text, contentType) {
+    if (contentType == "number") {
+      let regNumber = /^[0-9.]+$/
+      if (regNumber.test(text)) {
+        return true
+      }
+      else {
+        Constants.showSnack("Please enter numeric value only")
+        return false
+      }
+    }
+    else if (contentType == "email") {
+      let regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (regEmail.test(text)) {
+        return true
+      }
+      else {
+        Constants.showSnack(this.state.translation_common[this.state.Language].Valid_Email)
+        return false
+      }
+    }
+    else if (contentType == "alphabets") {
+      let regAlphabets = /^[A-Za-z\s]+$/;
+      if (regAlphabets.test(text)) {
+        return true
+      }
+      else {
+        Constants.showSnack("Please enter alphabets value only")
+        return false
+      }
+    }
+    else {
+      return true
+    }
   }
 
   /**
@@ -7889,18 +7943,50 @@ class SurveyBox extends Component {
   layoutTextInputType(questionArray, parentIndex) {
     return (
       <View>
-        <View style={styles.textBox}>
-          <TextInput
-            style={styles.InputText}
-            value={this.setAnswerForInput(questionArray)}
-            keyboardType={this.inputType(questionArray.properties.content_type)}
-            multiline={true}
-            onChangeText={answer =>
-              this.updateTextInput(questionArray, answer, parentIndex)
-            }
-            underlineColorAndroid={Color.colorWhite}
-          />
-        </View>
+        {questionArray.properties.hasOwnProperty('datePickerOn') && questionArray.properties.datePickerOn == 1 ?
+          /** text input with date picker */
+          <View style={styles.textBox}>
+            <TouchableOpacity onPress={() => this.openDatePickerFunction()}>
+              <TextInput
+                style={styles.InputText}
+                editable={false}
+                pointerEvents='none'
+                placeholder={this.state.translation[this.state.Language].SelectDate}
+                value={this.setAnswerForInput(questionArray)}
+                keyboardType={this.inputType(questionArray.properties.content_type)}
+                multiline={true}
+                onChangeText={answer =>
+                  this.updateTextInput(questionArray, answer, parentIndex)
+                }
+                underlineColorAndroid={Color.colorWhite}
+              />
+            </TouchableOpacity>
+            <DatePicker
+              modal
+              mode={'date'}
+              title={null}
+              confirmText={this.state.translation[this.state.Language].Confirm}
+              cancelText={this.state.translation[this.state.Language].Cancel}
+              open={this.state.isOpenDatePicker}
+              date={this.state.selectedDate}
+              onConfirm={(date) => { this.onConfirmDateSelection(date, questionArray, parentIndex) }}
+              onCancel={() => { this.oncancelDatePicker() }}
+            />
+          </View> :
+          <View style={styles.textBox}>
+            {/** normal text input */}
+            <TextInput
+              style={styles.InputText}
+              value={this.setAnswerForInput(questionArray)}
+              keyboardType={this.inputType(questionArray.properties.content_type)}
+              multiline={true}
+              onChangeText={answer =>
+                this.updateTextInput(questionArray, answer, parentIndex)
+              }
+              underlineColorAndroid={Color.colorWhite}
+            />
+          </View>
+        }
         {/* <Text style={styles.hintText}>{questionArray.properties.sublabel}</Text> */}
         {questionArray.properties.hasOwnProperty("sublabel") && questionArray.properties.sublabel.length > 0 ?
           <RenderHtml
@@ -7916,6 +8002,32 @@ class SurveyBox extends Component {
     );
   }
 
+  openDatePickerFunction() {
+    this.setState({ isOpenDatePicker: true })
+  }
+  onConfirmDateSelection(date, questionArray, parentIndex) {
+    let formatedDate = this.formateSelectedDate(date)
+    this.setState({ selectedDate: date, isOpenDatePicker: false }, () => {
+      this.updateTextInput(questionArray, formatedDate ? formatedDate.toString() : "", parentIndex)
+      this.setAnswerForInput(questionArray)
+    })
+  }
+  oncancelDatePicker() {
+    this.setState({ isOpenDatePicker: false })
+  }
+  formateSelectedDate(dateInput) {
+    if (dateInput) {
+      var dateIs = new Date(dateInput)
+      var formatedDate = (
+        (('0' + dateIs.getDate()).slice(-2))
+        + "-" +
+        (("0" + (dateIs.getMonth() + 1)).slice(-2))
+        + "-" +
+        dateIs.getFullYear()
+      )
+      return formatedDate
+    }
+  }
   /**
    * Capture type question render method
    * @param questionArray - currnt survey question array
@@ -8036,21 +8148,32 @@ class SurveyBox extends Component {
         compressQuality: CAMERASTYLE.COMPRESS_QUALITY,
         cropping: false,
         isVideo: true
-      }).then(video => {
+      }).then(async (video) => {
         this.setState({ videoProcessing: true });
-        let mime = video.mime.split("/");
-        let type = mime[1];
-        let path = video.path.replace(/(^\w+:|^)\/\//, '');
-        //         RNCompress.compressVideo(path, "medium").then(compressedFile => {
+        let path = "file://" + video.path
+        path = path.replace(/ /g, '%20')
+        const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+          (progress) => {
+            console.log('Compression Progress: ', progress);
+          }
+        );
+        let compressedPath = compressedVideo.replace('file://', '')
+        let source = { uri: compressedPath, data: '', type: 'mp4' };
+        this.addAnswerForSelectedMedia(index, source);
+
+        // RNCompress.compressVideo(path, "medium").then(compressedFile => {
         // let source = { uri: compressedFile.path, data: '', type: 'mp4' };
         //             this.addAnswerForSelectedMedia(index, source);
         //     })
-        ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
-          .then((compressedVideo) => {
-            let compressedPath = compressedVideo.replace('file://', '')
-            let source = { uri: compressedPath, data: '', type: 'mp4' };
-            this.addAnswerForSelectedMedia(index, source);
-          })
+        //let path = video.path.replace(/(^\w+:|^)\/\//, '');
+        //let mime = video.mime.split("/");
+        //let type = mime[1];
+        // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
+        //   .then((compressedVideo) => {
+        //     let compressedPath = compressedVideo.replace('file://', '')
+        //     let source = { uri: compressedPath, data: '', type: 'mp4' };
+        //     this.addAnswerForSelectedMedia(index, source);
+        //   })
       });
     }
     else {
@@ -8063,29 +8186,46 @@ class SurveyBox extends Component {
         mediaType: 'video',
         noData: false
 
-      }, (res) => {
+      }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           this.setState({ videoProcessing: true });
           let videoRes = res.assets[0]
           let path = videoRes.uri;
-          let ext = videoRes.type.split("/")
-          let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
-          let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+          path = path.replace(/ /g, '%20')
+          const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+            (progress) => {
+              console.log('Compression Progress: ', progress);
+            }
+          );
+          let source = {
+            uri: compressedVideo,
+            data: "",
+            type: 'mp4'
+          };
+          questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          this.addAnswerForSelectedMedia(index, source);
 
-          RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
-            .then(result => {
-              let source = {
-                uri: 'file://' + newfile,
-                data: "",
-                type: 'mp4'
-              };
-              questionResponseQue[this.state.questionsArr[index].questionID] = true;
-              this.addAnswerForSelectedMedia(index, source);
 
-            }).catch(e => {
-              //console.log(e);			
-            });
+          // let videoRes = res.assets[0]
+          // let path = videoRes.uri;
+          // let ext = videoRes.type.split("/")
+          // let questionArr = this.state.questionsArr[index];
+          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
+          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+
+          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+          //   .then(result => {
+          //     let source = {
+          //       uri: 'file://' + newfile,
+          //       data: "",
+          //       type: 'mp4'
+          //     };
+          //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          //     this.addAnswerForSelectedMedia(index, source);
+
+          //   }).catch(e => {
+          //     //console.log(e);			
+          //   });
         }
       });
     }
@@ -8338,51 +8478,6 @@ class SurveyBox extends Component {
         });
     }
   }
-  /**
-   * Take video from gallery
-   * @param {Number} index Currenet question array element position
-   */
-  /* videoFromGallery(index) {
-    ImagePicker.openPicker({
-      compressQuality: CAMERASTYLE.COMPRESS_QUALITY,
-      includeBase64: true,
-      isVideo: true
-    })
-      .then(video => {
-        this.setState({ changeImage: true, videoProcessing: true });
-        if (Platform.Version == 29) {
-          video.map(res => {
-            let mime = res.mime.split("/");
-            let type = mime[1];
-         
-            RNCompress.compressVideo(res.path, "low").then(compressedFile => {
-             let source = { uri: compressedFile.path, data: "", type: type };
-             this.addAnswerForSelectedMedia(index, source);  
-          }).catch(e => {
-             // console.log(e);
-          });
-     
-          });
-        }
-    else{
-      video.map(res => {
-            let mime = res.mime.split("/");
-            let type = mime[1];
-         
-           ProcessingManager.compress(res.path, videoCompressOptions) // compress options
-              .then(compressedVideo => {
-             let source = { uri: compressedVideo.source, data: "", type: type };
-             this.addAnswerForSelectedMedia(index, source);  
-          }).catch(e => {
-             // console.log(e);
-          });
-          });
-    }
-      })
-      .catch(e => {
-        //console.log(e);
-      });
-  } */
 
   /**
    * Take video from gallery
@@ -8394,25 +8489,40 @@ class SurveyBox extends Component {
         compressQuality: CAMERASTYLE.COMPRESS_QUALITY,
         includeBase64: true,
         isVideo: true
-      }).then(video => {
+      }).then(async (video) => {
         this.setState({ changeImage: true, videoProcessing: true });
-        let mime = video[0].mime.split("/");
-        let type = mime[1];
-        let path = video[0].path.replace(/(^\w+:|^)\/\//, '');
+        let path = "file://" + video[0].path
+        path = path.replace(/ /g, '%20')
+        const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+          (progress) => {
+            console.log('Compression Progress: ', progress);
+          }
+        );
+        let compressedPath = compressedVideo.replace('file://', '')
+        RNFetchBlob.fs.readFile(compressedPath, 'base64')
+          .then((data) => {
+            let base64 = data;
+            let source = { uri: compressedPath, data: base64, type: 'mp4' };
+            this.addAnswerForSelectedMedia(index, source);
+          })
+
         // RNCompress.compressVideo(path, "medium").then(compressedFile => {
         //   console.log('compressedFile', compressedFile)
         // Convert to base64 
         // })
-        ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
-          .then((compressedVideo) => {
-            let compressedPath = compressedVideo.replace('file://', '')
-            RNFetchBlob.fs.readFile(compressedPath, 'base64')
-              .then((data) => {
-                let base64 = data;
-                let source = { uri: compressedPath, data: base64, type: 'mp4' };
-                this.addAnswerForSelectedMedia(index, source);
-              })
-          })
+        // let mime = video[0].mime.split("/");
+        // let type = mime[1];
+        // let path = video[0].path.replace(/(^\w+:|^)\/\//, '');
+        // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
+        //   .then((compressedVideo) => {
+        //     let compressedPath = compressedVideo.replace('file://', '')
+        //     RNFetchBlob.fs.readFile(compressedPath, 'base64')
+        //       .then((data) => {
+        //         let base64 = data;
+        //         let source = { uri: compressedPath, data: base64, type: 'mp4' };
+        //         this.addAnswerForSelectedMedia(index, source);
+        //       })
+        //   })
       }).catch(e => {
         //console.log(e);
       });
@@ -8424,6 +8534,22 @@ class SurveyBox extends Component {
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           this.setState({ changeImage: true, videoProcessing: true });
+          let videoRes = res.assets[0]
+          let path = videoRes.uri
+          path = path.replace(/ /g, '%20')
+          const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+            (progress) => {
+              console.log('Compression Progress: ', progress);
+            }
+          );
+          let source = {
+            uri: compressedVideo,
+            data: "",
+            type: 'mp4'
+          };
+          questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          this.addAnswerForSelectedMedia(index, source);
+
           // let videoRes = res.assets[0]
           // let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
           // let path = 'file://' + filepath.path;
@@ -8432,29 +8558,29 @@ class SurveyBox extends Component {
           // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + ext;
           // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          let videoRes = res.assets[0]
-          let extn = videoRes.type.split('/')
-          const destPath = `${RNFS.TemporaryDirectoryPath}/${videoRes.fileName}.${extn[extn.length - 1]}`;
-          await RNFS.moveFile(videoRes.uri, destPath);
-          let path = 'file://' + destPath;
-          let questionArr = this.state.questionsArr[index];
-          let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + extn[extn.length - 1];
-          let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+          // let videoRes = res.assets[0]
+          // let extn = videoRes.type.split('/')
+          // const destPath = `${RNFS.TemporaryDirectoryPath}/${videoRes.fileName}.${extn[extn.length - 1]}`;
+          // await RNFS.moveFile(videoRes.uri, destPath);
+          // let path = 'file://' + destPath;
+          // let questionArr = this.state.questionsArr[index];
+          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + extn[extn.length - 1];
+          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
-          RNFFmpeg.executeWithArguments(["-i", path, "-vf", "scale=iw/2:ih/2", newfile])
-            .then(result => {
-              let source = {
-                uri: 'file://' + newfile,
-                data: "",
-                type: 'mp4'
-              };
-              questionResponseQue[this.state.questionsArr[index].questionID] = true;
-              this.addAnswerForSelectedMedia(index, source);
+          // // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+          // RNFFmpeg.executeWithArguments(["-i", path, "-vf", "scale=iw/2:ih/2", newfile])
+          //   .then(result => {
+          //     let source = {
+          //       uri: 'file://' + newfile,
+          //       data: "",
+          //       type: 'mp4'
+          //     };
+          //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+          //     this.addAnswerForSelectedMedia(index, source);
 
-            }).catch(e => {
-              //console.log(e);			
-            });
+          //   }).catch(e => {
+          //     //console.log(e);			
+          //   });
         }
       })
         .catch(e => {
@@ -9405,20 +9531,31 @@ class SurveyBox extends Component {
       RNFetchBlob.fs.exists(uri).then(exist => {
         RNFetchBlob.fs
           .stat(uri)
-          .then(pathRes => {
-            let path = pathRes.path;
-            let mime = pathRes.type.split("/");
-            let type = "mp4";
+          .then(async (pathRes) => {
+            let path = "file://" + pathRes.path;
+            path = path.replace(/ /g, '%20')
+            const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+              (progress) => {
+                console.log('Compression Progress: ', progress);
+              }
+            );
+            let compressedPath = compressedVideo.replace('file://', '')
+            RNFetchBlob.fs.stat(compressedPath).then((pathRes) => {
+              let source = { uri: compressedPath, data: '', type: type };
+              this.addAnswerForSelectedMedia(index, source);
+            });
             // RNCompress.compressVideo(path, "low").then(compressedFile => {
             // });
-            ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
-              .then((compressedVideo) => {
-                let compressedPath = compressedVideo.replace('file://', '')
-                RNFetchBlob.fs.stat(compressedPath).then((pathRes) => {
-                  let source = { uri: compressedPath, data: '', type: type };
-                  this.addAnswerForSelectedMedia(index, source);
-                });
-              })
+            //let mime = pathRes.type.split("/");
+            //let type = "mp4";
+            // ProcessingManager.compress(path, videoCompressOptions)   // like VideoPlayer compress options
+            //   .then((compressedVideo) => {
+            //     let compressedPath = compressedVideo.replace('file://', '')
+            //     RNFetchBlob.fs.stat(compressedPath).then((pathRes) => {
+            //       let source = { uri: compressedPath, data: '', type: type };
+            //       this.addAnswerForSelectedMedia(index, source);
+            //     });
+            //   })
           })
           .catch(e => {
             //console.log(e);
@@ -11217,6 +11354,7 @@ class SurveyBox extends Component {
           renderItem={({ item, index }) => {
             return (
               <TouchableWithoutFeedback
+                key={index}
                 onPress={() => choice_type === 'single' ?
                   this.singleLevelCheck(
                     parentPosition,
@@ -11364,6 +11502,7 @@ class SurveyBox extends Component {
                   {item.map((elem, i) => (
                     item[i].hasOwnProperty('id') &&
                     <View
+                      key={i}
                       style={[{
 
                         width: elem.id === 'other' ? '100%' : '50%',
@@ -11517,6 +11656,7 @@ class SurveyBox extends Component {
   multiLevelFalseSingleChoiceLayout(itemstorender, parentPosition, questionIndex, questionArr) {
     return (
       <View
+        key={itemstorender.id}
         // key={Date.now()}
         style={styles.sectionListContainer}
       >
@@ -11530,6 +11670,7 @@ class SurveyBox extends Component {
           renderItem={({ item, index }) => {
             return (
               <TouchableWithoutFeedback
+                key={index}
                 onPress={() => this.singleLevelCheck(parentPosition, index, questionIndex, questionArr)}>
                 <View>
                   <View style={styles.flatContainer}>
@@ -12172,6 +12313,41 @@ class SurveyBox extends Component {
     let arrLength = questionsArray.length;
     let currentQuesIndx = this.state.pageCount;
 
+    //check for text input limit validation
+    if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("limitchar") &&
+      questionsArray[currentQuesIndx].properties.limitchar === 1 && (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
+
+      let limit_check = this.limitCharValidation(questionsArray[currentQuesIndx], questionsArray[currentQuesIndx].answer);
+      if (
+        limit_check.limitValid === false
+      ) {
+        Constants.showSnack(limit_check.limitMessage);
+        return;
+      }
+    }
+    /** Check text input content type validation */
+    if (questionsArray[currentQuesIndx].questionType === "input" && questionsArray[currentQuesIndx].properties.hasOwnProperty("content_type") &&
+      (questionsArray[currentQuesIndx].properties.datePickerOn != 1)) {
+      let answerText = questionsArray[currentQuesIndx].answer.text
+      if (answerText && answerText.trim()) {
+        if (!this.inputElementValidation(answerText, questionsArray[currentQuesIndx].properties.content_type)) {
+          return;
+        }
+      }
+    }
+
+    /** check choice type element set limit */
+    if (questionsArray[currentQuesIndx].questionType === 'choice' && questionsArray[currentQuesIndx].properties.hasOwnProperty('setlimit') && questionsArray[currentQuesIndx].properties.setlimit == 1) {
+      let ansObj = questionsArray[currentQuesIndx].answer
+      let count = ansObj.selected_option && ansObj.selected_option.length || 0
+      let objProperty = questionsArray[currentQuesIndx].properties
+      if (count < objProperty.minlimit) {
+        Constants.showSnack(this.state.translation[this.state.Language].Minimum_Validation_Msg + " " + objProperty.minlimit + " " + this.state.translation[this.state.Language].Option)
+        return;
+      }
+    }
+
+
     /** Check max diff all set item is selected */
     if (questionsArray[currentQuesIndx].questionType === 'scale' && questionsArray[currentQuesIndx].properties.scale_type == 'maxdiff') {
       let ansObj = questionsArray[currentQuesIndx].answer
@@ -12377,42 +12553,6 @@ class SurveyBox extends Component {
               >
                 <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                   <View style={{ justifyContent: "flex-start", alignSelf: "stretch", flex: 1 }}>
-
-                    {/* <View style={{ paddingTop: 20, paddingBottom: 0 }}>
-                      <Text style={[styles.questionText]}>
-                        {" "}
-                        {questionsArr[pageCount].properties.question}
-                        {questionsArr[pageCount].properties.mandatory === 1 ? (
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              color: "red",
-                              paddingLeft: 10
-                            }}
-                          >
-                            {String.star}
-                          </Text>
-                        ) : (
-                            ""
-                          )}{" "}
-                      </Text>
-                    </View>
-
-                    {questionsArr[pageCount].properties.hasOwnProperty(
-                      "subheading"
-                    ) && (
-                        <Text
-                          style={[
-                            styles.hintText,
-                            {
-                              paddingBottom: 20,
-                              paddingTop: 0
-                            }
-                          ]}
-                        >
-                          {questionsArr[pageCount].properties.subheading}
-                        </Text>
-                      )} */}
 
                     {/** Dynamic title html element*/}
                     <View style={{ paddingTop: 10, paddingBottom: 0 }}>
