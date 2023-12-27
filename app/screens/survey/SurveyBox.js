@@ -1430,52 +1430,58 @@ class SurveyBox extends Component {
   // }
 
   createMaxdiffSet = (question) => {
-    let max_attr = question.properties.Maximum_Attributes ? question.properties.Maximum_Attributes.value : 0
-    let attr_per_task = question.properties.Attribute_PerTask ? question.properties.Attribute_PerTask.value : 0
-    let repeat_attr = question.properties.Repeate_Attribute ? question.properties.Repeate_Attribute.value : 0
-    const num_sets = (max_attr / attr_per_task) * repeat_attr;
-    let tempAtt = question.properties.attribute_data
-
-    let setOfAttribute = [];
-    let occurrences = {}; // Track occurrences of each item
-    const maxAttempts = 10000; // Maximum number of attempts to find suitable combinations
-
-    // Loop through num_sets and generate subarrays
-    for (let i = 0; i < num_sets; i++) {
-      let subarray = [];
-
-      // Loop until subarray is filled with unique attributes or until maximum attempts is reached
-      let attempts = 0;
-      while (subarray.length < attr_per_task && attempts < maxAttempts) {
-        let randomIndex = Math.floor(Math.random() * max_attr);
-        let randomItem = tempAtt[randomIndex];
-
-        // Check if the random item has exceeded the desired count (repeat_attr) in the subarray
-        if (
-          !subarray.includes(randomItem) &&
-          (!occurrences[randomIndex] || occurrences[randomIndex] < repeat_attr)
-        ) {
-          subarray.push(randomItem);
-          // Update the occurrences for the selected random item
-          occurrences[randomIndex] = occurrences[randomIndex] ? occurrences[randomIndex] + 1 : 1;
-        }
-        attempts++;
-      }
-
-      // If subarray is not filled with unique attributes or maximum attempts is reached,
-      // reset setOfAttribute and start over from the beginning
-      if (subarray.length < attr_per_task || attempts === maxAttempts) {
-        setOfAttribute = [];
-        occurrences = {};
-        i = -1;
-      } else {
-        subarray = subarray.map((element) => {
-          return { ...element, attributeSetID: i };
-        });
-        setOfAttribute.push(subarray);
-      }
+    if (question && question.answer && question.answer.attribute_Set && question.answer.attribute_Set.length > 0) {
+      /** if already given answer or set is already available */
+      question["properties"]["attribute_Set"] = question.answer.attribute_Set
     }
-    question["properties"]["attribute_Set"] = setOfAttribute
+    else {
+      let max_attr = question.properties.Maximum_Attributes ? question.properties.Maximum_Attributes.value : 0
+      let attr_per_task = question.properties.Attribute_PerTask ? question.properties.Attribute_PerTask.value : 0
+      let repeat_attr = question.properties.Repeate_Attribute ? question.properties.Repeate_Attribute.value : 0
+      const num_sets = (max_attr / attr_per_task) * repeat_attr;
+      let tempAtt = question.properties.attribute_data
+
+      let setOfAttribute = [];
+      let occurrences = {}; // Track occurrences of each item
+      const maxAttempts = 10000; // Maximum number of attempts to find suitable combinations
+
+      // Loop through num_sets and generate subarrays 
+      for (let i = 0; i < num_sets; i++) {
+        let subarray = [];
+
+        // Loop until subarray is filled with unique attributes or until maximum attempts is reached
+        let attempts = 0;
+        while (subarray.length < attr_per_task && attempts < maxAttempts) {
+          let randomIndex = Math.floor(Math.random() * max_attr);
+          let randomItem = tempAtt[randomIndex];
+
+          // Check if the random item has exceeded the desired count (repeat_attr) in the subarray
+          if (
+            !subarray.includes(randomItem) &&
+            (!occurrences[randomIndex] || occurrences[randomIndex] < repeat_attr)
+          ) {
+            subarray.push(randomItem);
+            // Update the occurrences for the selected random item
+            occurrences[randomIndex] = occurrences[randomIndex] ? occurrences[randomIndex] + 1 : 1;
+          }
+          attempts++;
+        }
+
+        // If subarray is not filled with unique attributes or maximum attempts is reached,
+        // reset setOfAttribute and start over from the beginning
+        if (subarray.length < attr_per_task || attempts === maxAttempts) {
+          setOfAttribute = [];
+          occurrences = {};
+          i = -1;
+        } else {
+          subarray = subarray.map((element) => {
+            return { ...element, attributeSetID: i };
+          });
+          setOfAttribute.push(subarray);
+        }
+      }
+      question["properties"]["attribute_Set"] = setOfAttribute
+    }
   }
 
   /** get offline answered question 
@@ -1737,21 +1743,50 @@ class SurveyBox extends Component {
               if (item.properties.hasOwnProperty('random') && item.properties.random === 1) {
                 let other_options_swipe = temp_options;
                 let other_options_swipe_temp = other_options_swipe;
-                let other_id;
+                let other_id = {};
+                let noneofabove_id = {};
+                let itemToShuffle = []
                 other_options_swipe_temp.map((o, i) => {
                   if (o.id === "other") {
                     other_id = o;
-                    other_options_swipe.splice(i, 1)
+                  }
+                  else if (o.id === "noneofabove") {
+                    noneofabove_id = o
+                  }
+                  else {
+                    itemToShuffle.push(o)
                   }
                 })
-                if (other_id !== undefined) {
-                  other_options_swipe = this.shuffle(other_options_swipe);
-                  other_options_swipe.push(other_id);
-                  item.properties.options = other_options_swipe;
-                } else {
-                  other_options_swipe = this.shuffle(other_options_swipe_temp);
-                  item.properties.options = other_options_swipe;
+                other_options_swipe = this.shuffle(itemToShuffle)
+                if (other_id && Object.keys(other_id).length > 0) {
+                  other_options_swipe.push(other_id)
                 }
+                if (noneofabove_id && Object.keys(noneofabove_id).length > 0) {
+                  other_options_swipe.push(noneofabove_id)
+                }
+                item.properties.options = other_options_swipe;
+
+                // if (other_id !== undefined) {
+                //   other_options_swipe = this.shuffle(other_options_swipe);
+                //   other_options_swipe.push(other_id);
+                //   item.properties.options = other_options_swipe;
+                // } else {
+                //   other_options_swipe = this.shuffle(other_options_swipe_temp);
+                //   item.properties.options = other_options_swipe;
+                // }
+              }
+              else {
+                /** Random is False - then none of above should be at last only */
+                temp_options && temp_options.forEach(item => {
+                  if (item.id == 'noneofabove') {
+                    const noneOfAboveIndex = this.getIndexById(temp_options, "noneofabove");
+                    if (noneOfAboveIndex !== -1) {
+                      temp_options.splice(noneOfAboveIndex, 1);
+                      temp_options.push(item);
+                    }
+                  }
+                });
+                item.properties.options = temp_options
               }
 
               item.properties.options.map((item1, index) => {
@@ -1802,21 +1837,50 @@ class SurveyBox extends Component {
               if (item.properties.hasOwnProperty('random') && item.properties.random === 1) {
                 let other_options_swipe = temp_options;
                 let other_options_swipe_temp = other_options_swipe;
-                let other_id;
+                let other_id = {};
+                let noneofabove_id = {};
+                let itemToShuffle = []
                 other_options_swipe_temp.map((o, i) => {
                   if (o.id === "other") {
                     other_id = o;
-                    other_options_swipe.splice(i, 1)
+                  }
+                  else if (o.id === "noneofabove") {
+                    noneofabove_id = o;
+                  }
+                  else {
+                    itemToShuffle.push(o)
                   }
                 })
-                if (other_id !== undefined) {
-                  other_options_swipe = this.shuffle(other_options_swipe);
-                  other_options_swipe.push(other_id);
-                  item.properties.options = other_options_swipe;
-                } else {
-                  other_options_swipe = this.shuffle(other_options_swipe_temp);
-                  item.properties.options = other_options_swipe;
+                other_options_swipe = this.shuffle(itemToShuffle)
+                if (other_id && Object.keys(other_id).length > 0) {
+                  other_options_swipe.push(other_id)
                 }
+                if (noneofabove_id && Object.keys(noneofabove_id).length > 0) {
+                  other_options_swipe.push(noneofabove_id)
+                }
+                item.properties.options = other_options_swipe;
+
+                // if (other_id !== undefined) {
+                //   other_options_swipe = this.shuffle(other_options_swipe);
+                //   other_options_swipe.push(other_id);
+                //   item.properties.options = other_options_swipe;
+                // } else {
+                //   other_options_swipe = this.shuffle(other_options_swipe_temp);
+                //   item.properties.options = other_options_swipe;
+                // }
+              }
+              else {
+                /** Random is False - then none of above should be at last only */
+                temp_options && temp_options.forEach(item => {
+                  if (item.id == 'noneofabove') {
+                    const noneOfAboveIndex = this.getIndexById(temp_options, "noneofabove");
+                    if (noneOfAboveIndex !== -1) {
+                      temp_options.splice(noneOfAboveIndex, 1);
+                      temp_options.push(item);
+                    }
+                  }
+                });
+                item.properties.options = temp_options
               }
 
               item.properties.options.map((item1, index) => {
@@ -1872,20 +1936,47 @@ class SurveyBox extends Component {
               if (item.properties.hasOwnProperty('random') && item.properties.random === 1) {
                 let temp_arry = multilevelFalseSingleChoiceInnerArray;
                 let other_options_swipe_temp = temp_arry;
-                let other_id;
+                let other_id = {};
+                let noneofabove_id = {};
+                let itemToShuffle = []
                 other_options_swipe_temp.map((o, i) => {
                   if (o.id === "other") {
                     other_id = o;
-                    temp_arry.splice(i, 1)
+                  }
+                  else if (o.id == 'noneofabove') {
+                    noneofabove_id = o
+                  }
+                  else {
+                    itemToShuffle.push(o)
                   }
                 })
-                if (other_id !== undefined) {
-                  multilevelFalseSingleChoiceInnerArray = this.shuffle(temp_arry);
-                  multilevelFalseSingleChoiceInnerArray.push(other_id);
-                } else {
-                  multilevelFalseSingleChoiceInnerArray = this.shuffle(multilevelFalseSingleChoiceInnerArray);
+                multilevelFalseSingleChoiceInnerArray = this.shuffle(itemToShuffle)
+                if (other_id && Object.keys(other_id).length > 0) {
+                  multilevelFalseSingleChoiceInnerArray.push(other_id)
                 }
+                if (noneofabove_id && Object.keys(noneofabove_id).length > 0) {
+                  multilevelFalseSingleChoiceInnerArray.push(noneofabove_id)
+                }
+                // if (other_id !== undefined) {
+                //   multilevelFalseSingleChoiceInnerArray = this.shuffle(temp_arry);
+                //   multilevelFalseSingleChoiceInnerArray.push(other_id);
+                // } else {
+                //   multilevelFalseSingleChoiceInnerArray = this.shuffle(multilevelFalseSingleChoiceInnerArray);
+                // }
               }
+              else {
+                /** Random is False - then none of above should be at last only */
+                multilevelFalseSingleChoiceInnerArray && multilevelFalseSingleChoiceInnerArray.forEach(item => {
+                  if (item.id == 'noneofabove') {
+                    const noneOfAboveIndex = this.getIndexById(multilevelFalseSingleChoiceInnerArray, "noneofabove");
+                    if (noneOfAboveIndex !== -1) {
+                      multilevelFalseSingleChoiceInnerArray.splice(noneOfAboveIndex, 1);
+                      multilevelFalseSingleChoiceInnerArray.push(item);
+                    }
+                  }
+                });
+              }
+
 
               this.state.multiLevelFalseSingleChoiceOuterArray.push({
                 index: mainIndex,
@@ -1915,21 +2006,46 @@ class SurveyBox extends Component {
               if (item.properties.hasOwnProperty('random') && item.properties.random === 1) {
                 let temp_arry = multilevelFalseMultiChoiceInnerArray;
                 let other_options_swipe_temp = temp_arry;
-                let other_id;
+                let other_id = {};
+                let noneofabove_id = {};
+                let itemToShuffle = []
                 other_options_swipe_temp.map((o, i) => {
                   if (o.id === "other") {
                     other_id = o;
-                    temp_arry.splice(i, 1)
+                  }
+                  else if (o.id === "noneofabove") {
+                    noneofabove_id = o
+                  }
+                  else {
+                    itemToShuffle.push(o)
                   }
                 })
-                if (other_id !== undefined) {
-                  multilevelFalseMultiChoiceInnerArray = this.shuffle(temp_arry);
-                  multilevelFalseMultiChoiceInnerArray.push(other_id);
-                } else {
-                  multilevelFalseMultiChoiceInnerArray = this.shuffle(multilevelFalseMultiChoiceInnerArray);
+                multilevelFalseMultiChoiceInnerArray = this.shuffle(itemToShuffle)
+                if (other_id && Object.keys(other_id).length > 0) {
+                  multilevelFalseMultiChoiceInnerArray.push(other_id)
                 }
+                if (noneofabove_id && Object.keys(noneofabove_id).length > 0) {
+                  multilevelFalseMultiChoiceInnerArray.push(noneofabove_id)
+                }
+                // if (other_id !== undefined) {
+                //   multilevelFalseMultiChoiceInnerArray = this.shuffle(temp_arry);
+                //   multilevelFalseMultiChoiceInnerArray.push(other_id);
+                // } else {
+                //   multilevelFalseMultiChoiceInnerArray = this.shuffle(multilevelFalseMultiChoiceInnerArray);
+                // }
               }
-
+              else {
+                /** Random is False - then none of above should be at last only */
+                multilevelFalseMultiChoiceInnerArray && multilevelFalseMultiChoiceInnerArray.forEach(item => {
+                  if (item.id == 'noneofabove') {
+                    const noneOfAboveIndex = this.getIndexById(multilevelFalseMultiChoiceInnerArray, "noneofabove");
+                    if (noneOfAboveIndex !== -1) {
+                      multilevelFalseMultiChoiceInnerArray.splice(noneOfAboveIndex, 1);
+                      multilevelFalseMultiChoiceInnerArray.push(item);
+                    }
+                  }
+                });
+              }
 
               this.state.multiLevelFalseMultiChoiceOuterArray.push({
                 index: mainIndex,
@@ -1941,7 +2057,14 @@ class SurveyBox extends Component {
       });
     }
   }
-
+  getIndexById(arr, id) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].id === id) {
+        return i;
+      }
+    }
+    return -1;
+  }
   /* shuffle choice question array options */
   shuffle(arrList) {
     let ctr = arrList.length;
