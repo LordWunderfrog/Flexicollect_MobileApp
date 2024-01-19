@@ -3141,7 +3141,8 @@ class SurveyBox extends Component {
       }
       if (arry.length > 0) {
         for (var i = arry.length - 1; i >= 0; i--) {
-          newcondition.splice(arry[i], 1);
+          /** Hide this to solve the issue of loop inside loop is not working */
+          //newcondition.splice(arry[i], 1);
         }
       }
 
@@ -6532,12 +6533,11 @@ class SurveyBox extends Component {
                 unMetTarget[k].multifield.length > 0
               ) {
                 if (!questionsArray[currentQuesIndx].hasOwnProperty("isUpdated") || (update && update === true)) {
-                  //
+
                   if (!unMetTarget[k].hasOwnProperty('loop') && (unMetTarget[k].do === "loop" ||
                     unMetTarget[k].do === "loop_input" || unMetTarget[k].do === "loop_set")) {
                     this.hide_unMetTarget_loopques(unMetTarget[k], questionsArray, currentQuesIndx)
                   }
-                  //
                   if (update && update === true) {
                     if (unMetTarget[k].do === "loop") {
                       this.clear_looponly(questionsArray, unMetTarget[k], currentQuesIndx, 'loop')
@@ -6552,7 +6552,6 @@ class SurveyBox extends Component {
                     }
                     questionsArray = this.state.questionsArr
                   }
-                  //
                 }
                 /* hide or show hide question based on user selection */
                 for (let j = 0; j < unMetTarget[k].multifield.length; j++) {
@@ -6574,7 +6573,32 @@ class SurveyBox extends Component {
                         }
 
                       }
-                      // break;
+                      else {
+                        /**To solve issue of hide multiple condition not working inside the looping condition added this else part 
+                         * in target and unmate target both section */
+                        if (
+                          unMetTarget[k].multifield[j].value ===
+                          questionsArray[i].handler && !questionsArray[i].hasOwnProperty("loop_number")
+                        ) {
+                          if (unMetTarget[k].do === "show_multiple") {
+                            questionsArray[i].isHide = false;
+                          } else if (unMetTarget[k].do === "hide_multiple") {
+                            questionsArray[i].isHide = false;
+                          }
+
+                          if (unMetTarget[k].hasOwnProperty('isHide') && unMetTarget[k].isHide) {
+                            if (unMetTarget[k].multifield[j].hasOwnProperty('trigger') && unMetTarget[k].multifield[j].trigger) {
+                              // skip triggerd ques in the list
+                            } else {
+                              questionsArray[i].isHide = true;
+                              if (update && update === true) {
+                                this.clear_loop_answer(questionsArray, target[k], i, 'hide')
+                              }
+                            }
+                          }
+
+                        }
+                      }
                     } else {
                       if (
                         unMetTarget[k].multifield[j].value ===
@@ -6586,7 +6610,6 @@ class SurveyBox extends Component {
                         } else if (unMetTarget[k].do === "hide_multiple") {
                           questionsArray[i].isHide = false;
                         }
-                        //
                         if (unMetTarget[k].hasOwnProperty('isHide') && unMetTarget[k].isHide) {
                           if (unMetTarget[k].multifield[j].hasOwnProperty('trigger') && unMetTarget[k].multifield[j].trigger) {
                             // skip triggerd ques in the list
@@ -6597,7 +6620,6 @@ class SurveyBox extends Component {
                             }
                           }
                         }
-                        //
                       }
                     }
                   }
@@ -6643,7 +6665,6 @@ class SurveyBox extends Component {
                 target[k].hasOwnProperty("multifield") &&
                 target[k].multifield.length > 0
               ) {
-                //
                 if (!target[k].hasOwnProperty('loop') && (target[k].do === "loop" ||
                   target[k].do === "loop_input" || target[k].do === "loop_set")) {
                   this.hide_unMetTarget_loopques(target[k], questionsArray, currentQuesIndx)
@@ -6658,7 +6679,6 @@ class SurveyBox extends Component {
                     this.create_loop(questionsArray, target[k], currentQuesIndx, 'loop_input')
                   }
                   questionsArray = this.state.questionsArr
-                  //
                 }
                 for (let j = 0; j < target[k].multifield.length; j++) {
                   for (let i = 0; i < questionsArray.length; i++) {
@@ -6678,9 +6698,29 @@ class SurveyBox extends Component {
                             break;
                           }
                         }
-
                       }
-                      // break;
+                      else {
+                        /**To solve issue of hide multiple condition not working inside the looping condition added this else part 
+                         * in target and unmate target both section */
+                        if (
+                          target[k].multifield[j].value ===
+                          questionsArray[i].handler && !questionsArray[i].hasOwnProperty("loop_number")
+                        ) {
+                          if (target[k].do === "show_multiple") {
+                            questionsArray[i].isHide = false;
+                          } else if (target[k].do === "hide_multiple") {
+                            questionsArray[i].isHide = true;
+                          }
+
+                          if (target[k].hasOwnProperty('isHide') && target[k].isHide === true) {
+                            if (target[k].multifield[j].hasOwnProperty('trigger') && target[k].multifield[j].trigger) {
+                              target[k].multifield[j].trigger = false
+                            } else {
+                              questionsArray[i].isHide = false;
+                            }
+                          }
+                        }
+                      }
                     } else {
                       if (
                         target[k].multifield[j].value ===
@@ -6692,7 +6732,6 @@ class SurveyBox extends Component {
                           questionsArray[i].isHide = true;
                           this.clear_loop_answer(questionsArray, target[k], i, 'hide')
                         }
-                        //
                         if (target[k].hasOwnProperty('isHide') && target[k].isHide === true) {
                           if (target[k].multifield[j].hasOwnProperty('trigger') && target[k].multifield[j].trigger) {
                             target[k].multifield[j].trigger = false
@@ -6702,8 +6741,6 @@ class SurveyBox extends Component {
                           }
 
                         }
-                        //
-
                       }
                     }
                   }
