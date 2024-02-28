@@ -3007,9 +3007,15 @@ class SurveyBox extends Component {
           if (!check && m.value === q.handler && q.hasOwnProperty('loop_triggered_qid') &&
             q.loop_triggered_qid === questionsArray[parentIndex].questionID
           ) {
-            if (loop_set_num === true) {
+            /** change condition
+             *  change the condition like that will only remove particular looping set of question if change my answer for looping 
+             *  question need to add or not. If add then it will add that set of question and if no then it will remove that set of 
+             *  question - inshort clear loop question while loop inside loop            
+            */
+            let endLoopIndex = parentIndex + conditions.length //last index of loop set for remove last access set of looping. 
+            if (loop_set_num === true && index > parentIndex && index < endLoopIndex) {
               arry.push(index)
-            } else if (loop_set_num <= q.loop_set_num && index > parentIndex) { //Added index > parentIndex condition to solve issue of clear loop question while loop inside loop
+            } else if (index > parentIndex && index < endLoopIndex) {
               arry.push(index)
             }
           }
