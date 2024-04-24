@@ -5319,6 +5319,265 @@ class SurveyBox extends Component {
    * @param {Array} conditions Conditions Array
    * @param {String} selected Selected value
    */
+  /** Origenal logic */
+  // choiceMultiLevelTarget(conditions, selected, target, unMetTarget, label, release) {
+  //   for (let i = 0; i < conditions.length; i++) {
+  //     if (release || conditions[i].target.do !== 'release') {
+  //       let match = 0;
+  //       // Match with current question answer when target is value
+  //       for (let j = 0; j < conditions[i].source.length; j++) {
+  //         let isMatch = false;
+  //         let isNotEqual = true;
+  //         if (conditions[i].source[j].state !== "") {
+  //           if (conditions[i].source[j].target !== "field") {
+  //             if (conditions[i].source[j].target === "Value_Multiple_Any") {
+  //               if (conditions[i].source[j].match_value.length && conditions[i].source[j].match_value.length > 0) {
+  //                 if (conditions[i].source[j].state === "equal") {
+  //                   for (let eq = 0; eq < selected.length; eq++) {
+  //                     for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
+  //                       if (conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
+  //                         if (conditions[i].source[j].match_value[mv].hasOwnProperty('p_id') && conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
+  //                           if (
+  //                             selected[eq]['sublabel_id'] ===
+  //                             conditions[i].source[j].match_value[mv].id &&
+  //                             selected[eq]['id'] ===
+  //                             conditions[i].source[j].match_value[mv].p_id
+  //                           ) {
+  //                             isMatch = true;
+  //                           }
+  //                         } else {
+  //                           if (
+  //                             selected[eq]['id'] ===
+  //                             conditions[i].source[j].match_value[mv].id
+  //                           ) {
+  //                             isMatch = true;
+  //                           }
+  //                         }
+  //                       } else {
+  //                         if (
+  //                           selected[eq][`${label}`] ===
+  //                           conditions[i].source[j].match_value[mv].value
+  //                         ) {
+  //                           isMatch = true;
+  //                         }
+  //                       }
+  //                     }
+  //                   }
+  //                 } else if (conditions[i].source[j].state === "notequal") {
+  //                   for (let neq = 0; neq < selected.length; neq++) {
+  //                     for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
+  //                       if (conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
+  //                         if (conditions[i].source[j].match_value[mv].hasOwnProperty('p_id') && conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
+  //                           if (
+  //                             selected[neq]['sublabel_id'] ===
+  //                             conditions[i].source[j].match_value[mv].id &&
+  //                             selected[neq]['id'] ===
+  //                             conditions[i].source[j].match_value[mv].p_id
+  //                           ) {
+  //                             isNotEqual = false;
+  //                           }
+  //                         } else {
+  //                           if (
+  //                             selected[neq]['id'] ===
+  //                             conditions[i].source[j].match_value[mv].id
+  //                           ) {
+  //                             isNotEqual = false;
+  //                           }
+  //                         }
+  //                       } else {
+  //                         if (
+  //                           selected[neq][`${label}`] ===
+  //                           conditions[i].source[j].match_value[mv].value
+  //                         ) {
+  //                           isNotEqual = false;
+  //                         }
+  //                       }
+  //                     }
+  //                   }
+  //                   isMatch = isNotEqual;
+  //                 }
+  //               }
+  //             } else if (conditions[i].source[j].target === "Value_Multiple_All") {
+  //               if (conditions[i].source[j].match_value.length && conditions[i].source[j].match_value.length > 0) {
+  //                 if (conditions[i].source[j].state === "equal") {
+  //                   let multiple_match = false;
+  //                   let match_index = [];
+  //                   for (let eq = 0; eq < selected.length; eq++) {
+  //                     for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
+  //                       if (conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
+  //                         if (conditions[i].source[j].match_value[mv].hasOwnProperty('p_id') && conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
+  //                           if (
+  //                             selected[eq]['sublabel_id'] ===
+  //                             conditions[i].source[j].match_value[mv].id &&
+  //                             selected[eq]['id'] ===
+  //                             conditions[i].source[j].match_value[mv].p_id
+  //                           ) {
+  //                             multiple_match = true;
+  //                             match_index.push(mv);
+  //                           } else {
+  //                             multiple_match = false
+  //                           }
+  //                         } else {
+  //                           if (
+  //                             selected[eq]['id'] ===
+  //                             conditions[i].source[j].match_value[mv].id
+  //                           ) {
+  //                             multiple_match = true;
+  //                             match_index.push(mv);
+  //                           } else {
+  //                             multiple_match = false
+  //                           }
+  //                         }
+  //                       } else {
+  //                         if (
+  //                           selected[eq][`${label}`] ===
+  //                           conditions[i].source[j].match_value[mv].value
+  //                         ) {
+  //                           multiple_match = true;
+  //                           match_index.push(mv);
+  //                         } else {
+  //                           multiple_match = false
+  //                         }
+  //                       }
+  //                     }
+  //                     isMatch = match_index.length === conditions[i].source[j].match_value.length
+  //                   }
+  //                 } else if (conditions[i].source[j].state === "notequal") {
+  //                   let multiple_match = false;
+  //                   let match_index = [];
+  //                   for (let neq = 0; neq < selected.length; neq++) {
+  //                     for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
+  //                       if (conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
+  //                         if (conditions[i].source[j].match_value[mv].hasOwnProperty('p_id') && conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
+  //                           if (
+  //                             selected[neq]['sublabel_id'] !==
+  //                             conditions[i].source[j].match_value[mv].id &&
+  //                             selected[neq]['id'] !==
+  //                             conditions[i].source[j].match_value[mv].p_id
+  //                           ) {
+  //                             multiple_match = true;
+  //                             match_index.push(mv);
+  //                           } else {
+  //                             multiple_match = false;
+  //                           }
+  //                         } else {
+  //                           if (
+  //                             selected[neq]['id'] !==
+  //                             conditions[i].source[j].match_value[mv].id
+  //                           ) {
+  //                             multiple_match = true;
+  //                             match_index.push(mv);
+  //                           } else {
+  //                             multiple_match = false;
+  //                           }
+  //                         }
+  //                       } else {
+  //                         if (
+  //                           selected[neq][`${label}`] !==
+  //                           conditions[i].source[j].match_value[mv].value
+  //                         ) {
+  //                           multiple_match = true;
+  //                           match_index.push(mv);
+  //                         } else {
+  //                           multiple_match = false;
+  //                         }
+  //                       }
+  //                     }
+  //                   }
+  //                   isMatch = match_index.length === conditions[i].source[j].match_value.length
+  //                 }
+  //               }
+  //             }
+  //             if (conditions[i].source[j].state === "equal") {
+  //               if (conditions[i].source[j].hasOwnProperty('id')) {
+  //                 if (conditions[i].source[j].hasOwnProperty('p_id') && conditions[i].source[j].hasOwnProperty('id')) {
+  //                   for (let eq = 0; eq < selected.length; eq++) {
+  //                     if (
+  //                       selected[eq]['id'] ==
+  //                       conditions[i].source[j].p_id &&
+  //                       selected[eq]['sublabel_id'] ==
+  //                       conditions[i].source[j].id
+  //                     ) {
+  //                       isMatch = true;
+  //                     }
+  //                   }
+  //                 } else {
+  //                   for (let eq = 0; eq < selected.length; eq++) {
+  //                     if (
+  //                       selected[eq]['id'] ==
+  //                       conditions[i].source[j].id
+  //                     ) {
+  //                       isMatch = true;
+  //                     }
+  //                   }
+  //                 }
+  //               } else {
+  //                 for (let eq = 0; eq < selected.length; eq++) {
+  //                   if (
+  //                     selected[eq][`${label}`] ==
+  //                     conditions[i].source[j].match_value
+  //                   ) {
+  //                     isMatch = true;
+  //                   }
+  //                 }
+  //               }
+  //             } else if (conditions[i].source[j].state === "notequal") {
+  //               if (conditions[i].source[j].hasOwnProperty('id')) {
+  //                 if (conditions[i].source[j].hasOwnProperty('p_id') && conditions[i].source[j].hasOwnProperty('id')) {
+  //                   for (let eq = 0; eq < selected.length; eq++) {
+  //                     if (
+  //                       selected[eq]['id'] ===
+  //                       conditions[i].source[j].p_id &&
+  //                       selected[eq]['sublabel_id'] ===
+  //                       conditions[i].source[j].id
+  //                     ) {
+  //                       isNotEqual = false;
+  //                     }
+  //                   }
+  //                 } else {
+  //                   for (let eq = 0; eq < selected.length; eq++) {
+  //                     if (
+  //                       selected[eq]['id'] ===
+  //                       conditions[i].source[j].id
+  //                     ) {
+  //                       isNotEqual = false;
+  //                     }
+  //                   }
+  //                 }
+  //               } else {
+  //                 for (let neq = 0; neq < selected.length; neq++) {
+  //                   if (
+  //                     selected[neq][`${label}`] ==
+  //                     conditions[i].source[j].match_value
+  //                   ) {
+  //                     isNotEqual = false;
+  //                   }
+  //                 }
+  //               }
+  //               isMatch = isNotEqual;
+  //             }
+  //             if (isMatch) {
+  //               match = match + 1;
+  //             }
+  //           }
+  //         }
+  //       }
+  //       if (conditions[i].rule && conditions[i].rule === "any" && match > 0) {
+  //         target.push(conditions[i].target);
+  //       } else if (
+  //         conditions[i].rule &&
+  //         conditions[i].rule === "and" &&
+  //         match == conditions[i].source.length
+  //       ) {
+  //         target.push(conditions[i].target);
+  //       } else {
+  //         unMetTarget.push(conditions[i].target);
+  //       }
+  //     }
+  //   }
+  // }
+
+  /** Changed logic but still failing in some scenarios */
   choiceMultiLevelTarget(conditions, selected, target, unMetTarget, label, release) {
     for (let i = 0; i < conditions.length; i++) {
       if (release || conditions[i].target.do !== 'release') {
@@ -5336,12 +5595,7 @@ class SurveyBox extends Component {
                       for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
                         if (conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
                           if (conditions[i].source[j].match_value[mv].hasOwnProperty('p_id') && conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
-                            if (
-                              selected[eq]['sublabel_id'] ===
-                              conditions[i].source[j].match_value[mv].id &&
-                              selected[eq]['id'] ===
-                              conditions[i].source[j].match_value[mv].p_id
-                            ) {
+                            if (selected[eq]['sublabel_id'] === conditions[i].source[j].match_value[mv].id && selected[eq]['id'] === conditions[i].source[j].match_value[mv].p_id) {
                               isMatch = true;
                             }
                           } else {
@@ -5353,10 +5607,7 @@ class SurveyBox extends Component {
                             }
                           }
                         } else {
-                          if (
-                            selected[eq][`${label}`] ===
-                            conditions[i].source[j].match_value[mv].value
-                          ) {
+                          if (selected[eq][`${label}`] === conditions[i].source[j].match_value[mv].value) {
                             isMatch = true;
                           }
                         }
@@ -5367,12 +5618,7 @@ class SurveyBox extends Component {
                       for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
                         if (conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
                           if (conditions[i].source[j].match_value[mv].hasOwnProperty('p_id') && conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
-                            if (
-                              selected[neq]['sublabel_id'] ===
-                              conditions[i].source[j].match_value[mv].id &&
-                              selected[neq]['id'] ===
-                              conditions[i].source[j].match_value[mv].p_id
-                            ) {
+                            if (selected[neq]['sublabel_id'] === conditions[i].source[j].match_value[mv].id && selected[neq]['id'] === conditions[i].source[j].match_value[mv].p_id) {
                               isNotEqual = false;
                             }
                           } else {
@@ -5384,10 +5630,7 @@ class SurveyBox extends Component {
                             }
                           }
                         } else {
-                          if (
-                            selected[neq][`${label}`] ===
-                            conditions[i].source[j].match_value[mv].value
-                          ) {
+                          if (selected[neq][`${label}`] === conditions[i].source[j].match_value[mv].value) {
                             isNotEqual = false;
                           }
                         }
@@ -5399,162 +5642,140 @@ class SurveyBox extends Component {
               } else if (conditions[i].source[j].target === "Value_Multiple_All") {
                 if (conditions[i].source[j].match_value.length && conditions[i].source[j].match_value.length > 0) {
                   if (conditions[i].source[j].state === "equal") {
-                    let multiple_match = false;
-                    let match_index = [];
-                    for (let eq = 0; eq < selected.length; eq++) {
-                      for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
+                    let all_match = true;
+                    for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
+                      let value_matched = false;
+                      for (let eq = 0; eq < selected.length; eq++) {
                         if (conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
                           if (conditions[i].source[j].match_value[mv].hasOwnProperty('p_id') && conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
-                            if (
-                              selected[eq]['sublabel_id'] ===
-                              conditions[i].source[j].match_value[mv].id &&
-                              selected[eq]['id'] ===
-                              conditions[i].source[j].match_value[mv].p_id
-                            ) {
-                              multiple_match = true;
-                              match_index.push(mv);
-                            } else {
-                              multiple_match = false
+                            if (selected[eq]['sublabel_id'] === conditions[i].source[j].match_value[mv].id && selected[eq]['id'] === conditions[i].source[j].match_value[mv].p_id) {
+                              value_matched = true;
+                              break;
                             }
                           } else {
-                            if (
-                              selected[eq]['id'] ===
-                              conditions[i].source[j].match_value[mv].id
-                            ) {
-                              multiple_match = true;
-                              match_index.push(mv);
-                            } else {
-                              multiple_match = false
+                            if (selected[eq]['id'] === conditions[i].source[j].match_value[mv].id) {
+                              value_matched = true;
+                              break;
                             }
                           }
                         } else {
-                          if (
-                            selected[eq][`${label}`] ===
-                            conditions[i].source[j].match_value[mv].value
-                          ) {
-                            multiple_match = true;
-                            match_index.push(mv);
-                          } else {
-                            multiple_match = false
+                          if (selected[eq][`${label}`] === conditions[i].source[j].match_value[mv].value) {
+                            value_matched = true;
+                            break;
                           }
                         }
                       }
-                      isMatch = match_index.length === conditions[i].source[j].match_value.length
+                      if (!value_matched) {
+                        all_match = false;
+                        break;
+                      }
                     }
+                    isMatch = all_match;
                   } else if (conditions[i].source[j].state === "notequal") {
-                    let multiple_match = false;
-                    let match_index = [];
-                    for (let neq = 0; neq < selected.length; neq++) {
-                      for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
+                    let any_not_matched = false;
+                    for (let mv = 0; mv < conditions[i].source[j].match_value.length; mv++) {
+                      let value_not_matched = true;
+                      for (let neq = 0; neq < selected.length; neq++) {
                         if (conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
                           if (conditions[i].source[j].match_value[mv].hasOwnProperty('p_id') && conditions[i].source[j].match_value[mv].hasOwnProperty('id')) {
-                            if (
-                              selected[neq]['sublabel_id'] !==
-                              conditions[i].source[j].match_value[mv].id &&
-                              selected[neq]['id'] !==
-                              conditions[i].source[j].match_value[mv].p_id
-                            ) {
-                              multiple_match = true;
-                              match_index.push(mv);
-                            } else {
-                              multiple_match = false;
+                            if (selected[neq]['sublabel_id'] === conditions[i].source[j].match_value[mv].id && selected[neq]['id'] === conditions[i].source[j].match_value[mv].p_id) {
+                              value_not_matched = false;
+                              break;
                             }
                           } else {
-                            if (
-                              selected[neq]['id'] !==
-                              conditions[i].source[j].match_value[mv].id
-                            ) {
-                              multiple_match = true;
-                              match_index.push(mv);
-                            } else {
-                              multiple_match = false;
+                            if (selected[neq]['id'] === conditions[i].source[j].match_value[mv].id) {
+                              value_not_matched = false;
+                              break;
                             }
                           }
                         } else {
-                          if (
-                            selected[neq][`${label}`] !==
-                            conditions[i].source[j].match_value[mv].value
-                          ) {
-                            multiple_match = true;
-                            match_index.push(mv);
-                          } else {
-                            multiple_match = false;
+                          if (selected[neq][`${label}`] === conditions[i].source[j].match_value[mv].value) {
+                            value_not_matched = false;
+                            break;
                           }
                         }
                       }
+                      if (!value_not_matched) {
+                        any_not_matched = true;
+                        break;
+                      }
                     }
-                    isMatch = match_index.length === conditions[i].source[j].match_value.length
+                    isMatch = !any_not_matched;
                   }
                 }
               }
-              if (conditions[i].source[j].state === "equal") {
-                if (conditions[i].source[j].hasOwnProperty('id')) {
-                  if (conditions[i].source[j].hasOwnProperty('p_id') && conditions[i].source[j].hasOwnProperty('id')) {
-                    for (let eq = 0; eq < selected.length; eq++) {
-                      if (
-                        selected[eq]['id'] ==
-                        conditions[i].source[j].p_id &&
-                        selected[eq]['sublabel_id'] ==
-                        conditions[i].source[j].id
-                      ) {
-                        isMatch = true;
+              else {
+                /** Normal equlas / not equlas condition */
+                if (conditions[i].source[j].state === "equal") {
+                  if (conditions[i].source[j].hasOwnProperty('id')) {
+                    if (conditions[i].source[j].hasOwnProperty('p_id') && conditions[i].source[j].hasOwnProperty('id')) {
+                      for (let eq = 0; eq < selected.length; eq++) {
+                        if (
+                          selected[eq]['id'] ==
+                          conditions[i].source[j].p_id &&
+                          selected[eq]['sublabel_id'] ==
+                          conditions[i].source[j].id
+                        ) {
+                          isMatch = true;
+                        }
+                      }
+                    } else {
+                      for (let eq = 0; eq < selected.length; eq++) {
+                        if (
+                          selected[eq]['id'] ==
+                          conditions[i].source[j].id
+                        ) {
+                          isMatch = true;
+                        }
                       }
                     }
                   } else {
                     for (let eq = 0; eq < selected.length; eq++) {
                       if (
-                        selected[eq]['id'] ==
-                        conditions[i].source[j].id
+                        selected[eq][`${label}`] ==
+                        conditions[i].source[j].match_value
                       ) {
                         isMatch = true;
                       }
                     }
                   }
-                } else {
-                  for (let eq = 0; eq < selected.length; eq++) {
-                    if (
-                      selected[eq][`${label}`] ==
-                      conditions[i].source[j].match_value
-                    ) {
-                      isMatch = true;
-                    }
-                  }
-                }
-              } else if (conditions[i].source[j].state === "notequal") {
-                if (conditions[i].source[j].hasOwnProperty('id')) {
-                  if (conditions[i].source[j].hasOwnProperty('p_id') && conditions[i].source[j].hasOwnProperty('id')) {
-                    for (let eq = 0; eq < selected.length; eq++) {
-                      if (
-                        selected[eq]['id'] ===
-                        conditions[i].source[j].p_id &&
-                        selected[eq]['sublabel_id'] ===
-                        conditions[i].source[j].id
-                      ) {
-                        isNotEqual = false;
+                } else if (conditions[i].source[j].state === "notequal") {
+                  if (conditions[i].source[j].hasOwnProperty('id')) {
+                    if (conditions[i].source[j].hasOwnProperty('p_id') && conditions[i].source[j].hasOwnProperty('id')) {
+                      for (let eq = 0; eq < selected.length; eq++) {
+                        if (
+                          selected[eq]['id'] ===
+                          conditions[i].source[j].p_id &&
+                          selected[eq]['sublabel_id'] ===
+                          conditions[i].source[j].id
+                        ) {
+                          isNotEqual = false;
+                        }
+                      }
+                    } else {
+                      for (let eq = 0; eq < selected.length; eq++) {
+                        if (
+                          selected[eq]['id'] ===
+                          conditions[i].source[j].id
+                        ) {
+                          isNotEqual = false;
+                        }
                       }
                     }
                   } else {
-                    for (let eq = 0; eq < selected.length; eq++) {
+                    for (let neq = 0; neq < selected.length; neq++) {
                       if (
-                        selected[eq]['id'] ===
-                        conditions[i].source[j].id
+                        selected[neq][`${label}`] ==
+                        conditions[i].source[j].match_value
                       ) {
                         isNotEqual = false;
                       }
                     }
                   }
-                } else {
-                  for (let neq = 0; neq < selected.length; neq++) {
-                    if (
-                      selected[neq][`${label}`] ==
-                      conditions[i].source[j].match_value
-                    ) {
-                      isNotEqual = false;
-                    }
-                  }
+                  isMatch = isNotEqual;
                 }
-                isMatch = isNotEqual;
               }
+
               if (isMatch) {
                 match = match + 1;
               }
