@@ -25,7 +25,8 @@ import * as Dimension from "../../style/Dimensions";
 // );
 const { height } = Dimensions.get('window');
 let backArrow = require('../../images/survey/arrow_back.png')
-let termsAndConditionUrl = 'http://www.eolasinternationalportal.com/EolasAppTandCs.htm';
+// let termsAndConditionUrl = 'http://www.eolasinternationalportal.com/EolasAppTandCs.htm'; //old link
+let termsAndConditionUrl = "http://eolasinternationalportal.com/TermsConditions.php"
 let title = 'Terms of Service';
 
 /** tearms and policy page class */
@@ -36,6 +37,8 @@ class TermsAndPolicy extends Component {
         //const { params } = this.props.navigation.state;
         const { params } = this.props.route;
         title = params ? params.title : 0;
+        termsAndConditionUrl = params && params.SelectedLan ?
+            `http://www.eolasinternationalportal.com/EolasAppTandCs.htm?lan=${params.SelectedLan}` : termsAndConditionUrl;
     }
 
     /** component life cycle */

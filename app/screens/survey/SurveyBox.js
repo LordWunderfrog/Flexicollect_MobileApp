@@ -12447,26 +12447,32 @@ class SurveyBox extends Component {
           (questionArr.properties.info_type === "none" && (
             <View
               style={{
-                margin: 10
+                margin: 10,
+                alignSelf: "center",
+                flex: 1
               }}
             >
               {questionArr.properties.hasOwnProperty("info_text") &&
                 questionArr.properties.info_text.includes("</") === true && (
-                  <ScrollView
-                    style={{ flex: 1 }}
-                    onTouchStart={ev => {
-                      this.setState({ isScrollEnabled: true });
-                    }}
-                  >
+                  // <ScrollView
+                  //   style={{ flex: 1 }}
+                  //   onTouchStart={ev => {
+                  //     this.setState({ isScrollEnabled: true });
+                  //   }}
+                  // >
+                  <ScrollView>
                     <WebView
                       //customStyle={`* body { font-size: 40px; } `}
-                      scalesPageToFit={false}
                       source={{
-                        html: questionArr.properties.info_text.replace(
+                        html: codeInject(questionArr.properties.info_text.replace(
                           "<html><head></head>",
                           `<html>${fontFamilyCss}`
-                        )
+                        ))
                       }}
+                      scalesPageToFit={false}
+                      scrollEnabled={false}
+                      javaScriptEnabled
+                      onNavigationStateChange={navState => this.handleNavigationChange(navState, idx)}
                       onShouldStartLoadWithRequest={event => {
                         if (event.url && event.url.startsWith('http')) {
                           Linking.openURL(event.url)
@@ -12474,9 +12480,16 @@ class SurveyBox extends Component {
                         }
                         return true
                       }}
+                      onLoadEnd={syntheticEvent => {
+                        // update component to be aware of loading status
+                        this.setState({ webview: true })
+                      }}
+                      onError={syntheticEvent => {
+                        this.setState({ webview: true })
+                      }}
                       style={{
-                        height: webViewScrollHeight,
-                        width: webViewScrollWidth
+                        width: webViewScrollWidth,
+                        height: realContentHeight[idx]
                       }}
                     />
                   </ScrollView>
@@ -12649,7 +12662,8 @@ class SurveyBox extends Component {
 
                   style={{
                     width: webViewScrollWidth,
-                    height: realContentHeight[idx]
+                    height: realContentHeight[idx],
+                    alignSelf: 'center'
                   }}
                 />
                 {this.state.webview &&

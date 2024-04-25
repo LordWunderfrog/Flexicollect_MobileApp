@@ -1035,7 +1035,7 @@ class SignIn extends Component {
             title = this.state.translation[this.state.Language].Privacy_Policy
         }
 
-        this.props.navigation.navigate('TermsAndPolicy', { title: title })
+        this.props.navigation.navigate('TermsAndPolicy', { title: title, SelectedLan: this.state.Language })
     }
 
     /**

@@ -603,7 +603,7 @@ class SignUp extends Component {
      * navigate to TermsAndPolicy page
      */
     goToTermsAndPolicyScreen = () => {
-        this.props.navigation.navigate('TermsAndPolicy', { title: this.state.translation[this.state.Language].Terms_Service })
+        this.props.navigation.navigate('TermsAndPolicy', { title: this.state.translation[this.state.Language].Terms_Service, SelectedLan: this.state.Language })
     }
 
     /**
