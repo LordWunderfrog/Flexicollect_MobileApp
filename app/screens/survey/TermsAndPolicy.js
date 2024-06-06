@@ -38,7 +38,7 @@ class TermsAndPolicy extends Component {
         const { params } = this.props.route;
         title = params ? params.title : 0;
         termsAndConditionUrl = params && params.SelectedLan ?
-            `http://www.eolasinternationalportal.com/EolasAppTandCs.htm?lan=${params.SelectedLan}` : termsAndConditionUrl;
+            `http://eolasinternationalportal.com/TermsConditions.php?lan=${params.SelectedLan}` : termsAndConditionUrl;
     }
 
     /** component life cycle */

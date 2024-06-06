@@ -1071,7 +1071,7 @@ class SignIn extends Component {
                     style={styles.viewContainer}>
 
                     <KeyboardAvoidingView style={{ flex: 1 }} {...(Platform.OS === 'ios' && { behavior: 'padding' })}>
-                        <ScrollView>
+                        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <View style={styles.topOverLay}>
                                 {/*logo*/}
                                 <Image
@@ -1284,7 +1284,8 @@ const styles = ScaledSheet.create({
     topOverLay: {
         flex: 1,
         width: '100%',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     //logo
     logo: {
@@ -1293,8 +1294,8 @@ const styles = ScaledSheet.create({
         // height: 74.5,
         width: '60%',
         height: 100,
-        marginTop: 50,
-        marginBottom: 50
+        marginTop: 30,
+        marginBottom: 30
     },
 
     //Title
