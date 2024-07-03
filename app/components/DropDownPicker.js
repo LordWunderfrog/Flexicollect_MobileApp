@@ -471,6 +471,7 @@ class DropDownPicker extends React.Component {
                         contentWidth={width}
                         baseStyle={htmlBaseStyle}
                         tagsStyles={pTagsStyles}
+                        defaultTextProps={{ allowFontScaling: false }}
                     />
 
                     {this.props.showArrow && (
@@ -588,6 +589,7 @@ class DropDownPicker extends React.Component {
                                                 })
                                             }}
                                             tagsStyles={pTagsStyles}
+                                            defaultTextProps={{ allowFontScaling: false }}
                                         />
 
                                     </View>

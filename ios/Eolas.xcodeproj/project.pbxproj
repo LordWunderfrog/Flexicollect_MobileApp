@@ -731,9 +731,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Eolas/Eolas.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HJZ3L2XA4R;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HJZ3L2XA4R;
@@ -750,7 +750,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.atom.EolasReact;
 				PRODUCT_NAME = Eolas;
 				PROVISIONING_PROFILE_SPECIFIER = NewEolasDevCertificate07Jun;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Eolas_Dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = EOLAS_AppStore;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -771,9 +771,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Eolas/Eolas.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = HJZ3L2XA4R;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HJZ3L2XA4R;
 				ENABLE_BITCODE = NO;
@@ -789,7 +789,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.atom.EolasReact;
 				PRODUCT_NAME = Eolas;
 				PROVISIONING_PROFILE_SPECIFIER = NewEolasDevCertificate07Jun;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Eolas_Dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = EOLAS_AppStore;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;

@@ -8402,6 +8402,7 @@ class SurveyBox extends Component {
             baseStyle={styles.basestyleSublable}
             //baseFontStyle={styles.hintText}
             tagsStyles={normalTagsStyles}
+            defaultTextProps={{ allowFontScaling: false }}
           /> : null}
       </View>
     );
@@ -10998,13 +10999,13 @@ class SurveyBox extends Component {
           <Row
             data={tableHead}
             flexArr={[1, 2, 1]}
-            style={{ height: 50 }}
+            style={{ flex: 1 }}
             textStyle={styles.maxdifftextstyle}
           />
           <Rows
             data={item}
             flexArr={[1, 2, 1]}
-            style={{ height: 50 }}
+            style={{ flex: 1, margin: 5 }}
             textStyle={styles.maxdifftextstyle}
           />
         </Table>
@@ -11485,6 +11486,7 @@ class SurveyBox extends Component {
                     baseStyle={styles.baseStyleSectionTitle}
                     //baseFontStyle={styles.headerTitle}
                     tagsStyles={darkBluetagsStyles}
+                    defaultTextProps={{ allowFontScaling: false }}
                   /> : null}
                 </View>
                 <View flex={0.2}
@@ -11535,6 +11537,7 @@ class SurveyBox extends Component {
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
                         tagsStyles={darkBluetagsStyles}
+                        defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
                   </View>
                   <View flex={0.1}
@@ -11626,6 +11629,7 @@ class SurveyBox extends Component {
                       baseStyle={styles.baseStyleSectionTitle}
                       //baseFontStyle={styles.headerTitle}
                       tagsStyles={darkBluetagsStyles}
+                      defaultTextProps={{ allowFontScaling: false }}
                     /> : null}
                   </View>
                   <View flex={0.2}
@@ -11676,6 +11680,7 @@ class SurveyBox extends Component {
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
                         tagsStyles={darkBluetagsStyles}
+                        defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
                     </View>
                     <View flex={0.1}
@@ -11820,6 +11825,7 @@ class SurveyBox extends Component {
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
                         tagsStyles={darkBluetagsStyles}
+                        defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
 
                     </View>
@@ -12016,6 +12022,7 @@ class SurveyBox extends Component {
                               baseStyle={styles.baseStyleSubText}
                               //baseFontStyle={styles.subText}
                               tagsStyles={darkBluetagsStyles}
+                              defaultTextProps={{ allowFontScaling: false }}
                             /> : null}
                           </View>
 
@@ -12096,6 +12103,7 @@ class SurveyBox extends Component {
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
                         tagsStyles={darkBluetagsStyles}
+                        defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
                     </View>
                     <View flex={0.2}
@@ -12190,6 +12198,7 @@ class SurveyBox extends Component {
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
                         tagsStyles={darkBluetagsStyles}
+                        defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
                     </View>
                     <View flex={0.1}
@@ -12981,6 +12990,7 @@ class SurveyBox extends Component {
                         baseStyle={styles.baseStyleQuestionText}
                         //baseFontStyle={styles.questionText}
                         tagsStyles={extraLargetagsStyles}
+                        defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
                     </View>
 
@@ -12994,6 +13004,7 @@ class SurveyBox extends Component {
                           baseStyle={styles.baseStyleSubTitle}
                           // baseFontStyle={styles.hintText}
                           tagsStyles={normalTagsStyles}
+                          defaultTextProps={{ allowFontScaling: false }}
                         />
                       )}
 
