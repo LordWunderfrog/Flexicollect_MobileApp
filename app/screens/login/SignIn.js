@@ -103,7 +103,9 @@ class SignIn extends Component {
 
         Linking.getInitialURL().then(url => {
             if (url && url != "") {
-                this.openSurvey(url);
+                setTimeout(() => {
+                    this.openSurvey(url);
+                }, 1000);
             } else {
                 if (Platform.OS == 'android') {
                     this.getData()
