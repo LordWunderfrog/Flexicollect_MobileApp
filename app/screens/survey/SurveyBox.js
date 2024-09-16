@@ -23,7 +23,9 @@ import {
   AppState,
   Button,
   Linking,
-  VirtualizedList
+  VirtualizedList,
+  Modal,
+  Pressable
 } from "react-native";
 import { PERMISSIONS, check, request, RESULTS, openSettings } from 'react-native-permissions';
 import GeolocationIOS from "@react-native-community/geolocation";
@@ -83,7 +85,8 @@ import RenderHtml from 'react-native-render-html';
 import DropDownPicker from '../../components/DropDownPicker'
 import { measureConnectionSpeed } from '../../components/GetNetworkSpeed';
 import Mailer from 'react-native-mail';
-import DatePicker from 'react-native-date-picker'
+import DatePicker from 'react-native-date-picker';
+import ImageViewer from "../../components/image-zoom-viewer";
 
 const videoCompressOptions = {
   //width: 720,
@@ -400,7 +403,9 @@ class SurveyBox extends Component {
       isSubmitDisable: false,
       isSlowNetwork: false,
       selectedDate: new Date(),
-      isOpenDatePicker: false
+      isOpenDatePicker: false,
+      infoImageModal: false,
+      cameraType: RNCamera.Constants.Type.back
     };
     this.sliderEditing = false;
     this.audioRecorderPlayer = new AudioRecorderPlayer();
@@ -9946,6 +9951,7 @@ class SurveyBox extends Component {
               }
             );
             let compressedPath = compressedVideo.replace('file://', '')
+            let type = "mp4";
             RNFetchBlob.fs.stat(compressedPath).then((pathRes) => {
               let source = { uri: compressedPath, data: '', type: type };
               this.addAnswerForSelectedMedia(index, source);
@@ -9996,6 +10002,16 @@ class SurveyBox extends Component {
     else {
       this.setState({ recording: false, showCamera: false });
     }
+  };
+
+  /** Handle swipe front camera */
+  toggleCameraType = () => {
+    let currentType = this.state.cameraType
+    this.setState({
+      cameraType: currentType === RNCamera.Constants.Type.back
+        ? RNCamera.Constants.Type.front
+        : RNCamera.Constants.Type.back
+    })
   };
 
   /* Handle Camera mode */
@@ -12547,18 +12563,33 @@ class SurveyBox extends Component {
                   }}
                 />
                 {this.state.webview &&
-                  <Image
-                    style={{
-                      resizeMode: "contain",
-                      minHeight: webViewScrollHeight - 100,
-                      minWidth: webViewScrollWidth
-                    }}
-                    source={{ uri: questionArr.properties.info_image }}
-                  />
+                  <Pressable onPress={() => this.setState({ infoImageModal: true })}>
+                    <Image
+                      style={{
+                        resizeMode: "contain",
+                        minHeight: webViewScrollHeight - 100,
+                        minWidth: webViewScrollWidth,
+                        marginTop: 10
+                      }}
+                      source={{ uri: questionArr.properties.info_image }}
+                    />
+                  </Pressable>
                 }
               </View>
             </ScrollView>
-
+            <Modal visible={this.state.infoImageModal} transparent={false}
+              style={{}}>
+              <ImageViewer
+                style={{ backgroundColor: Color.colorBlack }}
+                imageUrls={[{
+                  url: questionArr.properties.info_image,
+                }]}
+                enableImageZoom
+                enableSwipeDown={true}
+                swipeDownThreshold={0.5}
+                onSwipeDown={() => this.setState({ infoImageModal: false })}
+              />
+            </Modal>
           </View>
         )}
 
@@ -13354,7 +13385,7 @@ class SurveyBox extends Component {
                 this.camera = ref;
               }}
               style={styles.preview}
-              type={RNCamera.Constants.Type.back}
+              type={this.state.cameraType}
               flashMode={RNCamera.Constants.FlashMode.on}
               androidCameraPermissionOptions={{
                 title: this.state.translation[this.state.Language].Permission_Title,
@@ -13373,9 +13404,18 @@ class SurveyBox extends Component {
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <TouchableOpacity>
+              {recording ? <TouchableOpacity>
                 <View style={{ width: 50, height: 50 }} />
-              </TouchableOpacity>
+              </TouchableOpacity> : null}
+              {!recording && (
+                <TouchableOpacity
+                  style={{ marginLeft: 20, marginTop: 10 }}
+                  onPress={() => { this.toggleCameraType() }}
+                >
+                  <Image style={{ width: 50, height: 50, paddingLeft: 10 }}
+                    source={require('../../images/survey/rotate_button.png')} />
+                </TouchableOpacity>
+              )}
               {button}
               {!recording && (
                 <TouchableOpacity
