@@ -14177,7 +14177,6 @@ const styles = ScaledSheet.create({
     height: 20,
     justifyContent: "center"
   },
-
   blackDot: {
     width: 10,
     height: 10,
