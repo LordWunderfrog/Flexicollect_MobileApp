@@ -8588,57 +8588,62 @@ class SurveyBox extends Component {
       });
     }
     else {
-      launchCamera({
-        width: CAMERASTYLE.WIDTH,
-        height: CAMERASTYLE.HEIGHT,
-        includeBase64: true,
-        // cropping: false,
-        // isVideo: true
-        mediaType: 'video',
-        noData: false
+      /** TO add overlay question text used RNCamera 
+        same like ios **/
+      this.setState({ showCamera: true })
 
-      }, async (res) => {
-        if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
-          this.setState({ videoProcessing: true });
-          let videoRes = res.assets[0]
-          let path = videoRes.uri;
-          path = path.replace(/ /g, '%20')
-          const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
-            (progress) => {
-              console.log('Compression Progress: ', progress);
-            }
-          );
-          let source = {
-            uri: compressedVideo,
-            data: "",
-            type: 'mp4'
-          };
-          questionResponseQue[this.state.questionsArr[index].questionID] = true;
-          this.addAnswerForSelectedMedia(index, source);
+      /** To add overlay text removed bellow option and used RNCmera Option */
+      // launchCamera({
+      //   width: CAMERASTYLE.WIDTH,
+      //   height: CAMERASTYLE.HEIGHT,
+      //   includeBase64: true,
+      //   // cropping: false,
+      //   // isVideo: true
+      //   mediaType: 'video',
+      //   noData: false
+
+      // }, async (res) => {
+      //   if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
+      //     this.setState({ videoProcessing: true });
+      //     let videoRes = res.assets[0]
+      //     let path = videoRes.uri;
+      //     path = path.replace(/ /g, '%20')
+      //     const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+      //       (progress) => {
+      //         console.log('Compression Progress: ', progress);
+      //       }
+      //     );
+      //     let source = {
+      //       uri: compressedVideo,
+      //       data: "",
+      //       type: 'mp4'
+      //     };
+      //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+      //     this.addAnswerForSelectedMedia(index, source);
 
 
-          // let videoRes = res.assets[0]
-          // let path = videoRes.uri;
-          // let ext = videoRes.type.split("/")
-          // let questionArr = this.state.questionsArr[index];
-          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
-          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+      //     // let videoRes = res.assets[0]
+      //     // let path = videoRes.uri;
+      //     // let ext = videoRes.type.split("/")
+      //     // let questionArr = this.state.questionsArr[index];
+      //     // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
+      //     // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
-          //   .then(result => {
-          //     let source = {
-          //       uri: 'file://' + newfile,
-          //       data: "",
-          //       type: 'mp4'
-          //     };
-          //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
-          //     this.addAnswerForSelectedMedia(index, source);
+      //     // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+      //     //   .then(result => {
+      //     //     let source = {
+      //     //       uri: 'file://' + newfile,
+      //     //       data: "",
+      //     //       type: 'mp4'
+      //     //     };
+      //     //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+      //     //     this.addAnswerForSelectedMedia(index, source);
 
-          //   }).catch(e => {
-          //     //console.log(e);			
-          //   });
-        }
-      });
+      //     //   }).catch(e => {
+      //     //     //console.log(e);			
+      //     //   });
+      //   }
+      // });
     }
 
   }
@@ -9986,7 +9991,8 @@ class SurveyBox extends Component {
       });
     }
     else {
-      this.setState({ recording: false, showCamera: false });
+      pageIndex = this.state.pageCount;
+      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true });
       this.camera.stopRecording();
     }
   };
@@ -10000,7 +10006,8 @@ class SurveyBox extends Component {
       });
     }
     else {
-      this.setState({ recording: false, showCamera: false });
+      pageIndex = this.state.pageCount;
+      this.setState({ recording: false, showCamera: false, cameraMode: true });
     }
   };
 
@@ -13399,8 +13406,12 @@ class SurveyBox extends Component {
                 buttonPositive: this.state.translation[this.state.Language].OK,
                 buttonNegative: this.state.translation[this.state.Language].Cancel
               }}
-              onGoogleVisionBarcodesDetected={({ barcodes }) => { }}
+            //onGoogleVisionBarcodesDetected={({ barcodes }) => { }}  //commented to solve crash issue in android
             />
+            <View style={styles.videoOverlayView}>
+              <Text style={styles.videoOverlayText} numberOfLines={8}>{questionsArr[pageCount].properties.question ?
+                questionsArr[pageCount].properties.question : ""}</Text>
+            </View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
@@ -14545,5 +14556,20 @@ const styles = ScaledSheet.create({
     flex: 0.5,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  videoOverlayView: {
+    position: 'absolute',
+    top: 60,
+    left: 10,
+    right: 10,
+    padding: 10,
+    alignItems: 'center',
+    backgroundColor: Color.colorWhite,
+    opacity: 0.8
+  },
+  videoOverlayText: {
+    color: Color.colorBlack,
+    fontWeight: 'bold',
+    textAlign: 'justify'
   }
 });
