@@ -2333,7 +2333,7 @@ class SurveyBox extends Component {
    * */
   questionPostObject(currentQuestArrayPos, retryArray) {
     let questionObj = "";
-
+    let releaseMission = [];
     let questionArr = []
     if (retryArray && retryArray.length > 0) {
       /** case when - retry for submition then take full array while noreturn
@@ -2398,7 +2398,23 @@ class SurveyBox extends Component {
         answer: questionArr.answer
       };
     }
-
+    if (questionArr.conditions && questionArr.conditions.length > 0) {
+      for (let i = 0; i < questionArr.conditions.length; i++) {
+        if (questionArr.conditions[i].target.do === 'release') {
+          let relObj = {
+            project: questionArr.conditions[i].target.project,
+            mission: questionArr.conditions[i].target.mission
+          }
+          releaseMission.push(relObj);
+        }
+      }
+    }
+    /** IF target.do is 'release' and has target mission */
+    if (releaseMission.length > 0) {
+      questionObj.release_mission = releaseMission;
+    } else {
+      questionObj.release_mission = [];
+    }
     if (questionArr.isloop) {
       questionObj.loop_number = questionArr.loop_number;
       questionObj.loop_set = questionArr.loop_set_num;
@@ -6499,7 +6515,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              questionObj['release_mission'] = release_mission;
+              // questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6535,8 +6551,8 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].hasOwnProperty("isUpdated") &&
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
+                  // questionObj['release_mission'] = release_mission;
                   let questionObj = this.questionPostObject(currentQuesIndx);
-                  questionObj['release_mission'] = release_mission;
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
                     this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6555,7 +6571,7 @@ class SurveyBox extends Component {
                 questionsArray[currentQuesIndx].isUpdated === true
               ) {
                 let questionObj = this.questionPostObject(currentQuesIndx);
-                questionObj['release_mission'] = release_mission;
+                // questionObj['release_mission'] = release_mission;
                 if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                   questionsArray[currentQuesIndx].properties.noreturn === 1) {
                   this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6577,7 +6593,7 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
                   let questionObj = this.questionPostObject(currentQuesIndx);
-                  questionObj['release_mission'] = release_mission;
+                  // questionObj['release_mission'] = release_mission;
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
                     this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6596,7 +6612,7 @@ class SurveyBox extends Component {
                 questionsArray[currentQuesIndx].isUpdated === true
               ) {
                 let questionObj = this.questionPostObject(currentQuesIndx);
-                questionObj['release_mission'] = release_mission;
+                // questionObj['release_mission'] = release_mission;
                 if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                   questionsArray[currentQuesIndx].properties.noreturn === 1) {
                   this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6637,7 +6653,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              questionObj['release_mission'] = release_mission;
+              // questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6690,7 +6706,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              questionObj['release_mission'] = release_mission;
+              // questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6729,7 +6745,7 @@ class SurveyBox extends Component {
         questionsArray[currentQuesIndx].isUpdated === true
       ) {
         let questionObj = this.questionPostObject(currentQuesIndx);
-        questionObj['release_mission'] = release_mission;
+        // questionObj['release_mission'] = release_mission;
         if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
           questionsArray[currentQuesIndx].properties.noreturn === 1) {
           this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6760,6 +6776,7 @@ class SurveyBox extends Component {
             unMetTarget,
             false
           );
+          /** To hide / show / loop questions */
           if (unMetTarget) {
             for (let k = 0; k < unMetTarget.length; k++) {
               if (
@@ -9981,7 +9998,7 @@ class SurveyBox extends Component {
             clearInterval(interval);
             const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
               (progress) => {
-                console.log('Compression Progress: ', progress);
+                console.log('Compression Progress: 4', progress);
               }
             );
             let compressedPath = compressedVideo.replace('file://', '')
