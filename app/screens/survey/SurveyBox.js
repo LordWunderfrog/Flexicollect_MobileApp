@@ -310,7 +310,7 @@ class SurveyBox extends Component {
     // Reset question response queue process properties
     questionResponseQue = [];
     backBtnFired = false;
-
+    const videoDuration = 180;  //Video upload limit 3 min
     // Reset conditional matches process properties
     latestTarget = undefined;
     questionOffsets = [];
@@ -405,7 +405,9 @@ class SurveyBox extends Component {
       selectedDate: new Date(),
       isOpenDatePicker: false,
       infoImageModal: false,
-      cameraType: RNCamera.Constants.Type.back
+      cameraType: RNCamera.Constants.Type.back,
+      videoDurationCountdown: videoDuration,
+      maxDuration: videoDuration
     };
     this.sliderEditing = false;
     this.audioRecorderPlayer = new AudioRecorderPlayer();
@@ -8551,7 +8553,7 @@ class SurveyBox extends Component {
    * @param {Number} index Currenet question array element position
    */
   videoFromCamera(index) {
-    if (Platform.OS == 'ios') {
+    if (Platform.OS == 'ios') {  //not being called anywhere
       ImagePicker.openCamera({
         width: CAMERASTYLE.WIDTH,
         height: CAMERASTYLE.HEIGHT,
@@ -8610,7 +8612,7 @@ class SurveyBox extends Component {
       //     path = path.replace(/ /g, '%20')
       //     const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
       //       (progress) => {
-      //         console.log('Compression Progress: ', progress);
+      //         
       //       }
       //     );
       //     let source = {
@@ -8906,22 +8908,25 @@ class SurveyBox extends Component {
         includeBase64: true,
         isVideo: true
       }).then(async (video) => {
-        this.setState({ changeImage: true, videoProcessing: true });
-        let path = "file://" + video[0].path
-        path = path.replace(/ /g, '%20')
-        const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
-          (progress) => {
-            console.log('Compression Progress: ', progress);
-          }
-        );
-        let compressedPath = compressedVideo.replace('file://', '')
-        RNFetchBlob.fs.readFile(compressedPath, 'base64')
-          .then((data) => {
-            let base64 = data;
-            let source = { uri: compressedPath, data: base64, type: 'mp4' };
-            this.addAnswerForSelectedMedia(index, source);
-          })
-
+        if (video[0].duration > this.state.maxDuration) {
+          Alert.alert(`Video duration should not be more then 3 minute`)
+        } else {
+          this.setState({ changeImage: true, videoProcessing: true });
+          let path = "file://" + video[0].path
+          path = path.replace(/ /g, '%20')
+          const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+            (progress) => {
+              console.log('Compression Progress: 2', progress);
+            }
+          );
+          let compressedPath = compressedVideo.replace('file://', '')
+          RNFetchBlob.fs.readFile(compressedPath, 'base64')
+            .then((data) => {
+              let base64 = data;
+              let source = { uri: compressedPath, data: base64, type: 'mp4' };
+              this.addAnswerForSelectedMedia(index, source);
+            })
+        }
         // RNCompress.compressVideo(path, "medium").then(compressedFile => {
         //   console.log('compressedFile', compressedFile)
         // Convert to base64 
@@ -8949,23 +8954,26 @@ class SurveyBox extends Component {
         //noData: false,
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
-          this.setState({ changeImage: true, videoProcessing: true });
-          let videoRes = res.assets[0]
-          let path = videoRes.uri
-          path = path.replace(/ /g, '%20')
-          const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
-            (progress) => {
-              console.log('Compression Progress: ', progress);
-            }
-          );
-          let source = {
-            uri: compressedVideo,
-            data: "",
-            type: 'mp4'
-          };
-          questionResponseQue[this.state.questionsArr[index].questionID] = true;
-          this.addAnswerForSelectedMedia(index, source);
-
+          if (res.assets[0].duration && res.assets[0].duration > this.state.maxDuration) {
+            Alert.alert(`Video duration should not be more then 3 minute`)
+          } else {
+            this.setState({ changeImage: true, videoProcessing: true });
+            let videoRes = res.assets[0]
+            let path = videoRes.uri
+            path = path.replace(/ /g, '%20')
+            const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+              (progress) => {
+                console.log('Compression Progress: ', progress);
+              }
+            );
+            let source = {
+              uri: compressedVideo,
+              data: "",
+              type: 'mp4'
+            };
+            questionResponseQue[this.state.questionsArr[index].questionID] = true;
+            this.addAnswerForSelectedMedia(index, source);
+          }
           // let videoRes = res.assets[0]
           // let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
           // let path = 'file://' + filepath.path;
@@ -9301,6 +9309,7 @@ class SurveyBox extends Component {
 
   /* manage media access permission  */
   callMediaAccess(type, index, media) {
+    this.setState({ videoDurationCountdown: this.state.maxDuration })
     this.RBBottomSheet.close();
     // Pause the audio player if it's running
     this.handleAudioPause();
@@ -9353,7 +9362,8 @@ class SurveyBox extends Component {
     this.setState(
       {
         questionsArr: localArray,
-        videoProcessing: false
+        videoProcessing: false,
+        videoDurationCountdown: this.state.maxDuration
       },
       _ => {
         //console.log(this.state.videoProcessing);
@@ -9938,11 +9948,29 @@ class SurveyBox extends Component {
     );
   }
 
+  createMinuteDisplayFromSecond = (second) => {
+    const minute = Math.floor(second / 60);
+    const remainSeconds = second - (minute * 60)
+    return `${minute < 10 ? "0" + minute : minute}:${remainSeconds < 10 ? "0" + remainSeconds : remainSeconds}`
+  }
+
   /* start video recording when user click start button */
   async startVideoRecording(index) {
     this.setState({ recording: true });
-    // default to mp4 for android as codec is not set
-    await this.camera.recordAsync().then(async data => {
+    const interval = setInterval(() => {
+      this.state.videoDurationCountdown > 0 && this.setState({ videoDurationCountdown: this.state.videoDurationCountdown - 1 })
+    }, 1000)
+    setTimeout(() => {
+      if (!this.state.videoProcessing) {
+        clearInterval(interval);
+        pageIndex = this.state.pageCount;
+        this.stopVideoRecording.bind(this, this.state.pageCount)
+        this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true })
+      }
+    }, (this.state.maxDuration + 2) * 1000);
+    await this.camera.recordAsync({
+      maxDuration: this.state.maxDuration,
+    }).then(async data => {
       let uri = data.uri.replace(/(^\w+:|^)\/\//, "");
       RNFetchBlob.fs.exists(uri).then(exist => {
         RNFetchBlob.fs
@@ -9950,6 +9978,7 @@ class SurveyBox extends Component {
           .then(async (pathRes) => {
             let path = "file://" + pathRes.path;
             path = path.replace(/ /g, '%20')
+            clearInterval(interval);
             const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
               (progress) => {
                 console.log('Compression Progress: ', progress);
@@ -9984,15 +10013,13 @@ class SurveyBox extends Component {
   /* stop video recording when click stop button */
   stopVideoRecording = index => {
     if (Platform.OS == 'ios') {
-      this.camera.stopRecording();
       pageIndex = this.state.pageCount;
-      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true }, _ => {
-        //this.horizontalCarousel.goToPage(this.state.pageCount);
-      });
+      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true, videoDurationCountdown: this.state.maxDuration });
+      this.camera.stopRecording();
     }
     else {
       pageIndex = this.state.pageCount;
-      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true });
+      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true, videoDurationCountdown: this.state.maxDuration });
       this.camera.stopRecording();
     }
   };
@@ -13428,7 +13455,7 @@ class SurveyBox extends Component {
                 </TouchableOpacity>
               )}
               {button}
-              {!recording && (
+              {!recording ? (
                 <TouchableOpacity
                   style={{ alignSelf: "center", marginRight: 10 }}
                   onPress={this.closeVideoCamera.bind(this)}
@@ -13438,13 +13465,16 @@ class SurveyBox extends Component {
                   >
                     {translation[Language].Cancel}
                   </Text>
+                </TouchableOpacity>)
+                : <TouchableOpacity style={{ alignSelf: "center", marginRight: 10 }}>
+                  <Text style={{ color: 'white', fontSize: 18 }}>{this.createMinuteDisplayFromSecond(this.state.videoDurationCountdown)}</Text>
                 </TouchableOpacity>
-              )}
-              {recording && (
+              }
+              {/* {recording && (
                 <TouchableOpacity>
                   <View style={{ width: 50, height: 50 }} />
                 </TouchableOpacity>
-              )}
+              )} */}
             </View>
           </View>
         )}
