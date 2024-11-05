@@ -407,7 +407,8 @@ class SurveyBox extends Component {
       infoImageModal: false,
       cameraType: RNCamera.Constants.Type.back,
       videoDurationCountdown: videoDuration,
-      maxDuration: videoDuration
+      maxDuration: videoDuration,
+      surveyQuestions: [],
     };
     this.sliderEditing = false;
     this.audioRecorderPlayer = new AudioRecorderPlayer();
@@ -1044,11 +1045,19 @@ class SurveyBox extends Component {
         let leftDisable = false;
         if (LastAccess_questionArr.pageCount === 0 && LastAccess_questionArr.pageCount === LastAccess_questionArr.prevpage) { leftDisable = true }
         if (LastAccess_questionArr.prevpage < 0) { leftDisable = true }
+
+        const finalQuestions = allQuestions.length > 0 && allQuestions.map((que, index) => {
+          const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+          if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+            return { ...que, isHide: true }
+          } else return que
+        })
+
         this.setState(
           {
             translation: Constants.survey,
             arrLength: allQuestions.length,
-            questionsArr: allQuestions,
+            questionsArr: finalQuestions,
             isLoading: false,
             initialLoader: true,
             nextPage: LastAccess_questionArr.nextPage,
@@ -1367,10 +1376,18 @@ class SurveyBox extends Component {
                   this.addQuestionBasedOnChoiceType(allQuestions);
 
                   if (allQuestions.length !== 0) {
+
+                    const finalQuestions = allQuestions.length > 0 && allQuestions.map((que, index) => {
+                      const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+                      if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+                        return { ...que, isHide: true }
+                      } else return que
+                    })
+
                     this.setState(
                       {
                         arrLength: allQuestions.length,
-                        questionsArr: allQuestions,
+                        questionsArr: finalQuestions,
                         isLoading: false,
                         initialLoader: true,
                         nextPage: allQuestions.length > 1 ? 1 : 0,
@@ -2123,9 +2140,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -2151,9 +2168,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -7049,17 +7066,18 @@ class SurveyBox extends Component {
                   }
                 }
               }
+              questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget)
               questionsArray = this.state.questionsArr;
             }
           }
         }
-
+        const updatedQuestionArr = this.setHideShowQuestions(questionsArray, target, unMetTarget) //by kr
         // this.setState({
         //   questionsArr : questionsArray
         // }, () => {
         let nextPage = currentPage;
         let nextExists = false;
-        let copyquestionArray = questionsArray;
+        let copyquestionArray = updatedQuestionArr;
         let copyarrLength = copyquestionArray.length;
 
         for (let i = currentPage; i < copyquestionArray.length; i++) {
@@ -7087,21 +7105,45 @@ class SurveyBox extends Component {
           }
         }
         if (
-          !copyquestionArray[currentQuesIndx].properties.hasOwnProperty(
-            "noreturn"
-          ) ||
+          !copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") ||
           copyquestionArray[currentQuesIndx].properties.noreturn === 0
         ) {
-          this.actionForNavNextIcon(nextPage, nextExists, currentPage, page, copyquestionArray);
+          this.actionForNavNextIcon(nextPage, nextExists, currentPage, page, updatedQuestionArr);
         }
-        if (copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") && copyquestionArray[currentQuesIndx].properties.noreturn === 1 &&
-          (!copyquestionArray[currentQuesIndx].hasOwnProperty("isUpdated") || copyquestionArray[currentQuesIndx].isUpdated === false)) {
-          this.checkNoReturnQues(copyquestionArray[currentQuesIndx], currentQuesIndx);
+        if (copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") && updatedQuestionArr[currentQuesIndx].properties.noreturn === 1 &&
+          (!copyquestionArray[currentQuesIndx].hasOwnProperty("isUpdated") || updatedQuestionArr[currentQuesIndx].isUpdated === false)) {
+          this.checkNoReturnQues(updatedQuestionArr[currentQuesIndx], currentQuesIndx);
         }
         // })
-
       }
     }
+  }
+
+  /** Set hide/show question as per already hide/showed passed from admin BY KR*/
+  setHideShowQuestions(queArr, target, unmetTarget) {
+    const finalarr = queArr.length > 0 && queArr.map((que, index) => {
+      const unMettargetfind = unmetTarget.length > 0 && unmetTarget.find((tar) => tar.handler == que.handler);
+      if (unMettargetfind && unMettargetfind) {
+        const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+        if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+          return {
+            ...que,
+            isHide: true
+          }
+        }
+        else if (que.properties[keyname] && que.properties[keyname] == 'show') {
+          return {
+            ...que,
+            isHide: false
+          }
+        } else {
+          return que
+        }
+      } else {
+        return que
+      }
+    })
+    return finalarr
   }
 
   /** Get hidden questions based on condition
@@ -7546,7 +7588,8 @@ class SurveyBox extends Component {
       }
     }
     let nextExists = false;
-
+    questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget)
+    this.setState({ questionsArr: questionsArray });
     if (currentPage == arrLength - 1) {
       nextExists = false;
     } else {
@@ -7604,7 +7647,6 @@ class SurveyBox extends Component {
         break;
       }
     }
-
     let page = prevPage;
     if (prevPage == 0) {
       prevExists = false;
@@ -7898,9 +7940,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -7989,9 +8031,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -8078,9 +8120,11 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // console.log("dfhjsdfgjkhgjkdfgngf 8171" , "FORCE UPDATE")
+        // this.forceUpdate()
+        // }
       }
     );
   }
@@ -8170,9 +8214,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -8356,9 +8400,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -11274,9 +11318,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   };
@@ -11430,9 +11474,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -11510,9 +11554,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
