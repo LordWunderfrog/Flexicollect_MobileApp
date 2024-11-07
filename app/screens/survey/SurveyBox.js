@@ -87,6 +87,7 @@ import { measureConnectionSpeed } from '../../components/GetNetworkSpeed';
 import Mailer from 'react-native-mail';
 import DatePicker from 'react-native-date-picker';
 import ImageViewer from "../../components/image-zoom-viewer";
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 
 const videoCompressOptions = {
   //width: 720,
@@ -10017,16 +10018,17 @@ class SurveyBox extends Component {
 
   /* start video recording when user click start button */
   async startVideoRecording(index) {
+    this.keepScreenAwake();
     this.setState({ recording: true });
     const interval = setInterval(() => {
       this.state.videoDurationCountdown > 0 && this.setState({ videoDurationCountdown: this.state.videoDurationCountdown - 1 })
     }, 1000)
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       if (!this.state.videoProcessing) {
         clearInterval(interval);
         pageIndex = this.state.pageCount;
-        this.stopVideoRecording.bind(this, this.state.pageCount)
-        this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true })
+        this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true });
+        this.stopVideoRecording.bind(this, this.state.pageCount);
       }
     }, (this.state.maxDuration + 2) * 1000);
     await this.camera.recordAsync({
@@ -10037,9 +10039,13 @@ class SurveyBox extends Component {
         RNFetchBlob.fs
           .stat(uri)
           .then(async (pathRes) => {
+            this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true });
             let path = "file://" + pathRes.path;
             path = path.replace(/ /g, '%20')
             clearInterval(interval);
+            setTimeout(() => {
+              clearTimeout(timeout);
+            }, 2000)
             const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
               (progress) => {
                 console.log('Compression Progress: 4', progress);
@@ -10071,8 +10077,19 @@ class SurveyBox extends Component {
     });
   }
 
+  keepScreenAwake = () => {
+    // KeepAwake.activate();
+    activateKeepAwake();
+  };
+
+  allowScreenSleep = () => {
+    // KeepAwake.deactivate();
+    deactivateKeepAwake();
+  };
+
   /* stop video recording when click stop button */
   stopVideoRecording = index => {
+    this.allowScreenSleep()
     if (Platform.OS == 'ios') {
       pageIndex = this.state.pageCount;
       this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true, videoDurationCountdown: this.state.maxDuration });

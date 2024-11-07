@@ -24,6 +24,7 @@
     "@react-native-masked-view/masked-view": "^0.3.0",
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/native-stack": "^6.9.14",
+    "@sayem314/react-native-keep-awake": "^1.2.4",
     "axios": "^1.5.1",
     "deprecated-react-native-prop-types": "^5.0.0",
     "prop-types": "^15.8.1",
