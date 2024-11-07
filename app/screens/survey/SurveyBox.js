@@ -87,6 +87,7 @@ import { measureConnectionSpeed } from '../../components/GetNetworkSpeed';
 import Mailer from 'react-native-mail';
 import DatePicker from 'react-native-date-picker';
 import ImageViewer from "../../components/image-zoom-viewer";
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 
 const videoCompressOptions = {
   //width: 720,
@@ -310,7 +311,7 @@ class SurveyBox extends Component {
     // Reset question response queue process properties
     questionResponseQue = [];
     backBtnFired = false;
-
+    const videoDuration = 180;  //Video upload limit 3 min
     // Reset conditional matches process properties
     latestTarget = undefined;
     questionOffsets = [];
@@ -405,7 +406,10 @@ class SurveyBox extends Component {
       selectedDate: new Date(),
       isOpenDatePicker: false,
       infoImageModal: false,
-      cameraType: RNCamera.Constants.Type.back
+      cameraType: RNCamera.Constants.Type.back,
+      videoDurationCountdown: videoDuration,
+      maxDuration: videoDuration,
+      surveyQuestions: [],
     };
     this.sliderEditing = false;
     this.audioRecorderPlayer = new AudioRecorderPlayer();
@@ -1042,11 +1046,19 @@ class SurveyBox extends Component {
         let leftDisable = false;
         if (LastAccess_questionArr.pageCount === 0 && LastAccess_questionArr.pageCount === LastAccess_questionArr.prevpage) { leftDisable = true }
         if (LastAccess_questionArr.prevpage < 0) { leftDisable = true }
+
+        const finalQuestions = allQuestions.length > 0 && allQuestions.map((que, index) => {
+          const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+          if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+            return { ...que, isHide: true }
+          } else return que
+        })
+
         this.setState(
           {
             translation: Constants.survey,
             arrLength: allQuestions.length,
-            questionsArr: allQuestions,
+            questionsArr: finalQuestions,
             isLoading: false,
             initialLoader: true,
             nextPage: LastAccess_questionArr.nextPage,
@@ -1365,10 +1377,18 @@ class SurveyBox extends Component {
                   this.addQuestionBasedOnChoiceType(allQuestions);
 
                   if (allQuestions.length !== 0) {
+
+                    const finalQuestions = allQuestions.length > 0 && allQuestions.map((que, index) => {
+                      const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+                      if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+                        return { ...que, isHide: true }
+                      } else return que
+                    })
+
                     this.setState(
                       {
                         arrLength: allQuestions.length,
-                        questionsArr: allQuestions,
+                        questionsArr: finalQuestions,
                         isLoading: false,
                         initialLoader: true,
                         nextPage: allQuestions.length > 1 ? 1 : 0,
@@ -2121,9 +2141,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -2149,9 +2169,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -2331,7 +2351,7 @@ class SurveyBox extends Component {
    * */
   questionPostObject(currentQuestArrayPos, retryArray) {
     let questionObj = "";
-
+    let releaseMission = [];
     let questionArr = []
     if (retryArray && retryArray.length > 0) {
       /** case when - retry for submition then take full array while noreturn
@@ -2396,7 +2416,23 @@ class SurveyBox extends Component {
         answer: questionArr.answer
       };
     }
-
+    if (questionArr.conditions && questionArr.conditions.length > 0) {
+      for (let i = 0; i < questionArr.conditions.length; i++) {
+        if (questionArr.conditions[i].target.do === 'release') {
+          let relObj = {
+            project: questionArr.conditions[i].target.project,
+            mission: questionArr.conditions[i].target.mission
+          }
+          releaseMission.push(relObj);
+        }
+      }
+    }
+    /** IF target.do is 'release' and has target mission */
+    if (releaseMission.length > 0) {
+      questionObj.release_mission = releaseMission;
+    } else {
+      questionObj.release_mission = [];
+    }
     if (questionArr.isloop) {
       questionObj.loop_number = questionArr.loop_number;
       questionObj.loop_set = questionArr.loop_set_num;
@@ -6497,7 +6533,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              questionObj['release_mission'] = release_mission;
+              // questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6533,8 +6569,8 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].hasOwnProperty("isUpdated") &&
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
+                  // questionObj['release_mission'] = release_mission;
                   let questionObj = this.questionPostObject(currentQuesIndx);
-                  questionObj['release_mission'] = release_mission;
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
                     this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6553,7 +6589,7 @@ class SurveyBox extends Component {
                 questionsArray[currentQuesIndx].isUpdated === true
               ) {
                 let questionObj = this.questionPostObject(currentQuesIndx);
-                questionObj['release_mission'] = release_mission;
+                // questionObj['release_mission'] = release_mission;
                 if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                   questionsArray[currentQuesIndx].properties.noreturn === 1) {
                   this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6575,7 +6611,7 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
                   let questionObj = this.questionPostObject(currentQuesIndx);
-                  questionObj['release_mission'] = release_mission;
+                  // questionObj['release_mission'] = release_mission;
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
                     this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6594,7 +6630,7 @@ class SurveyBox extends Component {
                 questionsArray[currentQuesIndx].isUpdated === true
               ) {
                 let questionObj = this.questionPostObject(currentQuesIndx);
-                questionObj['release_mission'] = release_mission;
+                // questionObj['release_mission'] = release_mission;
                 if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                   questionsArray[currentQuesIndx].properties.noreturn === 1) {
                   this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6635,7 +6671,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              questionObj['release_mission'] = release_mission;
+              // questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6688,7 +6724,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              questionObj['release_mission'] = release_mission;
+              // questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6727,7 +6763,7 @@ class SurveyBox extends Component {
         questionsArray[currentQuesIndx].isUpdated === true
       ) {
         let questionObj = this.questionPostObject(currentQuesIndx);
-        questionObj['release_mission'] = release_mission;
+        // questionObj['release_mission'] = release_mission;
         if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
           questionsArray[currentQuesIndx].properties.noreturn === 1) {
           this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6758,6 +6794,7 @@ class SurveyBox extends Component {
             unMetTarget,
             false
           );
+          /** To hide / show / loop questions */
           if (unMetTarget) {
             for (let k = 0; k < unMetTarget.length; k++) {
               if (
@@ -7030,17 +7067,18 @@ class SurveyBox extends Component {
                   }
                 }
               }
+              questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget)
               questionsArray = this.state.questionsArr;
             }
           }
         }
-
+        const updatedQuestionArr = this.setHideShowQuestions(questionsArray, target, unMetTarget) //by kr
         // this.setState({
         //   questionsArr : questionsArray
         // }, () => {
         let nextPage = currentPage;
         let nextExists = false;
-        let copyquestionArray = questionsArray;
+        let copyquestionArray = updatedQuestionArr;
         let copyarrLength = copyquestionArray.length;
 
         for (let i = currentPage; i < copyquestionArray.length; i++) {
@@ -7068,21 +7106,45 @@ class SurveyBox extends Component {
           }
         }
         if (
-          !copyquestionArray[currentQuesIndx].properties.hasOwnProperty(
-            "noreturn"
-          ) ||
+          !copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") ||
           copyquestionArray[currentQuesIndx].properties.noreturn === 0
         ) {
-          this.actionForNavNextIcon(nextPage, nextExists, currentPage, page, copyquestionArray);
+          this.actionForNavNextIcon(nextPage, nextExists, currentPage, page, updatedQuestionArr);
         }
-        if (copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") && copyquestionArray[currentQuesIndx].properties.noreturn === 1 &&
-          (!copyquestionArray[currentQuesIndx].hasOwnProperty("isUpdated") || copyquestionArray[currentQuesIndx].isUpdated === false)) {
-          this.checkNoReturnQues(copyquestionArray[currentQuesIndx], currentQuesIndx);
+        if (copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") && updatedQuestionArr[currentQuesIndx].properties.noreturn === 1 &&
+          (!copyquestionArray[currentQuesIndx].hasOwnProperty("isUpdated") || updatedQuestionArr[currentQuesIndx].isUpdated === false)) {
+          this.checkNoReturnQues(updatedQuestionArr[currentQuesIndx], currentQuesIndx);
         }
         // })
-
       }
     }
+  }
+
+  /** Set hide/show question as per already hide/showed passed from admin BY KR*/
+  setHideShowQuestions(queArr, target, unmetTarget) {
+    const finalarr = queArr.length > 0 && queArr.map((que, index) => {
+      const unMettargetfind = unmetTarget.length > 0 && unmetTarget.find((tar) => tar.handler == que.handler);
+      if (unMettargetfind && unMettargetfind) {
+        const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+        if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+          return {
+            ...que,
+            isHide: true
+          }
+        }
+        else if (que.properties[keyname] && que.properties[keyname] == 'show') {
+          return {
+            ...que,
+            isHide: false
+          }
+        } else {
+          return que
+        }
+      } else {
+        return que
+      }
+    })
+    return finalarr
   }
 
   /** Get hidden questions based on condition
@@ -7527,7 +7589,8 @@ class SurveyBox extends Component {
       }
     }
     let nextExists = false;
-
+    questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget)
+    this.setState({ questionsArr: questionsArray });
     if (currentPage == arrLength - 1) {
       nextExists = false;
     } else {
@@ -7585,7 +7648,6 @@ class SurveyBox extends Component {
         break;
       }
     }
-
     let page = prevPage;
     if (prevPage == 0) {
       prevExists = false;
@@ -7879,9 +7941,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -7970,9 +8032,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -8059,9 +8121,11 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // console.log("dfhjsdfgjkhgjkdfgngf 8171" , "FORCE UPDATE")
+        // this.forceUpdate()
+        // }
       }
     );
   }
@@ -8151,9 +8215,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -8337,9 +8401,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -8551,7 +8615,7 @@ class SurveyBox extends Component {
    * @param {Number} index Currenet question array element position
    */
   videoFromCamera(index) {
-    if (Platform.OS == 'ios') {
+    if (Platform.OS == 'ios') {  //not being called anywhere
       ImagePicker.openCamera({
         width: CAMERASTYLE.WIDTH,
         height: CAMERASTYLE.HEIGHT,
@@ -8588,57 +8652,62 @@ class SurveyBox extends Component {
       });
     }
     else {
-      launchCamera({
-        width: CAMERASTYLE.WIDTH,
-        height: CAMERASTYLE.HEIGHT,
-        includeBase64: true,
-        // cropping: false,
-        // isVideo: true
-        mediaType: 'video',
-        noData: false
+      /** TO add overlay question text used RNCamera 
+        same like ios **/
+      this.setState({ showCamera: true })
 
-      }, async (res) => {
-        if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
-          this.setState({ videoProcessing: true });
-          let videoRes = res.assets[0]
-          let path = videoRes.uri;
-          path = path.replace(/ /g, '%20')
-          const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
-            (progress) => {
-              console.log('Compression Progress: ', progress);
-            }
-          );
-          let source = {
-            uri: compressedVideo,
-            data: "",
-            type: 'mp4'
-          };
-          questionResponseQue[this.state.questionsArr[index].questionID] = true;
-          this.addAnswerForSelectedMedia(index, source);
+      /** To add overlay text removed bellow option and used RNCmera Option */
+      // launchCamera({
+      //   width: CAMERASTYLE.WIDTH,
+      //   height: CAMERASTYLE.HEIGHT,
+      //   includeBase64: true,
+      //   // cropping: false,
+      //   // isVideo: true
+      //   mediaType: 'video',
+      //   noData: false
+
+      // }, async (res) => {
+      //   if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
+      //     this.setState({ videoProcessing: true });
+      //     let videoRes = res.assets[0]
+      //     let path = videoRes.uri;
+      //     path = path.replace(/ /g, '%20')
+      //     const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
+      //       (progress) => {
+      //         
+      //       }
+      //     );
+      //     let source = {
+      //       uri: compressedVideo,
+      //       data: "",
+      //       type: 'mp4'
+      //     };
+      //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+      //     this.addAnswerForSelectedMedia(index, source);
 
 
-          // let videoRes = res.assets[0]
-          // let path = videoRes.uri;
-          // let ext = videoRes.type.split("/")
-          // let questionArr = this.state.questionsArr[index];
-          // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
-          // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
+      //     // let videoRes = res.assets[0]
+      //     // let path = videoRes.uri;
+      //     // let ext = videoRes.type.split("/")
+      //     // let questionArr = this.state.questionsArr[index];
+      //     // let filename = questionArr.survey_id.toString() + questionArr.questionID.toString() + (new Date().getTime()).toString() + '.' + ext[1];
+      //     // let newfile = RNFS.DocumentDirectoryPath + "/" + filename;
 
-          // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
-          //   .then(result => {
-          //     let source = {
-          //       uri: 'file://' + newfile,
-          //       data: "",
-          //       type: 'mp4'
-          //     };
-          //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
-          //     this.addAnswerForSelectedMedia(index, source);
+      //     // RNFFmpeg.execute('-i ' + path + ' -vf "scale=iw/2:ih/2" ' + newfile)
+      //     //   .then(result => {
+      //     //     let source = {
+      //     //       uri: 'file://' + newfile,
+      //     //       data: "",
+      //     //       type: 'mp4'
+      //     //     };
+      //     //     questionResponseQue[this.state.questionsArr[index].questionID] = true;
+      //     //     this.addAnswerForSelectedMedia(index, source);
 
-          //   }).catch(e => {
-          //     //console.log(e);			
-          //   });
-        }
-      });
+      //     //   }).catch(e => {
+      //     //     //console.log(e);			
+      //     //   });
+      //   }
+      // });
     }
 
   }
@@ -8901,22 +8970,25 @@ class SurveyBox extends Component {
         includeBase64: true,
         isVideo: true
       }).then(async (video) => {
-        this.setState({ changeImage: true, videoProcessing: true });
-        let path = "file://" + video[0].path
-        path = path.replace(/ /g, '%20')
-        const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
-          (progress) => {
-            console.log('Compression Progress: ', progress);
-          }
-        );
-        let compressedPath = compressedVideo.replace('file://', '')
-        RNFetchBlob.fs.readFile(compressedPath, 'base64')
-          .then((data) => {
-            let base64 = data;
-            let source = { uri: compressedPath, data: base64, type: 'mp4' };
-            this.addAnswerForSelectedMedia(index, source);
-          })
-
+        if (video[0].duration > this.state.maxDuration) {
+          Alert.alert(`Video duration should not be more then 3 minute`)
+        } else {
+          this.setState({ changeImage: true, videoProcessing: true });
+          let path = "file://" + video[0].path
+          path = path.replace(/ /g, '%20')
+          const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+            (progress) => {
+              console.log('Compression Progress: 2', progress);
+            }
+          );
+          let compressedPath = compressedVideo.replace('file://', '')
+          RNFetchBlob.fs.readFile(compressedPath, 'base64')
+            .then((data) => {
+              let base64 = data;
+              let source = { uri: compressedPath, data: base64, type: 'mp4' };
+              this.addAnswerForSelectedMedia(index, source);
+            })
+        }
         // RNCompress.compressVideo(path, "medium").then(compressedFile => {
         //   console.log('compressedFile', compressedFile)
         // Convert to base64 
@@ -8944,23 +9016,26 @@ class SurveyBox extends Component {
         //noData: false,
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
-          this.setState({ changeImage: true, videoProcessing: true });
-          let videoRes = res.assets[0]
-          let path = videoRes.uri
-          path = path.replace(/ /g, '%20')
-          const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
-            (progress) => {
-              console.log('Compression Progress: ', progress);
-            }
-          );
-          let source = {
-            uri: compressedVideo,
-            data: "",
-            type: 'mp4'
-          };
-          questionResponseQue[this.state.questionsArr[index].questionID] = true;
-          this.addAnswerForSelectedMedia(index, source);
-
+          if (res.assets[0].duration && res.assets[0].duration > this.state.maxDuration) {
+            Alert.alert(`Video duration should not be more then 3 minute`)
+          } else {
+            this.setState({ changeImage: true, videoProcessing: true });
+            let videoRes = res.assets[0]
+            let path = videoRes.uri
+            path = path.replace(/ /g, '%20')
+            const compressedVideo = await Video.compress(path, { compressionMethod: "auto" },
+              (progress) => {
+                console.log('Compression Progress: ', progress);
+              }
+            );
+            let source = {
+              uri: compressedVideo,
+              data: "",
+              type: 'mp4'
+            };
+            questionResponseQue[this.state.questionsArr[index].questionID] = true;
+            this.addAnswerForSelectedMedia(index, source);
+          }
           // let videoRes = res.assets[0]
           // let filepath = await RNFetchBlob.fs.stat(videoRes.uri)
           // let path = 'file://' + filepath.path;
@@ -9296,6 +9371,7 @@ class SurveyBox extends Component {
 
   /* manage media access permission  */
   callMediaAccess(type, index, media) {
+    this.setState({ videoDurationCountdown: this.state.maxDuration })
     this.RBBottomSheet.close();
     // Pause the audio player if it's running
     this.handleAudioPause();
@@ -9348,7 +9424,8 @@ class SurveyBox extends Component {
     this.setState(
       {
         questionsArr: localArray,
-        videoProcessing: false
+        videoProcessing: false,
+        videoDurationCountdown: this.state.maxDuration
       },
       _ => {
         //console.log(this.state.videoProcessing);
@@ -9933,21 +10010,45 @@ class SurveyBox extends Component {
     );
   }
 
+  createMinuteDisplayFromSecond = (second) => {
+    const minute = Math.floor(second / 60);
+    const remainSeconds = second - (minute * 60)
+    return `${minute < 10 ? "0" + minute : minute}:${remainSeconds < 10 ? "0" + remainSeconds : remainSeconds}`
+  }
+
   /* start video recording when user click start button */
   async startVideoRecording(index) {
+    this.keepScreenAwake();
     this.setState({ recording: true });
-    // default to mp4 for android as codec is not set
-    await this.camera.recordAsync().then(async data => {
+    const interval = setInterval(() => {
+      this.state.videoDurationCountdown > 0 && this.setState({ videoDurationCountdown: this.state.videoDurationCountdown - 1 })
+    }, 1000)
+    const timeout = setTimeout(() => {
+      if (!this.state.videoProcessing) {
+        clearInterval(interval);
+        pageIndex = this.state.pageCount;
+        this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true });
+        this.stopVideoRecording.bind(this, this.state.pageCount);
+      }
+    }, (this.state.maxDuration + 2) * 1000);
+    await this.camera.recordAsync({
+      maxDuration: this.state.maxDuration,
+    }).then(async data => {
       let uri = data.uri.replace(/(^\w+:|^)\/\//, "");
       RNFetchBlob.fs.exists(uri).then(exist => {
         RNFetchBlob.fs
           .stat(uri)
           .then(async (pathRes) => {
+            this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true });
             let path = "file://" + pathRes.path;
             path = path.replace(/ /g, '%20')
+            clearInterval(interval);
+            setTimeout(() => {
+              clearTimeout(timeout);
+            }, 2000)
             const compressedVideo = await Video.compress(path, { compressionMethod: 'auto', },
               (progress) => {
-                console.log('Compression Progress: ', progress);
+                console.log('Compression Progress: 4', progress);
               }
             );
             let compressedPath = compressedVideo.replace('file://', '')
@@ -9976,17 +10077,27 @@ class SurveyBox extends Component {
     });
   }
 
+  keepScreenAwake = () => {
+    // KeepAwake.activate();
+    activateKeepAwake();
+  };
+
+  allowScreenSleep = () => {
+    // KeepAwake.deactivate();
+    deactivateKeepAwake();
+  };
+
   /* stop video recording when click stop button */
   stopVideoRecording = index => {
+    this.allowScreenSleep()
     if (Platform.OS == 'ios') {
-      this.camera.stopRecording();
       pageIndex = this.state.pageCount;
-      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true }, _ => {
-        //this.horizontalCarousel.goToPage(this.state.pageCount);
-      });
+      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true, videoDurationCountdown: this.state.maxDuration });
+      this.camera.stopRecording();
     }
     else {
-      this.setState({ recording: false, showCamera: false });
+      pageIndex = this.state.pageCount;
+      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: true, videoDurationCountdown: this.state.maxDuration });
       this.camera.stopRecording();
     }
   };
@@ -10000,7 +10111,8 @@ class SurveyBox extends Component {
       });
     }
     else {
-      this.setState({ recording: false, showCamera: false });
+      pageIndex = this.state.pageCount;
+      this.setState({ recording: false, showCamera: false, cameraMode: true });
     }
   };
 
@@ -11223,9 +11335,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   };
@@ -11379,9 +11491,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -11459,9 +11571,9 @@ class SurveyBox extends Component {
         questionsArr: localArray
       },
       _ => {
-        if (this.state.rightDisable === true) {
-          this.executeConditions(answer);
-        }
+        // if (this.state.rightDisable === true) {
+        this.executeConditions(answer);
+        // }
       }
     );
   }
@@ -13399,8 +13511,12 @@ class SurveyBox extends Component {
                 buttonPositive: this.state.translation[this.state.Language].OK,
                 buttonNegative: this.state.translation[this.state.Language].Cancel
               }}
-              onGoogleVisionBarcodesDetected={({ barcodes }) => { }}
+            //onGoogleVisionBarcodesDetected={({ barcodes }) => { }}  //commented to solve crash issue in android
             />
+            <View style={styles.videoOverlayView}>
+              <Text style={styles.videoOverlayText} numberOfLines={8}>{questionsArr[pageCount].properties.question ?
+                questionsArr[pageCount].properties.question : ""}</Text>
+            </View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
@@ -13417,7 +13533,7 @@ class SurveyBox extends Component {
                 </TouchableOpacity>
               )}
               {button}
-              {!recording && (
+              {!recording ? (
                 <TouchableOpacity
                   style={{ alignSelf: "center", marginRight: 10 }}
                   onPress={this.closeVideoCamera.bind(this)}
@@ -13427,13 +13543,16 @@ class SurveyBox extends Component {
                   >
                     {translation[Language].Cancel}
                   </Text>
+                </TouchableOpacity>)
+                : <TouchableOpacity style={{ alignSelf: "center", marginRight: 10 }}>
+                  <Text style={{ color: 'white', fontSize: 18 }}>{this.createMinuteDisplayFromSecond(this.state.videoDurationCountdown)}</Text>
                 </TouchableOpacity>
-              )}
-              {recording && (
+              }
+              {/* {recording && (
                 <TouchableOpacity>
                   <View style={{ width: 50, height: 50 }} />
                 </TouchableOpacity>
-              )}
+              )} */}
             </View>
           </View>
         )}
@@ -14545,5 +14664,20 @@ const styles = ScaledSheet.create({
     flex: 0.5,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  videoOverlayView: {
+    position: 'absolute',
+    top: 60,
+    left: 10,
+    right: 10,
+    padding: 10,
+    alignItems: 'center',
+    backgroundColor: Color.colorWhite,
+    opacity: 0.8
+  },
+  videoOverlayText: {
+    color: Color.colorBlack,
+    fontWeight: 'bold',
+    textAlign: 'justify'
   }
 });
