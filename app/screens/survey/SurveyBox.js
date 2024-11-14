@@ -2416,23 +2416,23 @@ class SurveyBox extends Component {
         answer: questionArr.answer
       };
     }
-    if (questionArr.conditions && questionArr.conditions.length > 0) {
-      for (let i = 0; i < questionArr.conditions.length; i++) {
-        if (questionArr.conditions[i].target.do === 'release') {
-          let relObj = {
-            project: questionArr.conditions[i].target.project,
-            mission: questionArr.conditions[i].target.mission
-          }
-          releaseMission.push(relObj);
-        }
-      }
-    }
+    // if (questionArr.conditions && questionArr.conditions.length > 0) {
+    //   for (let i = 0; i < questionArr.conditions.length; i++) {
+    //     if (questionArr.conditions[i].target.do === 'release') {
+    //       let relObj = {
+    //         project: questionArr.conditions[i].target.project,
+    //         mission: questionArr.conditions[i].target.mission
+    //       }
+    //       releaseMission.push(relObj);
+    //     }
+    //   }
+    // }
     /** IF target.do is 'release' and has target mission */
-    if (releaseMission.length > 0) {
-      questionObj.release_mission = releaseMission;
-    } else {
-      questionObj.release_mission = [];
-    }
+    // if (releaseMission.length > 0) {
+    //   questionObj.release_mission = releaseMission;
+    // } else {
+    //   questionObj.release_mission = [];
+    // }
     if (questionArr.isloop) {
       questionObj.loop_number = questionArr.loop_number;
       questionObj.loop_set = questionArr.loop_set_num;
@@ -4875,7 +4875,6 @@ class SurveyBox extends Component {
       val !== null && typeof val === "string" ? val.toLowerCase() : val;
     const matchValue =
       typeof matchVal === "string" ? matchVal.toLowerCase() : matchVal;
-
     switch (condition) {
       case "equal":
         if (target === "Value_Multiple_Any") {
@@ -4979,7 +4978,7 @@ class SurveyBox extends Component {
         } else {
           if (source && source.hasOwnProperty('id')) {
             if (source.hasOwnProperty('p_id') && source.hasOwnProperty('id')) {
-              isMatch = source.p_id != selectedp_id && source.id != selected_id;
+              isMatch = source.p_id != selectedp_id || source.id != selected_id;   //BY KR need to change && to ||  to fullfill the release condition
             } else {
               isMatch = source.id != selected_id;
             }
@@ -6533,7 +6532,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              // questionObj['release_mission'] = release_mission;
+              questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6569,7 +6568,7 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].hasOwnProperty("isUpdated") &&
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
-                  // questionObj['release_mission'] = release_mission;
+                  questionObj['release_mission'] = release_mission;
                   let questionObj = this.questionPostObject(currentQuesIndx);
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
@@ -6589,7 +6588,7 @@ class SurveyBox extends Component {
                 questionsArray[currentQuesIndx].isUpdated === true
               ) {
                 let questionObj = this.questionPostObject(currentQuesIndx);
-                // questionObj['release_mission'] = release_mission;
+                questionObj['release_mission'] = release_mission;
                 if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                   questionsArray[currentQuesIndx].properties.noreturn === 1) {
                   this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6611,7 +6610,7 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
                   let questionObj = this.questionPostObject(currentQuesIndx);
-                  // questionObj['release_mission'] = release_mission;
+                  questionObj['release_mission'] = release_mission;
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
                     this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6630,7 +6629,7 @@ class SurveyBox extends Component {
                 questionsArray[currentQuesIndx].isUpdated === true
               ) {
                 let questionObj = this.questionPostObject(currentQuesIndx);
-                // questionObj['release_mission'] = release_mission;
+                questionObj['release_mission'] = release_mission;
                 if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                   questionsArray[currentQuesIndx].properties.noreturn === 1) {
                   this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6671,7 +6670,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              // questionObj['release_mission'] = release_mission;
+              questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6724,7 +6723,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              // questionObj['release_mission'] = release_mission;
+              questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6763,7 +6762,7 @@ class SurveyBox extends Component {
         questionsArray[currentQuesIndx].isUpdated === true
       ) {
         let questionObj = this.questionPostObject(currentQuesIndx);
-        // questionObj['release_mission'] = release_mission;
+        questionObj['release_mission'] = release_mission;
         if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
           questionsArray[currentQuesIndx].properties.noreturn === 1) {
           this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -12933,6 +12932,78 @@ class SurveyBox extends Component {
       }
     }
 
+    /** BY KR RELEASE MISSION CONDITION ADDED*/
+    let release_mission = [];
+    if (questionsArray[currentQuesIndx].conditions.length > 0) {
+      for (let i = 0; i < questionsArray[currentQuesIndx].conditions.length; i++) {
+        if (questionsArray[currentQuesIndx].conditions[i].target.do == 'release' && questionsArray[currentQuesIndx].conditions[i].source) {
+          for (let j = 0; j < questionsArray[currentQuesIndx].conditions[i].source.length; j++) {
+            if (questionsArray[currentQuesIndx].questionType == 'choice') {
+              if (questionsArray[currentQuesIndx].answer.selected_option) {
+                isMatch = this.conditionValidation(
+                  questionsArray[currentQuesIndx].answer,
+                  questionsArray[currentQuesIndx].conditions[i].source[j].match_value,
+                  questionsArray[currentQuesIndx].conditions[i].source[j].state,
+                  questionsArray[currentQuesIndx].conditions[i].source[j].target,
+                  questionsArray[currentQuesIndx].answer.selected_option[0].id,
+                  questionsArray[currentQuesIndx].answer.selected_option[0].sub_id,
+                  questionsArray[currentQuesIndx].conditions[i].source[j]
+                );
+                if (isMatch) {
+                  relObj = {
+                    project: questionsArray[currentQuesIndx].conditions[i].target.project,
+                    mission: questionsArray[currentQuesIndx].conditions[i].target.mission
+                  }
+                  release_mission.push(relObj)
+                } else {
+                  release_mission == []
+                }
+              }
+            }
+            else if (questionsArray[currentQuesIndx].questionType == 'scale') {
+              if (questionsArray[currentQuesIndx].answer.selected_option) {
+                const length = questionsArray[currentQuesIndx].answer.selected_option.length
+                isMatch = this.conditionValidation(
+                  questionsArray[currentQuesIndx].answer.icon_type === "image" ? questionsArray[currentQuesIndx].answer.selected_option[length - 1].value : questionsArray[currentQuesIndx].answer.selected_option[0].value,
+                  questionsArray[currentQuesIndx].conditions[i].source[j].match_value,
+                  questionsArray[currentQuesIndx].conditions[i].source[j].state,
+                  questionsArray[currentQuesIndx].conditions[i].source[j].target,
+                );
+                if (isMatch) {
+                  relObj = {
+                    project: questionsArray[currentQuesIndx].conditions[i].target.project,
+                    mission: questionsArray[currentQuesIndx].conditions[i].target.mission
+                  }
+                  release_mission.push(relObj)
+                } else {
+                  release_mission == []
+                }
+              }
+            }
+            else if (questionsArray[currentQuesIndx].questionType == 'barcode') {
+              isMatch = this.conditionValidation(
+                questionsArray[currentQuesIndx].answer.barcode_id || "",
+                questionsArray[currentQuesIndx].conditions[i].source[j].match_value,
+                questionsArray[currentQuesIndx].conditions[i].source[j].state,
+                questionsArray[currentQuesIndx].conditions[i].source[j].target,
+              );
+              if (isMatch) {
+                relObj = {
+                  project: questionsArray[currentQuesIndx].conditions[i].target.project,
+                  mission: questionsArray[currentQuesIndx].conditions[i].target.mission
+                }
+                release_mission.push(relObj)
+              } else {
+                release_mission == []
+              }
+            }
+            else release_mission = [];
+          }
+        }
+        else release_mission = [];
+      }
+    }
+
     if (
       questionsArray[currentQuesIndx].properties.hasOwnProperty("mandatory") &&
       questionsArray[currentQuesIndx].properties.mandatory === 1
@@ -12944,6 +13015,7 @@ class SurveyBox extends Component {
           questionsArray[currentQuesIndx].answer.text != ""
         ) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         } else {
           Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
@@ -12956,6 +13028,7 @@ class SurveyBox extends Component {
             questionsArray[currentQuesIndx].answer.label_text.length >
             0))) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         }
         else {
@@ -12983,6 +13056,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].answer.label != ""))
         ) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         } else {
           Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
@@ -12995,6 +13069,7 @@ class SurveyBox extends Component {
           questionsArray[currentQuesIndx].answer.media != ""
         ) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         } else {
           Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
@@ -13009,6 +13084,7 @@ class SurveyBox extends Component {
           questionsArray[currentQuesIndx].answer.image != ""
         ) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         } else {
           Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
@@ -13016,10 +13092,12 @@ class SurveyBox extends Component {
       }
       else if (questionsArray[currentQuesIndx].questionType === "gps") {
         let questionObj = this.questionPostObject(currentQuesIndx);
+        questionObj.release_mission = release_mission;
         this.postAnswerToServer(questionObj, currentQuesIndx, true);
       }
     } else {
       let questionObj = this.questionPostObject(currentQuesIndx);
+      questionObj.release_mission = release_mission;
       this.postAnswerToServer(questionObj, currentQuesIndx, true);
     }
   };
