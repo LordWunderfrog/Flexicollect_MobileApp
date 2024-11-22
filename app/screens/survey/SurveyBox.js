@@ -7066,18 +7066,29 @@ class SurveyBox extends Component {
                   }
                 }
               }
-              questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget)
-              questionsArray = this.state.questionsArr;
+
+            }
+          }
+          questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget); //by kr
+          /** if multifiled and show_multiple OR hide_multiple in unMetTarget BY KR */
+          const unMettargetfindShowMultifield = unMetTarget.length > 0 && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield') && tar.do == 'show_multiple' && tar.multifield.length > 0);
+          const unMettargetfindHideMultifield = unMetTarget.length > 0 && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield') && tar.do == 'hide_multiple' && tar.multifield.length > 0);
+
+          if (unMettargetfindShowMultifield && unMettargetfindShowMultifield.length > 0) {
+            for (let i = 0; i < unMettargetfindShowMultifield.length; i++) {
+              questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindShowMultifield[i]], true, target);
+            }
+          }
+          if (unMettargetfindHideMultifield && unMettargetfindHideMultifield.length > 0) {
+            for (let i = 0; i < unMettargetfindHideMultifield.length; i++) {
+              questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindHideMultifield[i]], true, target);
             }
           }
         }
-        const updatedQuestionArr = this.setHideShowQuestions(questionsArray, target, unMetTarget) //by kr
-        // this.setState({
-        //   questionsArr : questionsArray
-        // }, () => {
+
         let nextPage = currentPage;
         let nextExists = false;
-        let copyquestionArray = updatedQuestionArr;
+        let copyquestionArray = questionsArray;
         let copyarrLength = copyquestionArray.length;
 
         for (let i = currentPage; i < copyquestionArray.length; i++) {
@@ -7108,11 +7119,11 @@ class SurveyBox extends Component {
           !copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") ||
           copyquestionArray[currentQuesIndx].properties.noreturn === 0
         ) {
-          this.actionForNavNextIcon(nextPage, nextExists, currentPage, page, updatedQuestionArr);
+          this.actionForNavNextIcon(nextPage, nextExists, currentPage, page, copyquestionArray);
         }
-        if (copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") && updatedQuestionArr[currentQuesIndx].properties.noreturn === 1 &&
-          (!copyquestionArray[currentQuesIndx].hasOwnProperty("isUpdated") || updatedQuestionArr[currentQuesIndx].isUpdated === false)) {
-          this.checkNoReturnQues(updatedQuestionArr[currentQuesIndx], currentQuesIndx);
+        if (copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") && copyquestionArray[currentQuesIndx].properties.noreturn === 1 &&
+          (!copyquestionArray[currentQuesIndx].hasOwnProperty("isUpdated") || copyquestionArray[currentQuesIndx].isUpdated === false)) {
+          this.checkNoReturnQues(copyquestionArray[currentQuesIndx], currentQuesIndx);
         }
         // })
       }
@@ -7145,6 +7156,39 @@ class SurveyBox extends Component {
     })
     return finalarr
   }
+
+  /** Set hide Multiple question if un match the condition of show_multiple BY KR */
+  setHideShowMultipleUnmetTarget(queArr, unmetTarget, isShowMultiple, target) {
+    const unMettargetfind = unmetTarget.length > 0 && unmetTarget.find((tar) => tar.hasOwnProperty("multifield"));
+    const unMettargetfind22 = unmetTarget.length > 0 && unmetTarget.filter((tar) => tar.hasOwnProperty("multifield") && tar.multifield.length > 0);
+
+    const finalarr = queArr.length > 0 && queArr.map((que, index) => {
+      const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+      if (unMettargetfind && unMettargetfind) {
+        const matchedField = unMettargetfind.multifield.find((item) => item.value == que.handler);
+        if (matchedField && que.properties[keyname] && que.properties[keyname] == 'hide') {
+          return {
+            ...que,
+            isHide: true
+          }
+        }
+        else if (matchedField && que.properties[keyname] && que.properties[keyname] == 'show') {
+          return {
+            ...que,
+            isHide: false
+          }
+        }
+        else {
+          return que;
+        }
+      }
+      else {
+        return que;
+      }
+
+    });
+    return finalarr;
+  };
 
   /** Get hidden questions based on condition
     * @param currentQuesIndx - current question index
@@ -7237,8 +7281,23 @@ class SurveyBox extends Component {
           }
         }
       }
-    }
+      questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget);
+      /** if multifiled and show_multiple OR hide_multiple in unMetTarget BY KR */
+      const unMettargetfindShowMultifield = unMetTarget.length > 0 && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield') && tar.do == 'show_multiple' && tar.multifield.length > 0);
+      const unMettargetfindHideMultifield = unMetTarget.length > 0 && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield') && tar.do == 'hide_multiple' && tar.multifield.length > 0);
 
+      if (unMettargetfindShowMultifield && unMettargetfindShowMultifield.length > 0) {
+        for (let i = 0; i < unMettargetfindShowMultifield.length; i++) {
+          questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindShowMultifield[i]], true, target);
+        }
+      }
+      if (unMettargetfindHideMultifield && unMettargetfindHideMultifield.length > 0) {
+        for (let i = 0; i < unMettargetfindHideMultifield.length; i++) {
+          questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindHideMultifield[i]], true, target);
+        }
+      }
+    }
+    // questionsArray = this.setHideShwQuestions(questionsArray, target, unMetTarget);  commented by KR
     let hiddenQuestions = []
 
     for (let i = 0; i < questionsArray.length; i++) {
@@ -7587,8 +7646,23 @@ class SurveyBox extends Component {
         }
       }
     }
+    questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget);
+    /** if multifiled and show_multiple OR hide_multiple in unMetTarget BY KR */
+    const unMettargetfindShowMultifield = unMetTarget.length > 0 && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield') && tar.do == 'show_multiple' && tar.multifield.length > 0);
+    const unMettargetfindHideMultifield = unMetTarget.length > 0 && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield') && tar.do == 'hide_multiple' && tar.multifield.length > 0);
+
+    if (unMettargetfindShowMultifield && unMettargetfindShowMultifield.length > 0) {
+      for (let i = 0; i < unMettargetfindShowMultifield.length; i++) {
+        questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindShowMultifield[i]], true, target);
+      }
+    }
+    if (unMettargetfindHideMultifield && unMettargetfindHideMultifield.length > 0) {
+      for (let i = 0; i < unMettargetfindHideMultifield.length; i++) {
+        questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindHideMultifield[i]], true, target);
+      }
+    }
     let nextExists = false;
-    questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget)
+
     this.setState({ questionsArr: questionsArray });
     if (currentPage == arrLength - 1) {
       nextExists = false;
