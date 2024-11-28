@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     View,
     Dimensions,
-    ImageBackground
+    ImageBackground,
+    Pressable
 } from "react-native";
 import { ScaledSheet } from 'react-native-size-matters';
 import * as Color from '../../style/Colors';
@@ -52,6 +53,7 @@ class MarkerScreen extends Component {
             whichMaker: 4,
             isSelected: false,
             selectedMaker: arrow,
+            selectedMakerArr : [],
             tapToPlace: imageProperty.marker_instruction_text !== '' ? imageProperty.marker_instruction_text : String.tapToPlace,
             locationX: width / 2,
             locationY: height / 2,
@@ -109,12 +111,65 @@ class MarkerScreen extends Component {
      */
     markerClick(whichMarker) {
         this.setState({ hidMaker: true })
+        const numberX = Math.random() * (3.1 - 1) + 1;
+        const numberY = Math.random() * (3.1 - 1.5) + 1.5;
         if (whichMarker === 'location') {
-            this.setState({ selectedMaker: locationIcon, whichMaker: 1, isScalable: false, isSelected: false, })
+            this.setState({ 
+                selectedMaker: locationIcon, 
+                whichMaker: 1, 
+                isScalable: false, 
+                isSelected: false,
+                selectedMakerArr : [
+                    ...this.state.selectedMakerArr,
+                    {
+                        marker : locationIcon,
+                        locationX : width/numberX,
+                        locationY : height/numberY,
+                        whichMaker : 1,
+                        isScalable : true,
+                        isSelected : true,
+                        isVisible : true
+                    }
+                ]
+            })
         } else if (whichMarker === 'circle') {
-            this.setState({ selectedMaker: circle, whichMaker: 2, isScalable: true, isSelected: true })
+            this.setState({ 
+                selectedMaker: circle, 
+                whichMaker: 2, 
+                isScalable: true, 
+                isSelected: true,
+                selectedMakerArr : [
+                    ...this.state.selectedMakerArr,
+                    {
+                        marker : circle,
+                        locationX : width/numberX,
+                        locationY : height/numberY,
+                        whichMaker : 2,
+                        isScalable : true,
+                        isSelected : true,
+                        isVisible : true
+                    }
+                ]
+            })
         } else if (whichMarker === 'arrow') {
-            this.setState({ selectedMaker: arrow, whichMaker: 3, isScalable: true, isSelected: true })
+            this.setState({ 
+                selectedMaker: arrow, 
+                whichMaker: 3, 
+                isScalable: true, 
+                isSelected: true,
+                selectedMakerArr : [
+                    ...this.state.selectedMakerArr,
+                    {
+                        marker : arrow,
+                        locationX : width/numberX,
+                        locationY : height/numberY,
+                        whichMaker : 3,
+                        isScalable : true,
+                        isSelected : true,
+                        isVisible : true
+                    }
+                ]
+            })
         }
         this.getSelectedMarkerId(whichMarker)
     }
@@ -151,7 +206,6 @@ class MarkerScreen extends Component {
             return {
                 width: 80,
                 height: 80,
-
             }
         } else {
             /*   marginTop: height / 2 - 40,
@@ -225,7 +279,7 @@ class MarkerScreen extends Component {
     markerOpacity(val) {
 
         if (this.state.whichMaker === val) {
-            return { opacity: 0.2 }
+            return { opacity: 1 }
         } else {
             return { opacity: 1 }
         }
@@ -234,6 +288,23 @@ class MarkerScreen extends Component {
         const { height } = e.nativeEvent.layout
         this.setState({ bottomViewHeight: height })
     }
+
+    /**
+     * @param {id} id - index of selected marker 
+     */
+    deleteMarker = (id) => {
+        // const markers11 = this.state.selectedMakerArr.filter((item , index)=>index!==id);
+        const markers11 = this.state.selectedMakerArr.map((item , index)=>{
+            if(index!==id) return item;
+            else return {
+                ...item,
+                isVisible : false
+            }
+        });
+        this.setState({
+            selectedMakerArr : markers11
+        })
+    };
 
     /** Class render method */
     render() {
@@ -248,53 +319,79 @@ class MarkerScreen extends Component {
                             resizeMode="stretch" source={this.state.image} />
                     </View>
                     {
-                        this.state.hidMaker && (<DragAndScale
-                            style={gesture}
-                            scalable={!this.state.isSelected ? false : { min: 1, max: 5 }}
-                            rotatable={false}
-                            onScaleEnd={(event, locationX, locationY, style) => {
-                                this.setState({
-                                    markerStyle: style
-                                })
-                            }}
-
-                            onScaleChange={(event, style) => {
-                                this.setState({
-                                    markerStyle: style
-                                })
-                            }}
-                            onPanRelease={(event, locationX, locationY, style, setValue) => {
-                                //Constants.saveKey('styleMarker',style)                        
-                                let localStyle = {
-                                    position: 'absolute',
-                                    alignSelf: 'center',
-                                    padding: 20,
-                                    marginTop: style.marginTop - 60,
-                                    marginLeft: style.marginLeft - 30,
-                                    left: style.left,
-                                    top: style.top
-                                }
-
-                                /**
-                                 * setValue=== true (scale) and setValue===false(drag)
-                                 * */
-                                this.setState({
-                                    locationX: locationX,
-                                    locationY: locationY,
-                                    markerStyle: localStyle
-                                })
-                            }}
-                        >
-                            <View style={[this.changeStyleMarker]}>
-                                <Image
-                                    ref={(c) => {
-                                        this.view = c;
-                                    }}
-                                    source={selectedMaker}
-                                    style={[this.changeStyleMarker]}
-                                />
-                            </View>
-                        </DragAndScale>)
+                        this.state.hidMaker && (
+                       this.state.selectedMakerArr.length>0 && 
+                       this.state.selectedMakerArr.map((item , index)=>{
+                        return(
+                            <DragAndScale
+                                scalable={!item.isSelected ? false : { min: 1, max: 5 }}
+                                rotatable={false}
+                                onScaleEnd={(event, locationX, locationY, style) => {
+                                    this.setState({
+                                        markerStyle: style
+                                    })
+                                }}
+                                onScaleChange={(event, style) => {
+                                    this.setState({
+                                        markerStyle: style
+                                    })
+                                }}
+                                onPanRelease={(event, locationX, locationY, style, setValue) => {
+                                    //Constants.saveKey('styleMarker',style)                        
+                                    let localStyle = {
+                                        position: 'absolute',
+                                        alignSelf: 'center',
+                                        padding: 20,
+                                        marginTop: style.marginTop - 60,
+                                        marginLeft: style.marginLeft - 30,
+                                        left: style.left,
+                                        top: style.top
+                                    }
+                                    /**
+                                     * setValue=== true (scale) and setValue===false(drag)
+                                     * */
+                                    this.setState({
+                                        locationX: item.locationX,
+                                        locationY: item.locationY,
+                                        markerStyle: localStyle
+                                    })
+                                }}
+                                style={{
+                                    ...gesture , 
+                                    left: item.locationX,
+                                    top: item.locationY,
+                                }}
+                            >
+                                <Pressable onPress={()=>this.deleteMarker(index)}>
+                                    <View style={item.whichMaker == 1 ? {
+                                            width: 35,
+                                            height: 50,
+                                        } : {
+                                            width: 80,
+                                            height: 80,
+                                        }}
+                                    >
+                                        <Image
+                                            ref={(c) => {
+                                                this.view = c;
+                                            }}
+                                            source={item.marker}
+                                            style={item.whichMaker == 1 ? {
+                                                width: 35,
+                                                height: 50,
+                                                opacity: item.isVisible ? 1 : 0
+                                            } : {
+                                                width: 80,
+                                                height: 80,
+                                                opacity: item.isVisible ? 1 : 0
+                                            }}
+                                        />
+                                        </View>
+                                </Pressable>
+                            </DragAndScale>
+                            )
+                            })
+                        )
                     }
                 </ViewShot>
 
@@ -453,8 +550,6 @@ const styles = ScaledSheet.create({
         position: 'absolute',
         alignSelf: 'center',
         justifyContent: 'center',
-        left: width / 2,
-        top: height / 2,
         transform: [
             {
                 translateX: -50
