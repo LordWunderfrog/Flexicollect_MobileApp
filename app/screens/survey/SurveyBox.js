@@ -1142,6 +1142,11 @@ class SurveyBox extends Component {
                                 )
                                   ? result.question.handler
                                   : null,
+                                group_number: result.question.hasOwnProperty(
+                                  "group_number"
+                                )
+                                  ? result.question.group_number
+                                  : null,
                                 uniqueID: result.id
                               };
                               if (result.hasOwnProperty('loop_answers')) {
@@ -1181,6 +1186,11 @@ class SurveyBox extends Component {
                                   "handler"
                                 )
                                   ? result.question.handler
+                                  : null,
+                                group_number: result.question.hasOwnProperty(
+                                  "group_number"
+                                )
+                                  ? result.question.group_number
                                   : null,
                                 uniqueID: result.id
                               };
@@ -1225,6 +1235,11 @@ class SurveyBox extends Component {
                                   "handler"
                                 )
                                   ? result.question.handler
+                                  : null,
+                                group_number: result.question.hasOwnProperty(
+                                  "group_number"
+                                )
+                                  ? result.question.group_number
                                   : null,
                                 uniqueID: result.id
                               };
@@ -2719,6 +2734,9 @@ class SurveyBox extends Component {
               if (cindex === newconditions.length - 1) {
                 newquesarr.loop_set_end = true
               }
+              if (q.group_number && q.group_number > 0) {
+                newquesarr.group_number = q.group_number
+              }
               if (newquesarr.hasOwnProperty('loop_set_end') && newquesarr.loop_set_end === true) {
                 newquesarr.conditions = this.setloopquesconditions(q.conditions, questionID, loop_set_num, cindex + 1, move_condition, move_condition)
               } else {
@@ -2754,12 +2772,42 @@ class SurveyBox extends Component {
         })
       })
       if (arry.length > 0) {
-        newquestionsArray.splice(spliceparentIndex + 1, 0, ...arry)
+        const newArray = this.shuffleArray(arry)
+        newquestionsArray.splice(spliceparentIndex + 1, 0, ...newArray)
         this.addQuestionBasedOnChoiceType(newquestionsArray)
         this.state.questionsArr = newquestionsArray;
       }
     }
   }
+
+  /** Shuffle the array of loop question before adding to main question array if qroup number exist */
+  shuffleArray = (loopQuestions) => {
+    const maxBatch = Math.max(...loopQuestions.map(item => item.group_number ? Number(item.group_number) : 0))
+    let start = 0;
+    let _array = [];
+    if (maxBatch > 0) {
+      for (let i = 0; i <= maxBatch; i++) {
+        _array = loopQuestions.filter((item) => item.group_number == i);
+        if (_array.length > 0) {
+          start = loopQuestions.findIndex((item) => item.handler == _array[0].handler)
+          let currentIndex = _array.length;
+          // While there remain elements to shuffle...
+          while (currentIndex != 0) {
+            // Pick a remaining element...
+            let randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            // And swap it with the current element.
+            [_array[currentIndex], _array[randomIndex]] = [
+              _array[randomIndex], _array[currentIndex]];
+          }
+        }
+      }
+    }
+    _array.map((item, index) => {
+      loopQuestions.splice(start + index, 1, item);
+    })
+    return loopQuestions;
+  };
 
   /** hiding the loop question that is not matched
    *  @param condition - condition for the looping
