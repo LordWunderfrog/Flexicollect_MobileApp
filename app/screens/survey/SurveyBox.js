@@ -88,6 +88,7 @@ import Mailer from 'react-native-mail';
 import DatePicker from 'react-native-date-picker';
 import ImageViewer from "../../components/image-zoom-viewer";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import * as Progress from 'react-native-progress';
 
 const videoCompressOptions = {
   //width: 720,
@@ -326,6 +327,10 @@ class SurveyBox extends Component {
 
     this.state = {
       hidden_question: [],
+      questionLength: 0,
+      hiddenQuestionLength: [],
+      progressNumber: 1,
+      maxReachedQuestion: 1,
       answer: "",
       pageCount: 0,
       leftArrow: pageIndex === 0 ? 0.3 : 1,
@@ -545,7 +550,33 @@ class SurveyBox extends Component {
     //GPSState.removeListener();
     // AppState.removeEventListener("change", this._handleAppStateChange);
     this.appStatechangeListner.remove()
+    this.setDataToAsync();
   }
+
+  /** method is used for progress bar manage for display question number out of total */
+  async surveySubmitted() {
+    await AsyncStorage.setItem(`SURVEY_SUBMITTED_${this.state.missionId}`, "1");
+  };
+
+  /** method is used for progress bar manage for display question number out of total */
+  async setDataToAsync() {
+    await AsyncStorage.setItem(`QUESTION_LENGTH_${this.state.missionId}`, `${this.state.questionLength}`);
+    await AsyncStorage.setItem(`MAX_REACHED_QUE_${this.state.missionId}`, `${this.state.maxReachedQuestion}`);
+  };
+
+  /** method is used for progress bar manage for display question number out of total */
+  async getDataFromAsync() {
+    const isSurveySubmitted = await AsyncStorage.getItem(`SURVEY_SUBMITTED_${this.state.missionId}`);;
+    const queLength = await AsyncStorage.getItem(`QUESTION_LENGTH_${this.state.missionId}`);
+    const maxreached = await AsyncStorage.getItem(`MAX_REACHED_QUE_${this.state.missionId}`);
+    this.setState({
+      questionLength: isSurveySubmitted == "1" ? 0 : queLength && queLength > 0 ? Number(queLength) : 0,
+      progressNumber: isSurveySubmitted == "1" ? 1 : maxreached && maxreached > 0 ? Number(maxreached) : 1,
+      maxReachedQuestion: isSurveySubmitted == "1" ? 1 : maxreached && maxreached > 0 ? Number(maxreached) : 1
+    }, async () => {
+      await AsyncStorage.setItem(`SURVEY_SUBMITTED_${this.state.missionId}`, "0");
+    })
+  };
 
   /* Get mission language page translation data from api  */
   async getpagetranslation() {
@@ -985,6 +1016,7 @@ class SurveyBox extends Component {
    * */
   async getQuestions(mid) {
     await this.getHiddenQuestionsFromAsync();
+    await this.getDataFromAsync();
     let LastAccess = false;
     let questionArr_temp = await AsyncStorage.getItem(mid.toString() + '_LastAccess');
     if (questionArr_temp !== null && questionArr_temp !== undefined && questionArr_temp !== '') {
@@ -1058,6 +1090,7 @@ class SurveyBox extends Component {
 
         this.setState(
           {
+            hiddenQuestionLength: finalQuestions.filter((item) => item.isHide == true),
             translation: Constants.survey,
             arrLength: allQuestions.length,
             questionsArr: finalQuestions,
@@ -1401,9 +1434,12 @@ class SurveyBox extends Component {
                         return { ...que, isHide: true }
                       } else return que
                     })
+                    const filteredQueArr = finalQuestions.filter((item) => (item.isHide == false || !item.isHide)).length;
 
                     this.setState(
                       {
+                        hiddenQuestionLength: finalQuestions.filter((item) => item.isHide == true),
+                        questionLength: this.state.questionLength > 0 ? this.state.questionLength : filteredQueArr,
                         arrLength: allQuestions.length,
                         questionsArr: finalQuestions,
                         isLoading: false,
@@ -2776,6 +2812,9 @@ class SurveyBox extends Component {
         newquestionsArray.splice(spliceparentIndex + 1, 0, ...newArray)
         this.addQuestionBasedOnChoiceType(newquestionsArray)
         this.state.questionsArr = newquestionsArray;
+        this.setState({
+          questionLength: this.state.questionLength + arry.length
+        })
       }
     }
   }
@@ -3125,6 +3164,11 @@ class SurveyBox extends Component {
         }
         this.addQuestionBasedOnChoiceType(newquestionsArray)
 
+        this.setState({
+          questionLength: this.state.questionLength - arry.length + 1,
+          progressNumber: this.state.progressNumber,
+          maxReachedQuestion: this.state.progressNumber
+        })
         this.state.questionsArr = newquestionsArray;
       }
     }
@@ -3560,6 +3604,9 @@ class SurveyBox extends Component {
               if (backBtnFired === true) {
                 this.onBackButtonPressAndroid();
               }
+              if (isSubmit === true) {
+                this.surveySubmitted();
+              }
 
               if (questionObj.question_type == "capture") {
                 questionObj.answer['image'] = questionsArr[currentPage].answer['image'];
@@ -3722,6 +3769,9 @@ class SurveyBox extends Component {
                 }
                 if (backBtnFired === true) {
                   this.onBackButtonPressAndroid();
+                }
+                if (isSubmit === true) {
+                  this.surveySubmitted();
                 }
 
                 if (questionObj.question_type == "capture") {
@@ -3897,6 +3947,9 @@ class SurveyBox extends Component {
                     this.onBackButtonPressAndroid();
                   }
 
+                  if (isSubmit === true) {
+                    this.surveySubmitted();
+                  }
                   if (questionObj.question_type == "capture") {
                     questionObj.answer['image'] = questionsArr[currentPage].answer['image'];
 
@@ -4058,6 +4111,9 @@ class SurveyBox extends Component {
         questionResponseQue[questionsArr[currentPage].questionID] = true;
         if (backBtnFired === true) {
           this.onBackButtonPressAndroid();
+        }
+        if (isSubmit === true) {
+          this.surveySubmitted();
         }
         let subExceeded = false;
         if (missionObject != null) {
@@ -7137,6 +7193,7 @@ class SurveyBox extends Component {
             }
           }
         }
+        this.setProgressNumber(questionsArray, target, unMetTarget)
 
         let nextPage = currentPage;
         let nextExists = false;
@@ -7167,6 +7224,12 @@ class SurveyBox extends Component {
             }
           }
         }
+        setTimeout(() => {
+          this.setState({
+            progressNumber: this.state.progressNumber + 1,
+            maxReachedQuestion: this.state.progressNumber + 1
+          })
+        }, 200);
         if (
           !copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") ||
           copyquestionArray[currentQuesIndx].properties.noreturn === 0
@@ -7181,6 +7244,201 @@ class SurveyBox extends Component {
       }
     }
   }
+
+  /** check if target question exist in hiddenQuestionLength */
+  checkTargetQuestionHidden(handler) {
+    let hide = false;
+    const question = this.state.questionsArr.find((que, index) => index > this.state.pageCount && que.handler == handler);
+    //mapping to find check In Hidden (if target question exist in hidden question ( at initially ))
+    this.state.hiddenQuestionLength.map((que) => {
+      if (question && question.hasOwnProperty("isloop") && question.isloop == true) {
+        if ((que.hasOwnProperty("loop_number") && que.loop_number == question.loop_number)
+          && (que.hasOwnProperty("loop_set_num") && que.loop_set_num == question.loop_set_num)
+          && que.handler == question.handler) {
+          hide = true;
+        }
+      }
+      else if (question && que.handler == question.handler) {
+        hide = true;
+      }
+    });
+    return hide;
+  };
+
+  /** SET question length and progressNumber according to target and ishide questions */
+  setProgressNumber(questionArr, target, unMetTarget) {
+    if (target && target.length > 0) {
+      for (let t = 0; t < target.length; t++) {
+        if (target[t].do == "hide") {
+          const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          setTimeout(() => {
+            this.setState({
+              questionLength: checkInHidden ? this.state.questionLength : this.state.questionLength - 1
+            }, () => {
+              this.setState({
+                hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+              })
+            })
+          }, 200);
+        }
+        else if (target[t].do == "show") {
+          const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          setTimeout(() => {
+            this.setState({
+              questionLength: checkInHidden ? this.state.questionLength + 1 : this.state.questionLength
+            }, () => {
+              this.setState({
+                hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+              })
+            })
+          }, 200);
+        }
+        else if (target[t].do == 'hide_multiple') {
+          const multifield = target[t].multifield.length > 0 && target[t].multifield;
+          for (let i = 0; i < multifield.length; i++) {
+            const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            if (checkInHidden) { }
+            else {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: this.state.questionLength - 1
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((item) => item.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+          }
+        }
+        else if (target[t].do == 'show_multiple') {
+          const multifield = target[t].multifield.length > 0 && target[t].multifield;
+          for (let i = 0; i < multifield.length; i++) {
+            const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            if (checkInHidden) {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: this.state.questionLength + 1
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+            else { }
+          }
+        }
+      }
+    }
+    if (unMetTarget && unMetTarget.length > 0) {
+      for (let u = 0; u < unMetTarget.length; u++) {
+        if (unMetTarget[u].do == "hide" || unMetTarget[u].do == "show") {
+          const checkInHidden = this.checkTargetQuestionHidden(unMetTarget[u].handler);
+          const question = this.state.questionsArr.find((que) => que.handler == unMetTarget[u].handler);
+          const existInTarget = this.findQuestionexistInTarget(unMetTarget[u].handler, target);
+          const keyname = question.questionType == 'capture' ? 'img_stats' : `${question.questionType}_stats`;
+          const stats = question.properties[keyname] ? question.properties[keyname] : "";
+          if (existInTarget) {
+            setTimeout(() => {
+              this.setState({
+                questionLength: this.state.questionLength
+              }, () => {
+                this.setState({
+                  hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                })
+              })
+            }, 200)
+          }
+          else {
+            if (checkInHidden) {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: stats == "hide"
+                    ? this.state.questionLength
+                    : stats == "show"
+                      ? this.state.questionLength + 1
+                      : this.state.questionLength + 1
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+            else {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: stats == "hide"
+                    ? this.state.questionLength - 1
+                    : stats == "show"
+                      ? this.state.questionLength
+                      : this.state.questionLength
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+          }
+        }
+        else if (unMetTarget[u].do == 'hide_multiple' || unMetTarget[u].do == 'show_multiple') {
+          const multifield = unMetTarget[u].multifield.length > 0 && unMetTarget[u].multifield;
+          for (let i = 0; i < multifield.length; i++) {
+            const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            const question = this.state.questionsArr.find((que) => que.handler == multifield[i].value);
+            const existInTarget = this.findQuestionexistInTarget(multifield[i].value, target);
+            const keyname = question.questionType == 'capture' ? 'img_stats' : `${question.questionType}_stats`;
+            const stats = question.properties[keyname] ? question.properties[keyname] : "";
+            if (existInTarget) {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: this.state.questionLength
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+            else {
+              if (checkInHidden) {
+                setTimeout(() => {
+                  this.setState({
+                    questionLength: stats == "hide"
+                      ? this.state.questionLength
+                      : stats == "show"
+                        ? this.state.questionLength + 1
+                        : this.state.questionLength + 1
+                  }, () => {
+                    this.setState({
+                      hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                    })
+                  })
+                }, 200)
+              }
+              else {
+                setTimeout(() => {
+                  this.setState({
+                    questionLength: stats == "hide"
+                      ? this.state.questionLength - 1
+                      : stats == "show"
+                        ? this.state.questionLength
+                        : this.state.questionLength
+                  }, () => {
+                    this.setState({
+                      hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                    })
+                  })
+                }, 200)
+              }
+            }
+          }
+        }
+      }
+    }
+  };
 
   /** Set hide/show question as per already hide/showed passed from admin BY KR*/
   setHideShowQuestions(queArr, target, unmetTarget) {
@@ -7865,6 +8123,11 @@ class SurveyBox extends Component {
     }
     if (from === 'swipe' && questionsArray[prevQuesIdx] && questionsArray[prevQuesIdx].hasOwnProperty('isHide') && questionsArray[prevQuesIdx].isHide === true) { time = 0 }
     this.actionForNavPrevIcon(prevPage, prevExists, currentPage, page, time);
+    setTimeout(() => {
+      this.setState({
+        progressNumber: this.state.progressNumber - 1
+      })
+    }, 200);
   }
 
   /**
@@ -13767,6 +14030,7 @@ class SurveyBox extends Component {
       );
     }
 
+    const progress = this.state.progressNumber / this.state.questionLength;
     return (
       <View style={styles.videoCameraContainer}>
         {this.state.showCamera && (
@@ -13865,6 +14129,16 @@ class SurveyBox extends Component {
               >
                 {!isLoading && arrLength > 0 && horizontalPages.length > 0 && (
                   <View style={styles.container}>
+                    <Progress.Bar
+                      height={7}
+                      color={Color.colorWhite}
+                      width={width - 100}
+                      progress={progress}
+                      style={styles.progressBarStyle}
+                    />
+                    <View style={{ alignItems: "center", justifyContent: "center", marginTop: 5 }}>
+                      <Text style={{ color: Color.colorWhite }}>Question {this.state.progressNumber} of {this.state.questionLength}</Text>
+                    </View>
                     <View
                       style={styles.pager}
                       onLayout={e => {
@@ -14958,5 +15232,9 @@ const styles = ScaledSheet.create({
     color: Color.colorBlack,
     fontWeight: 'bold',
     textAlign: 'justify'
+  },
+  progressBarStyle: {
+    marginHorizontal: 20,
+    marginTop: 10
   }
 });
