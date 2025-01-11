@@ -5268,7 +5268,14 @@ class SurveyBox extends Component {
       }
     }
     if (check) {
-      if ((answer && Object.keys(answer).length > 0) || (type == 'input')) {
+      if (
+        (answer && Object.keys(answer).length > 0 && type === "choice"
+          ? answer.choice_type == "multiple"
+            ? answer.selected_option && answer.selected_option.length > 0
+            : (answer && Object.keys(answer).length > 0)
+          : (answer && Object.keys(answer).length > 0))
+        || (type == 'input')
+      ) {
         if (type === "input") {
           this.inputConditionalTarget(conditions, answer, target, unMetTarget);
         } else if (type === "choice") {
@@ -5305,9 +5312,18 @@ class SurveyBox extends Component {
           this.barcodeConditionalTarget(conditions, answer, target, unMetTarget, release);
         }
       } else {
-        for (let j = 0; j < conditions.length; j++) {
-          if (release || conditions[j].target.do !== 'release') {
-            unMetTarget.push(conditions[j].target);
+        for (let i = 0; i < conditions.length; i++) {
+          for (let s = 0; s < conditions[i].source.length; s++) {
+            if (conditions[i].source[s].state == "notequal" && conditions[i].source[s].match_value !== "") {
+              target.push(conditions[i].target);
+            }
+            else {
+              for (let j = 0; j < conditions.length; j++) {
+                if (release || conditions[j].target.do !== 'release') {
+                  unMetTarget.push(conditions[j].target);
+                }
+              }
+            }
           }
         }
       }
@@ -10537,6 +10553,8 @@ class SurveyBox extends Component {
             //console.log(e);
           });
       });
+    }).catch(err => {
+      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: false });
     });
   }
 
