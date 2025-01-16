@@ -2809,7 +2809,13 @@ class SurveyBox extends Component {
       })
       if (arry.length > 0) {
         const newArray = this.shuffleArray(arry)
-        newquestionsArray.splice(spliceparentIndex + 1, 0, ...newArray)
+        if (this.state.questionsArr[this.state.pageCount].properties.noreturn == 1) {
+          const noReturnNewArray = [newArray[0], ...newArray]
+          newquestionsArray.splice(spliceparentIndex + 1, 0, ...noReturnNewArray)
+          newquestionsArray.shift();
+        } else {
+          newquestionsArray.splice(spliceparentIndex + 1, 0, ...newArray)
+        }
         this.addQuestionBasedOnChoiceType(newquestionsArray)
         this.state.questionsArr = newquestionsArray;
         this.setState({
@@ -13357,6 +13363,108 @@ class SurveyBox extends Component {
   }
 
   /**
+   * @returns release_mission if condition is true
+   */
+  getReleaseMissionOnSubmit() {
+    let questionsArray = this.state.questionsArr;
+    let currentQuesIndx = this.state.pageCount;
+    let release_mission = [];
+    let isMatch = false;
+    const currentQuestion = questionsArray[currentQuesIndx];
+    if (questionsArray[currentQuesIndx].conditions.length > 0) {
+      for (let i = 0; i < questionsArray[currentQuesIndx].conditions.length; i++) {
+        if (questionsArray[currentQuesIndx].conditions[i].target.do == 'release' && questionsArray[currentQuesIndx].conditions[i].source) {
+          for (let j = 0; j < questionsArray[currentQuesIndx].conditions[i].source.length; j++) {
+            if (questionsArray[currentQuesIndx].questionType == 'choice') {
+              if (questionsArray[currentQuesIndx].answer.selected_option) {
+                isMatch = this.conditionValidation(
+                  currentQuestion.answer,
+                  currentQuestion.conditions[i].source[j].match_value,
+                  currentQuestion.conditions[i].source[j].state,
+                  currentQuestion.conditions[i].source[j].target,
+                  currentQuestion.answer.selected_option[0].sub_id,
+                  currentQuestion.answer.selected_option[0].id,
+                  currentQuestion.conditions[i].source[j]
+                );
+              } else {
+                isMatch = this.conditionValidation(
+                  currentQuestion.answer,
+                  currentQuestion.conditions[i].source[j].match_value,
+                  currentQuestion.conditions[i].source[j].state,
+                  currentQuestion.conditions[i].source[j].target,
+                  null,
+                  currentQuestion.answer.id,
+                  currentQuestion.conditions[i].source[j]
+                );
+              }
+              if (isMatch) {
+                relObj = {
+                  project: currentQuestion.conditions[i].target.project,
+                  mission: currentQuestion.conditions[i].target.mission
+                }
+                release_mission.push(relObj)
+              } else {
+                release_mission == []
+              }
+            }
+            else if (currentQuestion.questionType == 'scale') {
+              if (currentQuestion.answer.selected_option) {
+                const length = currentQuestion.answer.selected_option.length;
+
+                if (currentQuestion.properties.scale_type == "table") {
+                  for (let j = 0; j < currentQuestion.conditions[i].source.length; j++) {
+                    isMatch = this.tableConditonalSourceMap(
+                      currentQuestion.answer.selected_option,
+                      currentQuestion.properties,
+                      currentQuestion.conditions[i].source[j]
+                    );
+                  }
+                } else {
+                  isMatch = this.conditionValidation(
+                    currentQuestion.answer.icon_type === "image" ? currentQuestion.answer.selected_option[length - 1].value : currentQuestion.answer.selected_option[0].value,
+                    currentQuestion.conditions[i].source[j].match_value,
+                    currentQuestion.conditions[i].source[j].state,
+                    currentQuestion.conditions[i].source[j].target,
+                  );
+                }
+                if (isMatch) {
+                  relObj = {
+                    project: currentQuestion.conditions[i].target.project,
+                    mission: currentQuestion.conditions[i].target.mission
+                  }
+                  release_mission.push(relObj)
+                } else {
+                  release_mission == []
+                }
+              }
+            }
+            else if (currentQuestion.questionType == 'barcode') {
+              isMatch = this.conditionValidation(
+                currentQuestion.answer.barcode_id || "",
+                currentQuestion.conditions[i].source[j].match_value,
+                currentQuestion.conditions[i].source[j].state,
+                currentQuestion.conditions[i].source[j].target,
+              );
+              if (isMatch) {
+                relObj = {
+                  project: currentQuestion.conditions[i].target.project,
+                  mission: currentQuestion.conditions[i].target.mission
+                }
+                release_mission.push(relObj)
+              } else {
+                release_mission == []
+              }
+            }
+            else release_mission = [];
+          }
+        }
+        else release_mission = [];
+      }
+    }
+    return release_mission;
+  };
+
+  /**
    * Submit survey
    */
   submitButtonClick = () => {
@@ -13414,77 +13522,9 @@ class SurveyBox extends Component {
       }
     }
 
-    /** BY KR RELEASE MISSION CONDITION ADDED*/
-    let release_mission = [];
-    if (questionsArray[currentQuesIndx].conditions.length > 0) {
-      for (let i = 0; i < questionsArray[currentQuesIndx].conditions.length; i++) {
-        if (questionsArray[currentQuesIndx].conditions[i].target.do == 'release' && questionsArray[currentQuesIndx].conditions[i].source) {
-          for (let j = 0; j < questionsArray[currentQuesIndx].conditions[i].source.length; j++) {
-            if (questionsArray[currentQuesIndx].questionType == 'choice') {
-              if (questionsArray[currentQuesIndx].answer.selected_option) {
-                isMatch = this.conditionValidation(
-                  questionsArray[currentQuesIndx].answer,
-                  questionsArray[currentQuesIndx].conditions[i].source[j].match_value,
-                  questionsArray[currentQuesIndx].conditions[i].source[j].state,
-                  questionsArray[currentQuesIndx].conditions[i].source[j].target,
-                  questionsArray[currentQuesIndx].answer.selected_option[0].id,
-                  questionsArray[currentQuesIndx].answer.selected_option[0].sub_id,
-                  questionsArray[currentQuesIndx].conditions[i].source[j]
-                );
-                if (isMatch) {
-                  relObj = {
-                    project: questionsArray[currentQuesIndx].conditions[i].target.project,
-                    mission: questionsArray[currentQuesIndx].conditions[i].target.mission
-                  }
-                  release_mission.push(relObj)
-                } else {
-                  release_mission == []
-                }
-              }
-            }
-            else if (questionsArray[currentQuesIndx].questionType == 'scale') {
-              if (questionsArray[currentQuesIndx].answer.selected_option) {
-                const length = questionsArray[currentQuesIndx].answer.selected_option.length
-                isMatch = this.conditionValidation(
-                  questionsArray[currentQuesIndx].answer.icon_type === "image" ? questionsArray[currentQuesIndx].answer.selected_option[length - 1].value : questionsArray[currentQuesIndx].answer.selected_option[0].value,
-                  questionsArray[currentQuesIndx].conditions[i].source[j].match_value,
-                  questionsArray[currentQuesIndx].conditions[i].source[j].state,
-                  questionsArray[currentQuesIndx].conditions[i].source[j].target,
-                );
-                if (isMatch) {
-                  relObj = {
-                    project: questionsArray[currentQuesIndx].conditions[i].target.project,
-                    mission: questionsArray[currentQuesIndx].conditions[i].target.mission
-                  }
-                  release_mission.push(relObj)
-                } else {
-                  release_mission == []
-                }
-              }
-            }
-            else if (questionsArray[currentQuesIndx].questionType == 'barcode') {
-              isMatch = this.conditionValidation(
-                questionsArray[currentQuesIndx].answer.barcode_id || "",
-                questionsArray[currentQuesIndx].conditions[i].source[j].match_value,
-                questionsArray[currentQuesIndx].conditions[i].source[j].state,
-                questionsArray[currentQuesIndx].conditions[i].source[j].target,
-              );
-              if (isMatch) {
-                relObj = {
-                  project: questionsArray[currentQuesIndx].conditions[i].target.project,
-                  mission: questionsArray[currentQuesIndx].conditions[i].target.mission
-                }
-                release_mission.push(relObj)
-              } else {
-                release_mission == []
-              }
-            }
-            else release_mission = [];
-          }
-        }
-        else release_mission = [];
-      }
-    }
+    /** release mission set if condition is full filled if release question is last */
+    const release_mission = this.getReleaseMissionOnSubmit();
+
     this.setHiddenQuestionsToAsync([]);
     if (
       questionsArray[currentQuesIndx].properties.hasOwnProperty("mandatory") &&
@@ -14155,7 +14195,7 @@ class SurveyBox extends Component {
                       style={styles.progressBarStyle}
                     />
                     <View style={{ alignItems: "center", justifyContent: "center", marginTop: 5 }}>
-                      <Text style={{ color: Color.colorWhite }}>Question {this.state.progressNumber} of {this.state.questionLength}</Text>
+                      <Text style={{ color: Color.colorWhite }}> {this.state.progressNumber} {this.state.translation[this.state.Language].of} {this.state.questionLength}</Text>
                     </View>
                     <View
                       style={styles.pager}
