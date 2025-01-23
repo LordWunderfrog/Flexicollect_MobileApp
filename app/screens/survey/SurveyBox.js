@@ -88,6 +88,7 @@ import Mailer from 'react-native-mail';
 import DatePicker from 'react-native-date-picker';
 import ImageViewer from "../../components/image-zoom-viewer";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import * as Progress from 'react-native-progress';
 
 const videoCompressOptions = {
   //width: 720,
@@ -262,7 +263,7 @@ const codeInject = (html) => html.replace(BODY_TAG_PATTERN, style + "</body>");
 /** Html render tag style */
 const normalTagsStyles = {
   p: {
-    color: "#D6D6D6",
+    color: Color.colorDarkBlue,
     fontSize: Dimension.normalText,
     fontStyle: "italic",
     padding: 0,
@@ -325,6 +326,11 @@ class SurveyBox extends Component {
     //console.log('capturedImageUri::', previewUri);
 
     this.state = {
+      hidden_question: [],
+      questionLength: 0,
+      hiddenQuestionLength: [],
+      progressNumber: 1,
+      maxReachedQuestion: 1,
       answer: "",
       pageCount: 0,
       leftArrow: pageIndex === 0 ? 0.3 : 1,
@@ -544,7 +550,33 @@ class SurveyBox extends Component {
     //GPSState.removeListener();
     // AppState.removeEventListener("change", this._handleAppStateChange);
     this.appStatechangeListner.remove()
+    this.setDataToAsync();
   }
+
+  /** method is used for progress bar manage for display question number out of total */
+  async surveySubmitted() {
+    await AsyncStorage.setItem(`SURVEY_SUBMITTED_${this.state.missionId}`, "1");
+  };
+
+  /** method is used for progress bar manage for display question number out of total */
+  async setDataToAsync() {
+    await AsyncStorage.setItem(`QUESTION_LENGTH_${this.state.missionId}`, `${this.state.questionLength}`);
+    await AsyncStorage.setItem(`MAX_REACHED_QUE_${this.state.missionId}`, `${this.state.maxReachedQuestion}`);
+  };
+
+  /** method is used for progress bar manage for display question number out of total */
+  async getDataFromAsync() {
+    const isSurveySubmitted = await AsyncStorage.getItem(`SURVEY_SUBMITTED_${this.state.missionId}`);;
+    const queLength = await AsyncStorage.getItem(`QUESTION_LENGTH_${this.state.missionId}`);
+    const maxreached = await AsyncStorage.getItem(`MAX_REACHED_QUE_${this.state.missionId}`);
+    this.setState({
+      questionLength: isSurveySubmitted == "1" ? 0 : queLength && queLength > 0 ? Number(queLength) : 0,
+      progressNumber: isSurveySubmitted == "1" ? 1 : maxreached && maxreached > 0 ? Number(maxreached) : 1,
+      maxReachedQuestion: isSurveySubmitted == "1" ? 1 : maxreached && maxreached > 0 ? Number(maxreached) : 1
+    }, async () => {
+      await AsyncStorage.setItem(`SURVEY_SUBMITTED_${this.state.missionId}`, "0");
+    })
+  };
 
   /* Get mission language page translation data from api  */
   async getpagetranslation() {
@@ -983,6 +1015,8 @@ class SurveyBox extends Component {
    * @param mid - selected mission id
    * */
   async getQuestions(mid) {
+    await this.getHiddenQuestionsFromAsync();
+    await this.getDataFromAsync();
     let LastAccess = false;
     let questionArr_temp = await AsyncStorage.getItem(mid.toString() + '_LastAccess');
     if (questionArr_temp !== null && questionArr_temp !== undefined && questionArr_temp !== '') {
@@ -1056,6 +1090,7 @@ class SurveyBox extends Component {
 
         this.setState(
           {
+            hiddenQuestionLength: finalQuestions.filter((item) => item.isHide == true),
             translation: Constants.survey,
             arrLength: allQuestions.length,
             questionsArr: finalQuestions,
@@ -1140,6 +1175,11 @@ class SurveyBox extends Component {
                                 )
                                   ? result.question.handler
                                   : null,
+                                group_number: result.question.hasOwnProperty(
+                                  "group_number"
+                                )
+                                  ? result.question.group_number
+                                  : null,
                                 uniqueID: result.id
                               };
                               if (result.hasOwnProperty('loop_answers')) {
@@ -1179,6 +1219,11 @@ class SurveyBox extends Component {
                                   "handler"
                                 )
                                   ? result.question.handler
+                                  : null,
+                                group_number: result.question.hasOwnProperty(
+                                  "group_number"
+                                )
+                                  ? result.question.group_number
                                   : null,
                                 uniqueID: result.id
                               };
@@ -1223,6 +1268,11 @@ class SurveyBox extends Component {
                                   "handler"
                                 )
                                   ? result.question.handler
+                                  : null,
+                                group_number: result.question.hasOwnProperty(
+                                  "group_number"
+                                )
+                                  ? result.question.group_number
                                   : null,
                                 uniqueID: result.id
                               };
@@ -1384,9 +1434,12 @@ class SurveyBox extends Component {
                         return { ...que, isHide: true }
                       } else return que
                     })
+                    const filteredQueArr = finalQuestions.filter((item) => (item.isHide == false || !item.isHide)).length;
 
                     this.setState(
                       {
+                        hiddenQuestionLength: finalQuestions.filter((item) => item.isHide == true),
+                        questionLength: this.state.questionLength > 0 ? this.state.questionLength : filteredQueArr,
                         arrLength: allQuestions.length,
                         questionsArr: finalQuestions,
                         isLoading: false,
@@ -2416,23 +2469,23 @@ class SurveyBox extends Component {
         answer: questionArr.answer
       };
     }
-    if (questionArr.conditions && questionArr.conditions.length > 0) {
-      for (let i = 0; i < questionArr.conditions.length; i++) {
-        if (questionArr.conditions[i].target.do === 'release') {
-          let relObj = {
-            project: questionArr.conditions[i].target.project,
-            mission: questionArr.conditions[i].target.mission
-          }
-          releaseMission.push(relObj);
-        }
-      }
-    }
+    // if (questionArr.conditions && questionArr.conditions.length > 0) {
+    //   for (let i = 0; i < questionArr.conditions.length; i++) {
+    //     if (questionArr.conditions[i].target.do === 'release') {
+    //       let relObj = {
+    //         project: questionArr.conditions[i].target.project,
+    //         mission: questionArr.conditions[i].target.mission
+    //       }
+    //       releaseMission.push(relObj);
+    //     }
+    //   }
+    // }
     /** IF target.do is 'release' and has target mission */
-    if (releaseMission.length > 0) {
-      questionObj.release_mission = releaseMission;
-    } else {
-      questionObj.release_mission = [];
-    }
+    // if (releaseMission.length > 0) {
+    //   questionObj.release_mission = releaseMission;
+    // } else {
+    //   questionObj.release_mission = [];
+    // }
     if (questionArr.isloop) {
       questionObj.loop_number = questionArr.loop_number;
       questionObj.loop_set = questionArr.loop_set_num;
@@ -2536,6 +2589,7 @@ class SurveyBox extends Component {
           })
         }
       }
+      // future_questuion :  check if loop question includes questions after the condititon question or not
       if (future_questuion) {
         if (questionsArray[parentIndex + 1].handler === condition.multifield[0].value) {
           check_loop_ques_next = true;
@@ -2682,9 +2736,11 @@ class SurveyBox extends Component {
       ) {
         loop_set_num = questionsArray[parentIndex].loop_set_num + 1;
       }
+      // array with hidden and current all questions.
+      const tempArr = [...this.state.hidden_question, ...questionsArr];
 
       newconditions.map((m, cindex) => {
-        questionsArr.map((q, index) => {
+        tempArr.map((q, index) => {
           let check = false;
           if (!check && m.value === q.handler) {
             if (q.hasOwnProperty('loop_number')) { check = true; }
@@ -2714,6 +2770,9 @@ class SurveyBox extends Component {
               if (cindex === newconditions.length - 1) {
                 newquesarr.loop_set_end = true
               }
+              if (q.group_number && q.group_number > 0) {
+                newquesarr.group_number = q.group_number
+              }
               if (newquesarr.hasOwnProperty('loop_set_end') && newquesarr.loop_set_end === true) {
                 newquesarr.conditions = this.setloopquesconditions(q.conditions, questionID, loop_set_num, cindex + 1, move_condition, move_condition)
               } else {
@@ -2723,8 +2782,8 @@ class SurveyBox extends Component {
                   newquesarr.conditions = this.setloopquesconditions(q.conditions, questionID, loop_set_num, cindex + 1, false, false)
                 }
               }
-              if (questionsArr[index].loop_answers && questionsArr[index].loop_answers.length > 0) {
-                questionsArr[index].loop_answers.map((a, aindex) => {
+              if (tempArr[index].loop_answers && tempArr[index].loop_answers.length > 0) {
+                tempArr[index].loop_answers.map((a, aindex) => {
                   if (label === 'loop_input') {
                     if (questionID === a.loop_triggered_qid && a.loop_set === loop_set_num && loop_number === a.loop_number) {
                       newquesarr.answer = a.answers;
@@ -2749,12 +2808,59 @@ class SurveyBox extends Component {
         })
       })
       if (arry.length > 0) {
-        newquestionsArray.splice(spliceparentIndex + 1, 0, ...arry)
+        const newArray = this.shuffleArray(arry)
+        if (this.state.questionsArr[this.state.pageCount].properties.noreturn == 1 
+              && this.state.questionsArr[this.state.pageCount].conditions.length > 0) {
+          const temp_first = {
+            ...newArray[0],
+            properties : {
+              ...newArray[0].properties,
+              noreturn : 0
+            }
+          }
+          const noReturnNewArray = [temp_first, ...newArray]
+          newquestionsArray.splice(spliceparentIndex + 1, 0, ...noReturnNewArray)
+          newquestionsArray.shift();
+        } else {
+          newquestionsArray.splice(spliceparentIndex + 1, 0, ...newArray)
+        }
         this.addQuestionBasedOnChoiceType(newquestionsArray)
         this.state.questionsArr = newquestionsArray;
+        this.setState({
+          questionLength: this.state.questionLength + arry.length
+        })
       }
     }
   }
+
+  /** Shuffle the array of loop question before adding to main question array if qroup number exist */
+  shuffleArray = (loopQuestions) => {
+    const maxBatch = Math.max(...loopQuestions.map(item => item.group_number ? Number(item.group_number) : 0))
+    let start = 0;
+    let _array = [];
+    if (maxBatch > 0) {
+      for (let i = 0; i <= maxBatch; i++) {
+        _array = loopQuestions.filter((item) => item.group_number == i);
+        if (_array.length > 0) {
+          start = loopQuestions.findIndex((item) => item.handler == _array[0].handler)
+          let currentIndex = _array.length;
+          // While there remain elements to shuffle...
+          while (currentIndex != 0) {
+            // Pick a remaining element...
+            let randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            // And swap it with the current element.
+            [_array[currentIndex], _array[randomIndex]] = [
+              _array[randomIndex], _array[currentIndex]];
+          }
+        }
+      }
+    }
+    _array.map((item, index) => {
+      loopQuestions.splice(start + index, 1, item);
+    })
+    return loopQuestions;
+  };
 
   /** hiding the loop question that is not matched
    *  @param condition - condition for the looping
@@ -3072,6 +3178,11 @@ class SurveyBox extends Component {
         }
         this.addQuestionBasedOnChoiceType(newquestionsArray)
 
+        this.setState({
+          questionLength: this.state.questionLength - arry.length + 1,
+          progressNumber: this.state.progressNumber,
+          maxReachedQuestion: this.state.progressNumber
+        })
         this.state.questionsArr = newquestionsArray;
       }
     }
@@ -3507,6 +3618,9 @@ class SurveyBox extends Component {
               if (backBtnFired === true) {
                 this.onBackButtonPressAndroid();
               }
+              if (isSubmit === true) {
+                this.surveySubmitted();
+              }
 
               if (questionObj.question_type == "capture") {
                 questionObj.answer['image'] = questionsArr[currentPage].answer['image'];
@@ -3669,6 +3783,9 @@ class SurveyBox extends Component {
                 }
                 if (backBtnFired === true) {
                   this.onBackButtonPressAndroid();
+                }
+                if (isSubmit === true) {
+                  this.surveySubmitted();
                 }
 
                 if (questionObj.question_type == "capture") {
@@ -3844,6 +3961,9 @@ class SurveyBox extends Component {
                     this.onBackButtonPressAndroid();
                   }
 
+                  if (isSubmit === true) {
+                    this.surveySubmitted();
+                  }
                   if (questionObj.question_type == "capture") {
                     questionObj.answer['image'] = questionsArr[currentPage].answer['image'];
 
@@ -4005,6 +4125,9 @@ class SurveyBox extends Component {
         questionResponseQue[questionsArr[currentPage].questionID] = true;
         if (backBtnFired === true) {
           this.onBackButtonPressAndroid();
+        }
+        if (isSubmit === true) {
+          this.surveySubmitted();
         }
         let subExceeded = false;
         if (missionObject != null) {
@@ -4875,7 +4998,6 @@ class SurveyBox extends Component {
       val !== null && typeof val === "string" ? val.toLowerCase() : val;
     const matchValue =
       typeof matchVal === "string" ? matchVal.toLowerCase() : matchVal;
-
     switch (condition) {
       case "equal":
         if (target === "Value_Multiple_Any") {
@@ -4979,7 +5101,7 @@ class SurveyBox extends Component {
         } else {
           if (source && source.hasOwnProperty('id')) {
             if (source.hasOwnProperty('p_id') && source.hasOwnProperty('id')) {
-              isMatch = source.p_id != selectedp_id && source.id != selected_id;
+              isMatch = source.p_id != selectedp_id || source.id != selected_id;   //BY KR need to change && to ||  to fullfill the release condition
             } else {
               isMatch = source.id != selected_id;
             }
@@ -5160,7 +5282,14 @@ class SurveyBox extends Component {
       }
     }
     if (check) {
-      if ((answer && Object.keys(answer).length > 0) || (type == 'input')) {
+      if (
+        (answer && Object.keys(answer).length > 0 && type === "choice"
+          ? answer.choice_type == "multiple"
+            ? answer.selected_option && answer.selected_option.length > 0
+            : (answer && Object.keys(answer).length > 0)
+          : (answer && Object.keys(answer).length > 0))
+        || (type == 'input')
+      ) {
         if (type === "input") {
           this.inputConditionalTarget(conditions, answer, target, unMetTarget);
         } else if (type === "choice") {
@@ -5197,9 +5326,18 @@ class SurveyBox extends Component {
           this.barcodeConditionalTarget(conditions, answer, target, unMetTarget, release);
         }
       } else {
-        for (let j = 0; j < conditions.length; j++) {
-          if (release || conditions[j].target.do !== 'release') {
-            unMetTarget.push(conditions[j].target);
+        for (let i = 0; i < conditions.length; i++) {
+          for (let s = 0; s < conditions[i].source.length; s++) {
+            if (conditions[i].source[s].state == "notequal" && conditions[i].source[s].match_value !== "") {
+              target.push(conditions[i].target);
+            }
+            else {
+              for (let j = 0; j < conditions.length; j++) {
+                if (release || conditions[j].target.do !== 'release') {
+                  unMetTarget.push(conditions[j].target);
+                }
+              }
+            }
           }
         }
       }
@@ -6533,7 +6671,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              // questionObj['release_mission'] = release_mission;
+              questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6569,7 +6707,7 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].hasOwnProperty("isUpdated") &&
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
-                  // questionObj['release_mission'] = release_mission;
+                  questionObj['release_mission'] = release_mission;
                   let questionObj = this.questionPostObject(currentQuesIndx);
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
@@ -6589,7 +6727,7 @@ class SurveyBox extends Component {
                 questionsArray[currentQuesIndx].isUpdated === true
               ) {
                 let questionObj = this.questionPostObject(currentQuesIndx);
-                // questionObj['release_mission'] = release_mission;
+                questionObj['release_mission'] = release_mission;
                 if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                   questionsArray[currentQuesIndx].properties.noreturn === 1) {
                   this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6611,7 +6749,7 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
                   let questionObj = this.questionPostObject(currentQuesIndx);
-                  // questionObj['release_mission'] = release_mission;
+                  questionObj['release_mission'] = release_mission;
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
                     this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6630,7 +6768,7 @@ class SurveyBox extends Component {
                 questionsArray[currentQuesIndx].isUpdated === true
               ) {
                 let questionObj = this.questionPostObject(currentQuesIndx);
-                // questionObj['release_mission'] = release_mission;
+                questionObj['release_mission'] = release_mission;
                 if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                   questionsArray[currentQuesIndx].properties.noreturn === 1) {
                   this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6671,7 +6809,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              // questionObj['release_mission'] = release_mission;
+              questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6724,7 +6862,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].isUpdated === true
             ) {
               let questionObj = this.questionPostObject(currentQuesIndx);
-              // questionObj['release_mission'] = release_mission;
+              questionObj['release_mission'] = release_mission;
               if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                 questionsArray[currentQuesIndx].properties.noreturn === 1) {
                 this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -6763,7 +6901,7 @@ class SurveyBox extends Component {
         questionsArray[currentQuesIndx].isUpdated === true
       ) {
         let questionObj = this.questionPostObject(currentQuesIndx);
-        // questionObj['release_mission'] = release_mission;
+        questionObj['release_mission'] = release_mission;
         if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
           questionsArray[currentQuesIndx].properties.noreturn === 1) {
           this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -7067,18 +7205,29 @@ class SurveyBox extends Component {
                   }
                 }
               }
-              questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget)
-              questionsArray = this.state.questionsArr;
+
+            }
+          }
+
+          /** if show/hide in unMetTarget */
+          questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget);
+          /** if multifiled and show_multiple OR hide_multiple in unMetTarget */
+          const unMettargetfindShowMultifield =
+            unMetTarget.length > 0
+            && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield')
+              && (tar.do == 'show_multiple' || tar.do == 'hide_multiple')
+              && tar.multifield.length > 0);
+          if (unMettargetfindShowMultifield && unMettargetfindShowMultifield.length > 0) {
+            for (let i = 0; i < unMettargetfindShowMultifield.length; i++) {
+              questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindShowMultifield[i]], target);
             }
           }
         }
-        const updatedQuestionArr = this.setHideShowQuestions(questionsArray, target, unMetTarget) //by kr
-        // this.setState({
-        //   questionsArr : questionsArray
-        // }, () => {
+        this.setProgressNumber(questionsArray, target, unMetTarget)
+
         let nextPage = currentPage;
         let nextExists = false;
-        let copyquestionArray = updatedQuestionArr;
+        let copyquestionArray = questionsArray;
         let copyarrLength = copyquestionArray.length;
 
         for (let i = currentPage; i < copyquestionArray.length; i++) {
@@ -7105,20 +7254,221 @@ class SurveyBox extends Component {
             }
           }
         }
+        setTimeout(() => {
+          this.setState({
+            progressNumber: this.state.progressNumber + 1,
+            maxReachedQuestion: this.state.progressNumber + 1
+          })
+        }, 200);
         if (
           !copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") ||
           copyquestionArray[currentQuesIndx].properties.noreturn === 0
         ) {
-          this.actionForNavNextIcon(nextPage, nextExists, currentPage, page, updatedQuestionArr);
+          this.actionForNavNextIcon(nextPage, nextExists, currentPage, page, copyquestionArray);
         }
-        if (copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") && updatedQuestionArr[currentQuesIndx].properties.noreturn === 1 &&
-          (!copyquestionArray[currentQuesIndx].hasOwnProperty("isUpdated") || updatedQuestionArr[currentQuesIndx].isUpdated === false)) {
-          this.checkNoReturnQues(updatedQuestionArr[currentQuesIndx], currentQuesIndx);
+        if (copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") && copyquestionArray[currentQuesIndx].properties.noreturn === 1 &&
+          (!copyquestionArray[currentQuesIndx].hasOwnProperty("isUpdated") || copyquestionArray[currentQuesIndx].isUpdated === false)) {
+          this.checkNoReturnQues(copyquestionArray[currentQuesIndx], currentQuesIndx);
         }
         // })
       }
     }
   }
+
+  /** check if target question exist in hiddenQuestionLength */
+  checkTargetQuestionHidden(handler) {
+    let hide = false;
+    const question = this.state.questionsArr.find((que, index) => index > this.state.pageCount && que.handler == handler);
+    //mapping to find check In Hidden (if target question exist in hidden question ( at initially ))
+    this.state.hiddenQuestionLength.map((que) => {
+      if (question && question.hasOwnProperty("isloop") && question.isloop == true) {
+        if ((que.hasOwnProperty("loop_number") && que.loop_number == question.loop_number)
+          && (que.hasOwnProperty("loop_set_num") && que.loop_set_num == question.loop_set_num)
+          && que.handler == question.handler) {
+          hide = true;
+        }
+      }
+      else if (question && que.handler == question.handler) {
+        hide = true;
+      }
+    });
+    return hide;
+  };
+
+  /** SET question length and progressNumber according to target and ishide questions */
+  setProgressNumber(questionArr, target, unMetTarget) {
+    if (target && target.length > 0) {
+      for (let t = 0; t < target.length; t++) {
+        if (target[t].do == "hide") {
+          const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          setTimeout(() => {
+            this.setState({
+              questionLength: checkInHidden ? this.state.questionLength : this.state.questionLength - 1
+            }, () => {
+              this.setState({
+                hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+              })
+            })
+          }, 200);
+        }
+        else if (target[t].do == "show") {
+          const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          setTimeout(() => {
+            this.setState({
+              questionLength: checkInHidden ? this.state.questionLength + 1 : this.state.questionLength
+            }, () => {
+              this.setState({
+                hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+              })
+            })
+          }, 200);
+        }
+        else if (target[t].do == 'hide_multiple') {
+          const multifield = target[t].multifield.length > 0 && target[t].multifield;
+          for (let i = 0; i < multifield.length; i++) {
+            const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            if (checkInHidden) { }
+            else {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: this.state.questionLength - 1
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((item) => item.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+          }
+        }
+        else if (target[t].do == 'show_multiple') {
+          const multifield = target[t].multifield.length > 0 && target[t].multifield;
+          for (let i = 0; i < multifield.length; i++) {
+            const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            if (checkInHidden) {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: this.state.questionLength + 1
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+            else { }
+          }
+        }
+      }
+    }
+    if (unMetTarget && unMetTarget.length > 0) {
+      for (let u = 0; u < unMetTarget.length; u++) {
+        if (unMetTarget[u].do == "hide" || unMetTarget[u].do == "show") {
+          const checkInHidden = this.checkTargetQuestionHidden(unMetTarget[u].handler);
+          const question = this.state.questionsArr.find((que) => que.handler == unMetTarget[u].handler);
+          const existInTarget = this.findQuestionexistInTarget(unMetTarget[u].handler, target);
+          const keyname = question.questionType == 'capture' ? 'img_stats' : `${question.questionType}_stats`;
+          const stats = question.properties[keyname] ? question.properties[keyname] : "";
+          if (existInTarget) {
+            setTimeout(() => {
+              this.setState({
+                questionLength: this.state.questionLength
+              }, () => {
+                this.setState({
+                  hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                })
+              })
+            }, 200)
+          }
+          else {
+            if (checkInHidden) {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: stats == "hide"
+                    ? this.state.questionLength
+                    : stats == "show"
+                      ? this.state.questionLength + 1
+                      : this.state.questionLength + 1
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+            else {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: stats == "hide"
+                    ? this.state.questionLength - 1
+                    : stats == "show"
+                      ? this.state.questionLength
+                      : this.state.questionLength
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+          }
+        }
+        else if (unMetTarget[u].do == 'hide_multiple' || unMetTarget[u].do == 'show_multiple') {
+          const multifield = unMetTarget[u].multifield.length > 0 && unMetTarget[u].multifield;
+          for (let i = 0; i < multifield.length; i++) {
+            const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            const question = this.state.questionsArr.find((que) => que.handler == multifield[i].value);
+            const existInTarget = this.findQuestionexistInTarget(multifield[i].value, target);
+            const keyname = question.questionType == 'capture' ? 'img_stats' : `${question.questionType}_stats`;
+            const stats = question.properties[keyname] ? question.properties[keyname] : "";
+            if (existInTarget) {
+              setTimeout(() => {
+                this.setState({
+                  questionLength: this.state.questionLength
+                }, () => {
+                  this.setState({
+                    hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                  })
+                })
+              }, 200)
+            }
+            else {
+              if (checkInHidden) {
+                setTimeout(() => {
+                  this.setState({
+                    questionLength: stats == "hide"
+                      ? this.state.questionLength
+                      : stats == "show"
+                        ? this.state.questionLength + 1
+                        : this.state.questionLength + 1
+                  }, () => {
+                    this.setState({
+                      hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                    })
+                  })
+                }, 200)
+              }
+              else {
+                setTimeout(() => {
+                  this.setState({
+                    questionLength: stats == "hide"
+                      ? this.state.questionLength - 1
+                      : stats == "show"
+                        ? this.state.questionLength
+                        : this.state.questionLength
+                  }, () => {
+                    this.setState({
+                      hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
+                    })
+                  })
+                }, 200)
+              }
+            }
+          }
+        }
+      }
+    }
+  };
 
   /** Set hide/show question as per already hide/showed passed from admin BY KR*/
   setHideShowQuestions(queArr, target, unmetTarget) {
@@ -7126,16 +7476,17 @@ class SurveyBox extends Component {
       const unMettargetfind = unmetTarget.length > 0 && unmetTarget.find((tar) => tar.handler == que.handler);
       if (unMettargetfind && unMettargetfind) {
         const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+        const existInTarget = this.findQuestionexistInTarget(unMettargetfind.handler, target);
         if (que.properties[keyname] && que.properties[keyname] == 'hide') {
           return {
             ...que,
-            isHide: true
+            isHide: existInTarget ? que.isHide : true
           }
         }
         else if (que.properties[keyname] && que.properties[keyname] == 'show') {
           return {
             ...que,
-            isHide: false
+            isHide: existInTarget ? que.isHide : false
           }
         } else {
           return que
@@ -7144,8 +7495,70 @@ class SurveyBox extends Component {
         return que
       }
     })
+    this.setState({ questionsArr: finalarr });
     return finalarr
   }
+
+  /** Set hide Multiple question if un match the condition of show_multiple BY KR */
+  setHideShowMultipleUnmetTarget(queArr, unmetTarget, target) {
+    const unMettargetfind = unmetTarget.length > 0 && unmetTarget.find((tar) => tar.hasOwnProperty("multifield"));
+
+    const finalarr = queArr.length > 0 && queArr.map((que, index) => {
+      const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+      if (unMettargetfind && unMettargetfind) {
+        const matchedField = unMettargetfind.multifield.find((item) => item.value == que.handler);
+        const existInTarget = matchedField && this.findQuestionexistInTarget(matchedField.value, target);
+        if (matchedField && que.properties[keyname] && que.properties[keyname] == 'hide') {
+          return {
+            ...que,
+            isHide: existInTarget ? que.isHide : true
+          }
+        }
+        else if (matchedField && que.properties[keyname] && que.properties[keyname] == 'show') {
+          return {
+            ...que,
+            isHide: existInTarget ? que.isHide : false
+          }
+        }
+        else {
+          return que;
+        }
+      }
+      else {
+        return que;
+      }
+
+    });
+    this.setState({ questionsArr: finalarr });
+    return finalarr;
+  };
+
+  /** Find Question handler in target array */
+  findQuestionexistInTarget(queHandler, target) {
+    let exist = false;
+    for (let i = 0; i < target.length; i++) {
+      if ((target[i].do == 'show_multiple' || target[i].do == 'hide_multiple')
+        && target[i].multifield && target[i].multifield.length > 0) {
+        for (let j = 0; j < target[i].multifield.length; j++) {
+          if (target[i].multifield[j].value == queHandler) {
+            exist = true
+          }
+          else {
+            exist = exist ? true : false
+          }
+        }
+      }
+      else if (target[i].do == 'show' || target[i].do == 'hide') {
+        if (target[i].handler == queHandler) {
+          exist = true
+        }
+        else {
+          exist = exist ? true : false
+        }
+      }
+    }
+    return exist;
+  };
 
   /** Get hidden questions based on condition
     * @param currentQuesIndx - current question index
@@ -7238,6 +7651,20 @@ class SurveyBox extends Component {
           }
         }
       }
+
+      /** if show/hide in unMetTarget */
+      questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget);
+      /** if multifiled and show_multiple OR hide_multiple in unMetTarget */
+      const unMettargetfindShowMultifield =
+        unMetTarget.length > 0
+        && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield')
+          && (tar.do == 'show_multiple' || tar.do == 'hide_multiple')
+          && tar.multifield.length > 0);
+      if (unMettargetfindShowMultifield && unMettargetfindShowMultifield.length > 0) {
+        for (let i = 0; i < unMettargetfindShowMultifield.length; i++) {
+          questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindShowMultifield[i]], target);
+        }
+      }
     }
 
     let hiddenQuestions = []
@@ -7257,11 +7684,15 @@ class SurveyBox extends Component {
    *  @param questionsArray - survey question array
   */
   removeHiddenQuestion(questionsArray) {
-    let questions = []
+    let questions = [];
+    const nextConditionIndex = questionsArray.findIndex((item) => item.conditions.length > 0)
     let aviMultifiled = this.getIfMultifiledAvailable(questionsArray)
     for (let i = 0; i < questionsArray.length; i++) {
       let handlerData = questionsArray[i].handler
-      if (
+      if (nextConditionIndex >= 0 && i >= nextConditionIndex) {
+        questions.push(questionsArray[i])
+      }
+      else if (
         !questionsArray[i].isHide || questionsArray[i].isHide === false
       ) {
         questions.push(questionsArray[i])
@@ -7317,6 +7748,30 @@ class SurveyBox extends Component {
     return queueCompleted;
   }
 
+  /** store no return hidden questions to asyncStorage with "isFromHiddenStorage" key true to identify*/
+  async setHiddenQuestionsToAsync(hiddenQuestionArr) {
+
+    const data = hiddenQuestionArr.length > 0 && hiddenQuestionArr.map((item) => {
+      return {
+        ...item,
+        isFromHiddenStorage: true
+      }
+    }) || [];
+
+    await AsyncStorage.setItem(`HIDDEN_${this.state.missionId}`, JSON.stringify(data));
+    this.setState({
+      hidden_question: data ? data : []
+    });
+  };
+
+  async getHiddenQuestionsFromAsync() {
+    const data = await AsyncStorage.getItem(`HIDDEN_${this.state.missionId}`);
+    this.setState({
+      hidden_question: data && JSON.parse(data) ? JSON.parse(data) : []
+    })
+    return data && JSON.parse(data) ? JSON.parse(data) : [];
+  };
+
   /**
    * checking for the no return condition
    * @param {questionarray} validate current question no return property 
@@ -7325,7 +7780,8 @@ class SurveyBox extends Component {
    */
   async checkNoReturnQues(question, currentQuesIndx, isFromRetry) {
     try {
-
+      const getHiddenQuestion = await this.getHiddenQuestionsFromAsync();
+      let setHiddenQuestion = [];
       let mid = this.state.missionId.toString();
 
       let queueCompleted = this.checkPreviousPostInprogress();
@@ -7404,6 +7860,24 @@ class SurveyBox extends Component {
                   Constants.saveKey('questionBackupArr_' + mid, JSON.stringify(this.state.questionBackupArr));
                   let questionsArray = this.state.questionsArr.slice(currentQuesIndx + 1);
                   let filteredQuestions = this.removeHiddenQuestion(questionsArray);
+
+                  for (let i = 0; i < this.state.questionsArr.length; i++) {
+                    const find = filteredQuestions.find((item) => item.handler === this.state.questionsArr[i].handler);
+                    if (find) {
+                      const findArray = this.state.questionsArr.filter((item) => item.handler == find.handler)
+                      if (findArray.length > 1) {
+                        const checkLoopNumber = findArray.find((item) => !item.hasOwnProperty('loop_number'));
+                        if (checkLoopNumber) {
+                          setHiddenQuestion.push(this.state.questionsArr[i]);
+                        }
+                      }
+                    }
+                    if (!find) {
+                      setHiddenQuestion.push(this.state.questionsArr[i]);
+                    }
+                  }
+                  const arrCombine = [...getHiddenQuestion, ...setHiddenQuestion];
+                  this.setHiddenQuestionsToAsync(arrCombine)
                   if (filteredQuestions.length > 0) {
                     this.addQuestionBasedOnChoiceType(filteredQuestions);
                     pageIndex = 0;
@@ -7588,8 +8062,22 @@ class SurveyBox extends Component {
         }
       }
     }
+
+    /** if show/hide in unMetTarget */
+    questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget);
+    /** if multifiled and show_multiple OR hide_multiple in unMetTarget*/
+    const unMettargetfindShowMultifield =
+      unMetTarget.length > 0
+      && unMetTarget.filter((tar) => tar.hasOwnProperty('multifield')
+        && (tar.do == 'show_multiple' || tar.do == 'hide_multiple')
+        && tar.multifield.length > 0);
+    if (unMettargetfindShowMultifield && unMettargetfindShowMultifield.length > 0) {
+      for (let i = 0; i < unMettargetfindShowMultifield.length; i++) {
+        questionsArray = this.setHideShowMultipleUnmetTarget(questionsArray, [unMettargetfindShowMultifield[i]], target);
+      }
+    }
     let nextExists = false;
-    questionsArray = this.setHideShowQuestions(questionsArray, target, unMetTarget)
+
     this.setState({ questionsArr: questionsArray });
     if (currentPage == arrLength - 1) {
       nextExists = false;
@@ -7665,6 +8153,11 @@ class SurveyBox extends Component {
     }
     if (from === 'swipe' && questionsArray[prevQuesIdx] && questionsArray[prevQuesIdx].hasOwnProperty('isHide') && questionsArray[prevQuesIdx].isHide === true) { time = 0 }
     this.actionForNavPrevIcon(prevPage, prevExists, currentPage, page, time);
+    setTimeout(() => {
+      this.setState({
+        progressNumber: this.state.progressNumber - 1
+      })
+    }, 200);
   }
 
   /**
@@ -8971,7 +9464,7 @@ class SurveyBox extends Component {
         isVideo: true
       }).then(async (video) => {
         if (video[0].duration > this.state.maxDuration) {
-          Alert.alert(`Video duration should not be more then 3 minute`)
+          Alert.alert(this.state.translation[this.state.Language].MaxVideoLimit)
         } else {
           this.setState({ changeImage: true, videoProcessing: true });
           let path = "file://" + video[0].path
@@ -9017,7 +9510,7 @@ class SurveyBox extends Component {
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           if (res.assets[0].duration && res.assets[0].duration > this.state.maxDuration) {
-            Alert.alert(`Video duration should not be more then 3 minute`)
+            Alert.alert(this.state.translation[this.state.Language].MaxVideoLimit)
           } else {
             this.setState({ changeImage: true, videoProcessing: true });
             let videoRes = res.assets[0]
@@ -10074,6 +10567,8 @@ class SurveyBox extends Component {
             //console.log(e);
           });
       });
+    }).catch(err => {
+      this.setState({ recording: false, showCamera: false, cameraMode: true, videoProcessing: false });
     });
   }
 
@@ -12876,6 +13371,108 @@ class SurveyBox extends Component {
   }
 
   /**
+   * @returns release_mission if condition is true
+   */
+  getReleaseMissionOnSubmit() {
+    let questionsArray = this.state.questionsArr;
+    let currentQuesIndx = this.state.pageCount;
+    let release_mission = [];
+    let isMatch = false;
+    const currentQuestion = questionsArray[currentQuesIndx];
+    if (questionsArray[currentQuesIndx].conditions.length > 0) {
+      for (let i = 0; i < questionsArray[currentQuesIndx].conditions.length; i++) {
+        if (questionsArray[currentQuesIndx].conditions[i].target.do == 'release' && questionsArray[currentQuesIndx].conditions[i].source) {
+          for (let j = 0; j < questionsArray[currentQuesIndx].conditions[i].source.length; j++) {
+            if (questionsArray[currentQuesIndx].questionType == 'choice') {
+              if (questionsArray[currentQuesIndx].answer.selected_option) {
+                isMatch = this.conditionValidation(
+                  currentQuestion.answer,
+                  currentQuestion.conditions[i].source[j].match_value,
+                  currentQuestion.conditions[i].source[j].state,
+                  currentQuestion.conditions[i].source[j].target,
+                  currentQuestion.answer.selected_option[0].sub_id,
+                  currentQuestion.answer.selected_option[0].id,
+                  currentQuestion.conditions[i].source[j]
+                );
+              } else {
+                isMatch = this.conditionValidation(
+                  currentQuestion.answer,
+                  currentQuestion.conditions[i].source[j].match_value,
+                  currentQuestion.conditions[i].source[j].state,
+                  currentQuestion.conditions[i].source[j].target,
+                  null,
+                  currentQuestion.answer.id,
+                  currentQuestion.conditions[i].source[j]
+                );
+              }
+              if (isMatch) {
+                relObj = {
+                  project: currentQuestion.conditions[i].target.project,
+                  mission: currentQuestion.conditions[i].target.mission
+                }
+                release_mission.push(relObj)
+              } else {
+                release_mission == []
+              }
+            }
+            else if (currentQuestion.questionType == 'scale') {
+              if (currentQuestion.answer.selected_option) {
+                const length = currentQuestion.answer.selected_option.length;
+
+                if (currentQuestion.properties.scale_type == "table") {
+                  for (let j = 0; j < currentQuestion.conditions[i].source.length; j++) {
+                    isMatch = this.tableConditonalSourceMap(
+                      currentQuestion.answer.selected_option,
+                      currentQuestion.properties,
+                      currentQuestion.conditions[i].source[j]
+                    );
+                  }
+                } else {
+                  isMatch = this.conditionValidation(
+                    currentQuestion.answer.icon_type === "image" ? currentQuestion.answer.selected_option[length - 1].value : currentQuestion.answer.selected_option[0].value,
+                    currentQuestion.conditions[i].source[j].match_value,
+                    currentQuestion.conditions[i].source[j].state,
+                    currentQuestion.conditions[i].source[j].target,
+                  );
+                }
+                if (isMatch) {
+                  relObj = {
+                    project: currentQuestion.conditions[i].target.project,
+                    mission: currentQuestion.conditions[i].target.mission
+                  }
+                  release_mission.push(relObj)
+                } else {
+                  release_mission == []
+                }
+              }
+            }
+            else if (currentQuestion.questionType == 'barcode') {
+              isMatch = this.conditionValidation(
+                currentQuestion.answer.barcode_id || "",
+                currentQuestion.conditions[i].source[j].match_value,
+                currentQuestion.conditions[i].source[j].state,
+                currentQuestion.conditions[i].source[j].target,
+              );
+              if (isMatch) {
+                relObj = {
+                  project: currentQuestion.conditions[i].target.project,
+                  mission: currentQuestion.conditions[i].target.mission
+                }
+                release_mission.push(relObj)
+              } else {
+                release_mission == []
+              }
+            }
+            else release_mission = [];
+          }
+        }
+        else release_mission = [];
+      }
+    }
+    return release_mission;
+  };
+
+  /**
    * Submit survey
    */
   submitButtonClick = () => {
@@ -12933,6 +13530,10 @@ class SurveyBox extends Component {
       }
     }
 
+    /** release mission set if condition is full filled if release question is last */
+    const release_mission = this.getReleaseMissionOnSubmit();
+
+    this.setHiddenQuestionsToAsync([]);
     if (
       questionsArray[currentQuesIndx].properties.hasOwnProperty("mandatory") &&
       questionsArray[currentQuesIndx].properties.mandatory === 1
@@ -12944,6 +13545,7 @@ class SurveyBox extends Component {
           questionsArray[currentQuesIndx].answer.text != ""
         ) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         } else {
           Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
@@ -12956,6 +13558,7 @@ class SurveyBox extends Component {
             questionsArray[currentQuesIndx].answer.label_text.length >
             0))) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         }
         else {
@@ -12983,6 +13586,7 @@ class SurveyBox extends Component {
               questionsArray[currentQuesIndx].answer.label != ""))
         ) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         } else {
           Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
@@ -12995,6 +13599,7 @@ class SurveyBox extends Component {
           questionsArray[currentQuesIndx].answer.media != ""
         ) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         } else {
           Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
@@ -13009,6 +13614,7 @@ class SurveyBox extends Component {
           questionsArray[currentQuesIndx].answer.image != ""
         ) {
           let questionObj = this.questionPostObject(currentQuesIndx);
+          questionObj.release_mission = release_mission;
           this.postAnswerToServer(questionObj, currentQuesIndx, true);
         } else {
           Constants.showSnack(this.state.translation[this.state.Language].Mandatory_Msg);
@@ -13016,10 +13622,12 @@ class SurveyBox extends Component {
       }
       else if (questionsArray[currentQuesIndx].questionType === "gps") {
         let questionObj = this.questionPostObject(currentQuesIndx);
+        questionObj.release_mission = release_mission;
         this.postAnswerToServer(questionObj, currentQuesIndx, true);
       }
     } else {
       let questionObj = this.questionPostObject(currentQuesIndx);
+      questionObj.release_mission = release_mission;
       this.postAnswerToServer(questionObj, currentQuesIndx, true);
     }
   };
@@ -13488,6 +14096,7 @@ class SurveyBox extends Component {
       );
     }
 
+    const progress = this.state.progressNumber / this.state.questionLength;
     return (
       <View style={styles.videoCameraContainer}>
         {this.state.showCamera && (
@@ -13586,6 +14195,16 @@ class SurveyBox extends Component {
               >
                 {!isLoading && arrLength > 0 && horizontalPages.length > 0 && (
                   <View style={styles.container}>
+                    <Progress.Bar
+                      height={7}
+                      color={Color.colorWhite}
+                      width={width - 100}
+                      progress={progress}
+                      style={styles.progressBarStyle}
+                    />
+                    <View style={{ alignItems: "center", justifyContent: "center", marginTop: 5 }}>
+                      <Text style={{ color: Color.colorWhite }}> {this.state.progressNumber} {this.state.translation[this.state.Language].of} {this.state.questionLength}</Text>
+                    </View>
                     <View
                       style={styles.pager}
                       onLayout={e => {
@@ -14679,5 +15298,9 @@ const styles = ScaledSheet.create({
     color: Color.colorBlack,
     fontWeight: 'bold',
     textAlign: 'justify'
+  },
+  progressBarStyle: {
+    marginHorizontal: 20,
+    marginTop: 10
   }
 });

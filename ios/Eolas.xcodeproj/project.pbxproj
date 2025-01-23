@@ -731,9 +731,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Eolas/Eolas.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HJZ3L2XA4R;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HJZ3L2XA4R;
@@ -741,7 +741,7 @@
 				INFOPLIST_FILE = Eolas/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 5.27;
+				MARKETING_VERSION = 5.28;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -750,7 +750,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.atom.EolasReact;
 				PRODUCT_NAME = Eolas;
 				PROVISIONING_PROFILE_SPECIFIER = Eolas_Development2024;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = EOLAS_AppStore;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Eolas_Development2024;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -771,16 +771,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Eolas/Eolas.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = HJZ3L2XA4R;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HJZ3L2XA4R;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Eolas/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 5.27;
+				MARKETING_VERSION = 5.28;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -789,7 +789,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.atom.EolasReact;
 				PRODUCT_NAME = Eolas;
 				PROVISIONING_PROFILE_SPECIFIER = Eolas_Development2024;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = EOLAS_AppStore;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Eolas_Development2024;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;

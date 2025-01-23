@@ -10,14 +10,14 @@ module.exports = {
   */
 
   // DEVELOPMENT
-  // BASE_URL: 'https://devapi.flexicollect.com/v1/',
-  // BASE_URL_V2: 'https://devapi.flexicollect.com/v2/',
-  // BASE_URL_V3: 'https://devapi.flexicollect.com/v3/',
+  BASE_URL: 'https://devapi.flexicollect.com/v1/',
+  BASE_URL_V2: 'https://devapi.flexicollect.com/v2/',
+  BASE_URL_V3: 'https://devapi.flexicollect.com/v3/',
 
   // STAGING
-  BASE_URL: 'https://api.flexicollect.com/v1/',
-  BASE_URL_V2: 'https://api.flexicollect.com/v2/',
-  BASE_URL_V3: 'https://api.flexicollect.com/v3/',
+  // BASE_URL: 'https://api.flexicollect.com/v1/',
+  // BASE_URL_V2: 'https://api.flexicollect.com/v2/',
+  // BASE_URL_V3: 'https://api.flexicollect.com/v3/',
 
   /**Store url for redirect on store for upgrade application*/
   PLAY_STORE_URL: Platform.OS == 'ios' ? "https://apps.apple.com/us/app/id1463959676" : "https://play.google.com/store/apps/details?id=com.eolas",
@@ -4030,7 +4030,8 @@ module.exports = {
       "Least": "Minste",
       "Most": "Meeste",
       "MaxDiffSelectMsg": "Kies asseblief die minste en meeste item vir elke stel van vrae",
-      "SelectDate": "Kies asseblief datum"
+      "SelectDate": "Kies asseblief datum",
+      "MaxVideoLimit": "Video duur moet nie langer as 3 minute wees nie",
     },
     "Arabic": {
       "Loading_Questions": "تحميل الأسئلة",
@@ -4075,7 +4076,8 @@ module.exports = {
       "Least": "الأدنى",
       "Most": "الأكثر",
       "MaxDiffSelectMsg": "يرجى اختيار العنصر الأقل والأكثر لكل مجموعة من الأسئلة",
-      "SelectDate": "الرجاء تحديد التاريخ"
+      "SelectDate": "الرجاء تحديد التاريخ",
+      "MaxVideoLimit": "يجب ألا تزيد مدة الفيديو عن 3 دقائق",
     },
     "Chinese": {
       "Loading_Questions": "加载问题",
@@ -4121,6 +4123,7 @@ module.exports = {
       "Most": "最大",
       "MaxDiffSelectMsg": "请为所有问题集选择最小和最大项目",
       "SelectDate": "请选择日期",
+      "MaxVideoLimit": "视频时长不得超过3分钟",
     },
     "Dutch": {
       "Loading_Questions": "Vragen worden geladen",
@@ -4166,6 +4169,7 @@ module.exports = {
       "Most": "Meest",
       "MaxDiffSelectMsg": "Selecteer de minst en meest gekozen items voor alle vragenreeksen.",
       "SelectDate": "Selecteer alsjeblieft de datum",
+      "MaxVideoLimit": "De videoduur mag niet langer zijn dan 3 minuten",
     },
     "English": {
       "Loading_Questions": "Loading Questions",
@@ -4210,7 +4214,8 @@ module.exports = {
       "Least": "Least",
       "Most": "Most",
       "MaxDiffSelectMsg": "Please select least and most item for all set of question",
-      "SelectDate": "Please Select Date"
+      "SelectDate": "Please Select Date",
+      "MaxVideoLimit": "Video duration should not be more then 3 minute",
     },
     "French": {
       "Loading_Questions": "Chargement des questions",
@@ -4256,6 +4261,7 @@ module.exports = {
       "Most": "Le plus",
       "MaxDiffSelectMsg": "Veuillez sélectionner l'option la moins et la plus choisie pour chaque ensemble de questions.",
       "SelectDate": "Veuillez sélectionner une date",
+      "MaxVideoLimit": "La durée de la vidéo ne doit pas dépasser 3 minutes",
     },
     "German": {
       "Loading_Questions": "Fragen werden hochgeladen",
@@ -4301,6 +4307,7 @@ module.exports = {
       "Most": "Am meisten",
       "MaxDiffSelectMsg": "Bitte wählen Sie das Element mit der geringsten und der größten Bewertung für alle Fragengruppen.",
       "SelectDate": "Bitte Datum auswählen",
+      "MaxVideoLimit": "Die Videodauer sollte nicht länger als 3 Minuten sein",
     },
     "Greek": {
       "Loading_Questions": "Φόρτωση ερωτήσεων",
@@ -4345,7 +4352,8 @@ module.exports = {
       "Least": "Ελάχιστο",
       "Most": "Μέγιστο",
       "MaxDiffSelectMsg": "Παρακαλώ επιλέξτε το ελάχιστο και το μέγιστο στοιχείο για όλες τις ερωτήσεις",
-      "SelectDate": "Παρακαλώ επιλέξτε ημερομηνία"
+      "SelectDate": "Παρακαλώ επιλέξτε ημερομηνία",
+      "MaxVideoLimit": "Η διάρκεια του βίντεο δεν πρέπει να υπερβαίνει τα 3 λεπτά",
     },
     "Hindi": {
       "Loading_Questions": "प्रश्न लोड हो रहे हैं",
@@ -4391,6 +4399,7 @@ module.exports = {
       "Most": "सबसे अधिक",
       "MaxDiffSelectMsg": "कृपया सभी सेट के प्रश्न के लिए सबसे कम और सबसे अधिक आइटम का चयन करें",
       "SelectDate": "कृपया दिनांक चुनें",
+      "MaxVideoLimit": "वीडियो की अवधि 3 मिनट से अधिक नहीं होनी चाहिए",
     },
     "Indonesian": {
       "Loading_Questions": "Memuat pertanyaan",
@@ -4436,6 +4445,7 @@ module.exports = {
       "Most": "Paling Banyak",
       "MaxDiffSelectMsg": "Silakan pilih item paling sedikit dan paling banyak untuk semua set pertanyaan",
       "SelectDate": "Silakan Pilih Tanggal",
+      "MaxVideoLimit": "Durasi video tidak boleh lebih dari 3 menit",
     },
     "Italian": {
       "Loading_Questions": "Caricamento domande",
@@ -4481,6 +4491,7 @@ module.exports = {
       "Most": "Massimo",
       "MaxDiffSelectMsg": "Seleziona l'elemento minimo e massimo per tutti i set di domande",
       "SelectDate": "Seleziona la data",
+      "MaxVideoLimit": "La durata del video non deve essere superiore a 3 minuti",
     },
     "Japanese": {
       "Loading_Questions": "質問の誤謬",
@@ -4526,6 +4537,7 @@ module.exports = {
       "Most": "最高",
       "MaxDiffSelectMsg": "すべてのセットの質問について、最低と最高のアイテムを選択してください",
       "SelectDate": "日付を選択してください",
+      "MaxVideoLimit": "ビデオの長さは3分以内にしてください",
     },
     "Malay": {
       "Loading_Questions": "Memuat naik  soalan",
@@ -4571,6 +4583,7 @@ module.exports = {
       "Most": "Tertinggi",
       "MaxDiffSelectMsg": "Sila pilih item terendah dan tertinggi untuk semua set soalan",
       "SelectDate": "Sila pilih tarikh",
+      "MaxVideoLimit": "Panjang video tidak boleh lebih daripada 3 minit",
     },
     "Polish": {
       "Loading_Questions": "Ładowanie pytań",
@@ -4616,6 +4629,7 @@ module.exports = {
       "Most": "Najwięcej",
       "MaxDiffSelectMsg": "Proszę wybrać najmniej i najwięcej element dla wszystkich zestawów pytań",
       "SelectDate": "Proszę wybrać datę",
+      "MaxVideoLimit": "Czas trwania filmu nie powinien być dłuższy niż 3 minuty",
     },
     "Portuguese": {
       "Loading_Questions": "Carregando perguntas",
@@ -4661,6 +4675,7 @@ module.exports = {
       "Most": "Máximo",
       "MaxDiffSelectMsg": "Por favor, selecione o item mínimo e máximo para todos os conjuntos de perguntas",
       "SelectDate": "Selecione a data",
+      "MaxVideoLimit": "A duração do vídeo não deve ser superior a 3 minutos",
     },
     "Russian": {
       "Loading_Questions": "Вопросы загружаются",
@@ -4706,6 +4721,7 @@ module.exports = {
       "Most": "Наибольшее",
       "MaxDiffSelectMsg": "Пожалуйста, выберите наименьший и наибольший элементы для всех наборов вопросов",
       "SelectDate": "Пожалуйста, выберите дату",
+      "MaxVideoLimit": "Продолжительность видео не должна превышать 3 минут.",
     },
     "Spanish": {
       "Loading_Questions": "Cargando preguntas",
@@ -4751,6 +4767,7 @@ module.exports = {
       "Most": "Mayor",
       "MaxDiffSelectMsg": "Por favor selecciona el elemento más pequeño y más grande para todos los conjuntos de preguntas",
       "SelectDate": "Por favor seleccione fecha",
+      "MaxVideoLimit": "La duración del vídeo no debe ser superior a 3 minutos.",
     },
     "Tagalog": {
       "Loading_Questions": "Naglo-load ng mga Katanungan",
@@ -4796,6 +4813,7 @@ module.exports = {
       "Most": "Pinakamataas",
       "MaxDiffSelectMsg": "Mangyaring pumili ng pinakamababa at pinakamataas na item para sa lahat ng set ng tanong",
       "SelectDate": "Mangyaring pumili ng petsa",
+      "MaxVideoLimit": "Ang tagal ng video ay hindi dapat lumampas sa 3 minuto",
     },
     "Thai": {
       "Loading_Questions": "กำลังโหลดคำถาม",
@@ -4841,6 +4859,7 @@ module.exports = {
       "Most": "มากที่สุด",
       "MaxDiffSelectMsg": "โปรดเลือกรายการน้อยที่สุดและมากที่สุดสำหรับชุดคำถามทั้งหมด",
       "SelectDate": "กรุณาเลือกวันที่",
+      "MaxVideoLimit": "ความยาววิดีโอไม่ควรเกิน 3 นาที",
     },
     "Vietnamese": {
       "Loading_Questions": "Đang tải câu hỏi",
@@ -4886,6 +4905,7 @@ module.exports = {
       "Most": "Nhiều nhất",
       "MaxDiffSelectMsg": "Vui lòng chọn mục ít nhất và nhiều nhất cho tất cả các bộ câu hỏi",
       "SelectDate": "Vui lòng chọn ngày",
+      "MaxVideoLimit": "Độ dài video không được dài quá 3 phút",
     },
     "Urdu": {
       "Loading_Questions": "سوالات لوڈ ہو رہے ہیں",
@@ -4931,6 +4951,7 @@ module.exports = {
       "Most": "زیادہ سے زیادہ",
       "MaxDiffSelectMsg": "براہ کرم ہر سیٹ کے سوال کے لئے کمترین اور زیادہ سے زیادہ آئٹم منتخب کریں",
       "SelectDate": "براہ کرم تاریخ منتخب کریں۔",
+      "MaxVideoLimit": "ویڈیو کا دورانیہ 3 منٹ سے زیادہ نہیں ہونا چاہیے۔",
     },
   },
   common_text: {
