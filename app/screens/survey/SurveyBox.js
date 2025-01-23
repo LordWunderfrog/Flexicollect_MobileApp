@@ -263,7 +263,7 @@ const codeInject = (html) => html.replace(BODY_TAG_PATTERN, style + "</body>");
 /** Html render tag style */
 const normalTagsStyles = {
   p: {
-    color: "#D6D6D6",
+    color: Color.colorDarkBlue,
     fontSize: Dimension.normalText,
     fontStyle: "italic",
     padding: 0,
@@ -2809,8 +2809,16 @@ class SurveyBox extends Component {
       })
       if (arry.length > 0) {
         const newArray = this.shuffleArray(arry)
-        if (this.state.questionsArr[this.state.pageCount].properties.noreturn == 1) {
-          const noReturnNewArray = [newArray[0], ...newArray]
+        if (this.state.questionsArr[this.state.pageCount].properties.noreturn == 1 
+              && this.state.questionsArr[this.state.pageCount].conditions.length > 0) {
+          const temp_first = {
+            ...newArray[0],
+            properties : {
+              ...newArray[0].properties,
+              noreturn : 0
+            }
+          }
+          const noReturnNewArray = [temp_first, ...newArray]
           newquestionsArray.splice(spliceparentIndex + 1, 0, ...noReturnNewArray)
           newquestionsArray.shift();
         } else {
@@ -9456,7 +9464,7 @@ class SurveyBox extends Component {
         isVideo: true
       }).then(async (video) => {
         if (video[0].duration > this.state.maxDuration) {
-          Alert.alert(`Video duration should not be more then 3 minute`)
+          Alert.alert(this.state.translation[this.state.Language].MaxVideoLimit)
         } else {
           this.setState({ changeImage: true, videoProcessing: true });
           let path = "file://" + video[0].path
@@ -9502,7 +9510,7 @@ class SurveyBox extends Component {
       }, async (res) => {
         if (!res.hasOwnProperty('didCancel') && res.didCancel !== true) {
           if (res.assets[0].duration && res.assets[0].duration > this.state.maxDuration) {
-            Alert.alert(`Video duration should not be more then 3 minute`)
+            Alert.alert(this.state.translation[this.state.Language].MaxVideoLimit)
           } else {
             this.setState({ changeImage: true, videoProcessing: true });
             let videoRes = res.assets[0]
