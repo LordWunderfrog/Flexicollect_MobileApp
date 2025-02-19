@@ -1082,8 +1082,8 @@ class SurveyBox extends Component {
         if (LastAccess_questionArr.prevpage < 0) { leftDisable = true }
 
         const finalQuestions = allQuestions.length > 0 && allQuestions.map((que, index) => {
-          const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
-          if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+          const keyname = que?.questionType == 'capture' ? 'img_stats' : `${que?.questionType}_stats`;
+          if (que?.properties[keyname] && que?.properties[keyname] == 'hide') {
             return { ...que, isHide: true }
           } else return que
         })
@@ -1429,8 +1429,8 @@ class SurveyBox extends Component {
                   if (allQuestions.length !== 0) {
 
                     const finalQuestions = allQuestions.length > 0 && allQuestions.map((que, index) => {
-                      const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
-                      if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+                      const keyname = que?.questionType == 'capture' ? 'img_stats' : `${que?.questionType}_stats`;
+                      if (que?.properties[keyname] && que?.properties[keyname] == 'hide') {
                         return { ...que, isHide: true }
                       } else return que
                     })
@@ -1513,11 +1513,11 @@ class SurveyBox extends Component {
       question["properties"]["attribute_Set"] = question.answer.attribute_Set
     }
     else {
-      let max_attr = question.properties.Maximum_Attributes ? question.properties.Maximum_Attributes.value : 0
-      let attr_per_task = question.properties.Attribute_PerTask ? question.properties.Attribute_PerTask.value : 0
-      let repeat_attr = question.properties.Repeate_Attribute ? question.properties.Repeate_Attribute.value : 0
+      let max_attr = question?.properties.Maximum_Attributes ? question?.properties.Maximum_Attributes.value : 0
+      let attr_per_task = question?.properties.Attribute_PerTask ? question?.properties.Attribute_PerTask.value : 0
+      let repeat_attr = question?.properties.Repeate_Attribute ? question?.properties.Repeate_Attribute.value : 0
       const num_sets = (max_attr / attr_per_task) * repeat_attr;
-      let tempAtt = question.properties.attribute_data
+      let tempAtt = question?.properties.attribute_data
 
       let setOfAttribute = [];
       let occurrences = {}; // Track occurrences of each item
@@ -7301,9 +7301,10 @@ class SurveyBox extends Component {
       for (let t = 0; t < target.length; t++) {
         if (target[t].do == "hide") {
           const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          const find = this.state.questionsArr.find((item) => item.handler == target[t].handler);
           setTimeout(() => {
             this.setState({
-              questionLength: checkInHidden ? this.state.questionLength : this.state.questionLength - 1
+              questionLength: checkInHidden || !find ? this.state.questionLength : this.state.questionLength - 1
             }, () => {
               this.setState({
                 hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
@@ -7313,9 +7314,10 @@ class SurveyBox extends Component {
         }
         else if (target[t].do == "show") {
           const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          const find = this.state.questionsArr.find((item) => item.handler == target[t].handler);
           setTimeout(() => {
             this.setState({
-              questionLength: checkInHidden ? this.state.questionLength + 1 : this.state.questionLength
+              questionLength: checkInHidden || find ? this.state.questionLength + 1 : this.state.questionLength
             }, () => {
               this.setState({
                 hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
@@ -7326,8 +7328,9 @@ class SurveyBox extends Component {
         else if (target[t].do == 'hide_multiple') {
           const multifield = target[t].multifield.length > 0 && target[t].multifield;
           for (let i = 0; i < multifield.length; i++) {
+            const find = this.state.questionsArr.find((item) => item.handler == multifield[i].value);
             const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
-            if (checkInHidden) { }
+            if (checkInHidden || !find) { }
             else {
               setTimeout(() => {
                 this.setState({
@@ -7344,8 +7347,9 @@ class SurveyBox extends Component {
         else if (target[t].do == 'show_multiple') {
           const multifield = target[t].multifield.length > 0 && target[t].multifield;
           for (let i = 0; i < multifield.length; i++) {
+            const find = this.state.questionsArr.find((item) => item.handler == multifield[i].value);
             const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
-            if (checkInHidden) {
+            if (checkInHidden && find) {
               setTimeout(() => {
                 this.setState({
                   questionLength: this.state.questionLength + 1
@@ -7367,8 +7371,8 @@ class SurveyBox extends Component {
           const checkInHidden = this.checkTargetQuestionHidden(unMetTarget[u].handler);
           const question = this.state.questionsArr.find((que) => que.handler == unMetTarget[u].handler);
           const existInTarget = this.findQuestionexistInTarget(unMetTarget[u].handler, target);
-          const keyname = question.questionType == 'capture' ? 'img_stats' : `${question.questionType}_stats`;
-          const stats = question.properties[keyname] ? question.properties[keyname] : "";
+          const keyname = question?.questionType == 'capture' ? 'img_stats' : `${question?.questionType}_stats`;
+          const stats = question?.properties[keyname] ? question?.properties[keyname] : "";
           if (existInTarget) {
             setTimeout(() => {
               this.setState({
@@ -7419,8 +7423,8 @@ class SurveyBox extends Component {
             const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
             const question = this.state.questionsArr.find((que) => que.handler == multifield[i].value);
             const existInTarget = this.findQuestionexistInTarget(multifield[i].value, target);
-            const keyname = question.questionType == 'capture' ? 'img_stats' : `${question.questionType}_stats`;
-            const stats = question.properties[keyname] ? question.properties[keyname] : "";
+            const keyname = question && question?.questionType == 'capture' ? 'img_stats' : `${question?.questionType}_stats`;
+            const stats = question && question?.properties[keyname] ? question?.properties[keyname] : "";
             if (existInTarget) {
               setTimeout(() => {
                 this.setState({
@@ -7475,15 +7479,15 @@ class SurveyBox extends Component {
     const finalarr = queArr.length > 0 && queArr.map((que, index) => {
       const unMettargetfind = unmetTarget.length > 0 && unmetTarget.find((tar) => tar.handler == que.handler);
       if (unMettargetfind && unMettargetfind) {
-        const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+        const keyname = que?.questionType == 'capture' ? 'img_stats' : `${que?.questionType}_stats`;
         const existInTarget = this.findQuestionexistInTarget(unMettargetfind.handler, target);
-        if (que.properties[keyname] && que.properties[keyname] == 'hide') {
+        if (que?.properties[keyname] && que?.properties[keyname] == 'hide') {
           return {
             ...que,
             isHide: existInTarget ? que.isHide : true
           }
         }
-        else if (que.properties[keyname] && que.properties[keyname] == 'show') {
+        else if (que?.properties[keyname] && que?.properties[keyname] == 'show') {
           return {
             ...que,
             isHide: existInTarget ? que.isHide : false
@@ -7504,17 +7508,17 @@ class SurveyBox extends Component {
     const unMettargetfind = unmetTarget.length > 0 && unmetTarget.find((tar) => tar.hasOwnProperty("multifield"));
 
     const finalarr = queArr.length > 0 && queArr.map((que, index) => {
-      const keyname = que.questionType == 'capture' ? 'img_stats' : `${que.questionType}_stats`;
+      const keyname = que?.questionType == 'capture' ? 'img_stats' : `${que?.questionType}_stats`;
       if (unMettargetfind && unMettargetfind) {
         const matchedField = unMettargetfind.multifield.find((item) => item.value == que.handler);
         const existInTarget = matchedField && this.findQuestionexistInTarget(matchedField.value, target);
-        if (matchedField && que.properties[keyname] && que.properties[keyname] == 'hide') {
+        if (matchedField && que?.properties[keyname] && que?.properties[keyname] == 'hide') {
           return {
             ...que,
             isHide: existInTarget ? que.isHide : true
           }
         }
-        else if (matchedField && que.properties[keyname] && que.properties[keyname] == 'show') {
+        else if (matchedField && que?.properties[keyname] && que?.properties[keyname] == 'show') {
           return {
             ...que,
             isHide: existInTarget ? que.isHide : false
