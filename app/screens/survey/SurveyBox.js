@@ -8462,6 +8462,7 @@ class SurveyBox extends Component {
   ) {
     let selectedItems = [];
     let answer;
+    const queProperty = questionArray.properties;
     const { multiLevelTrueMultiChoiceOuterArray } = this.state;
     let questionCopy = JSON.parse(
       JSON.stringify(multiLevelTrueMultiChoiceOuterArray[parentIndex].data)
@@ -8495,6 +8496,8 @@ class SurveyBox extends Component {
     questionCopy.map((item, pos) => {
       item.data.map(dataItem => {
         if (dataItem.isClicked) {
+          const find = questionArray?.answer?.selected_option
+          && questionArray?.answer?.selected_option.find((element) => element.id == item.id && element.sublabel_id == dataItem.id );
           let obj = {
             id: item.id,
             label: item.title,
@@ -8505,6 +8508,18 @@ class SurveyBox extends Component {
             sub_label_image: dataItem.label_image,
             remote_sub_label_image: dataItem.remote_label_image ? dataItem.remote_label_image : ""
           };
+
+          if(queProperty?.multiPreference && queProperty.multiPreference == 1){
+            const preference = questionArray.answer == "" || questionArray.answer.selected_option == []
+              ? 1 : find
+              ? find.preference_order : questionArray?.answer?.selected_option.length + 1;
+           
+            obj = {
+              ...obj,
+              preference_order : preference
+            }
+          }
+
           selectedItems.push(obj);
           if (item.id !== 'other') {
             this.state.questionsArr[questionIndex].answer && this.state.questionsArr[questionIndex].answer.other_value ?
@@ -8513,7 +8528,13 @@ class SurveyBox extends Component {
         }
       });
     });
-
+    if(queProperty?.multiPreference && queProperty.multiPreference == 1){
+      selectedItems.sort((a, b) => a.preference_order - b.preference_order);
+      selectedItems = selectedItems.map((item, index) => ({
+        ...item,
+        preference_order: index + 1
+      }));
+    }
     /* create answer object */
     answer = {
       choice_type: "multiple",
@@ -8684,6 +8705,8 @@ class SurveyBox extends Component {
      * Iterate through question array and only add clicked items to {@link selectedItems}
      * */
     questionCopy.map((item, pos) => {
+      const find = questionArray?.answer?.selected_option
+        && questionArray?.answer?.selected_option.find((element) => element.id == item.id);
       if (item.isClicked) {
         let obj = {
           id: item.id,
@@ -8691,6 +8714,16 @@ class SurveyBox extends Component {
           label_image: item.label_image,
           remote_label_image: item.remote_label_image ? item.remote_label_image : ""
         };
+        if(queProperty?.multiPreference && queProperty.multiPreference == 1){
+          const preference = questionArray.answer == "" || questionArray?.answer?.selected_option == []
+            ? 1 : find
+            ? find.preference_order : questionArray?.answer?.selected_option.length + 1;
+         
+          obj = {
+            ...obj,
+            preference_order : preference
+          }
+        }
         selectedItems.push(obj);
         if (item.id !== 'other') {
           this.state.questionsArr[questionIndex].answer && this.state.questionsArr[questionIndex].answer.other_value ?
@@ -8698,6 +8731,13 @@ class SurveyBox extends Component {
         }
       }
     });
+    if(queProperty?.multiPreference && queProperty.multiPreference == 1){
+      selectedItems.sort((a, b) => a.preference_order - b.preference_order);
+      selectedItems = selectedItems.map((item, index) => ({
+        ...item,
+        preference_order: index + 1
+      }));
+    }
     answer = {
       choice_type: "multiple",
       multilevel: 0,
@@ -12144,13 +12184,15 @@ class SurveyBox extends Component {
       }}
 
       renderItem={({ item, index, section }) => {
+        const find = questionArray?.answer?.selected_option && questionArray?.answer?.selected_option.length > 0 &&
+        questionArray?.answer?.selected_option.find((element)=>element.id == section.id && element.sublabel_id == item.id)
         return (
           section.headerClicked && (
             <TouchableWithoutFeedback
               onPress={() => this.multipleCheck(index, section.position, item, parentIndex, questionIndex, questionArray)}>
               <View>
                 <View style={styles.subItem}>
-                  <View flex={0.9} style={[styles.subItemInnerView, {
+                  <View flex={0.7} style={[styles.subItemInnerView, {
                     paddingTop: 5,
                     paddingBottom: 5
                   }]}>
@@ -12166,6 +12208,16 @@ class SurveyBox extends Component {
                         tagsStyles={darkBluetagsStyles}
                         defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
+                  </View>
+                  <View flex={0.1} style={styles.centerContaier}> 
+                    {
+                      questionArray?.properties?.multiPreference && questionArray?.properties?.multiPreference == 1 && find
+                      && (
+                        <View style={styles.preferenceContainer}>
+                         <Text style={{color : Color.colorWhite}}>{find?.preference_order}</Text>
+                        </View>
+                      )
+                    }
                   </View>
                   <View flex={0.1}
                     style={{
@@ -12389,6 +12441,8 @@ class SurveyBox extends Component {
           bounces={false}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
+            const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 && 
+            questionArr?.answer?.selected_option.find((element)=>element.id == item.id);
             return (
               <TouchableWithoutFeedback
                 key={index}
@@ -12413,6 +12467,16 @@ class SurveyBox extends Component {
                     paddingTop: 15,
                     paddingBottom: 15
                   }}>
+                    <View style={{position : "absolute" , right : 5 , top:5 , zIndex:100}}>
+                      {
+                        questionArr?.properties?.multiPreference && questionArr?.properties?.multiPreference == 1 && find
+                          && (
+                            <View style={styles.preferenceContainer}>
+                              <Text style={{color : Color.colorWhite}}>{find?.preference_order}</Text>
+                            </View>
+                        )
+                      }
+                    </View>
                     {item.label_image !== "" &&
                       item.label_image !== null &&
                       item.label_image !== undefined && (
@@ -12454,7 +12518,6 @@ class SurveyBox extends Component {
                         tagsStyles={darkBluetagsStyles}
                         defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
-
                     </View>
 
                   </View>
@@ -12537,12 +12600,13 @@ class SurveyBox extends Component {
                   flexDirection: 'row',
                   width: '100%',
                 }}>
-                  {item.map((elem, i) => (
-                    item[i].hasOwnProperty('id') &&
+                  {item.map((elem, i) => {
+                    const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 && 
+                    questionArr?.answer?.selected_option.find((element)=>element.id == elem.id);
+                    return(item[i].hasOwnProperty('id') &&
                     <View
                       key={i}
                       style={[{
-
                         width: elem.id === 'other' ? '100%' : '50%',
                         backgroundColor: 'white',
                         flexDirection: "column",
@@ -12623,26 +12687,12 @@ class SurveyBox extends Component {
                               flexDirection: "row",
                               alignSelf: "center",
                               width: 120,
-                              // paddingTop: 0,
                               marginTop: 5,
-                              // paddingBottom: 10,
-                              // marginLeft: 10,
-                              // marginRight:10
                             }}
                           >
                             <Image
                               style={styles.checkBoxImage}
-                              source={choice_type === 'single' ? this.imageRadioBox(elem.isClicked) : this.imageCheckBox(elem.isClicked)}
-                            />
-                            {/* <Text style={{
-                              // styles.subText
-                              color: Color.colorDarkBlue,
-                              fontSize: Dimension.normalText,
-                              paddingLeft: 10,
-                              // marginRight: 20,
-                              paddingRight: 10
-                            }}>{elem.label}</Text> */}
-
+                              source={choice_type === 'single' ? this.imageRadioBox(elem.isClicked) : this.imageCheckBox(elem.isClicked)}/>
                             {elem.label ? <RenderHtml
                               source={{ html: elem.label_text ? elem.label_text : elem.label }}
                               contentWidth={width}
@@ -12652,6 +12702,16 @@ class SurveyBox extends Component {
                               defaultTextProps={{ allowFontScaling: false }}
                             /> : null}
                           </View>
+                            <View style={{position : "absolute" , right:15}}>
+                              {
+                                questionArr?.properties?.multiPreference && questionArr?.properties?.multiPreference == 1 && find
+                                && (
+                                  <View style={styles.preferenceContainer}>
+                                   <Text style={{color : Color.colorWhite}}>{find?.preference_order}</Text>
+                                  </View>
+                                )
+                              }
+                            </View>
 
 
                           {elem.id === 'other' &&
@@ -12675,8 +12735,8 @@ class SurveyBox extends Component {
                           {/* <View style={styles.viewBg} /> */}
                         </View>
                       </TouchableWithoutFeedback>
-                    </View>
-                  ))}
+                      </View>)
+                  })}
                 </View>
               );
             }}
@@ -12802,13 +12862,15 @@ class SurveyBox extends Component {
           bounces={false}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
-
+            const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 && 
+            questionArr?.answer?.selected_option.find((element)=>element.id == item.id)
+            // const number = 1.50-(find?.preference_order+1)/itemstorender.length;
             return (
               <TouchableWithoutFeedback
                 onPress={() => this.singleLevelMultiCheck(index, item, parentPosition, questionIndex, questionArr)}>
                 <View>
                   <View style={styles.flatContainer}>
-                    <View flex={0.9} style={{
+                    <View flex={0.7} style={{
                       flexDirection: 'row',
                       marginLeft: 10,
                       alignSelf: 'stretch',
@@ -12827,6 +12889,16 @@ class SurveyBox extends Component {
                         tagsStyles={darkBluetagsStyles}
                         defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
+                    </View>
+                    <View flex={0.1} style={styles.centerContaier}> 
+                      {
+                        questionArr?.properties?.multiPreference && questionArr?.properties?.multiPreference == 1 && find
+                        && (
+                          <View style={styles.preferenceContainer}>
+                           <Text style={{color : Color.colorWhite}}>{find?.preference_order}</Text>
+                          </View>
+                        )
+                      }
                     </View>
                     <View flex={0.1}
                       style={{
@@ -15306,5 +15378,21 @@ const styles = ScaledSheet.create({
   progressBarStyle: {
     marginHorizontal: 20,
     marginTop: 10
+  },
+  preferenceContainer : {
+    alignSelf : "center",
+    borderRadius:30,
+    backgroundColor: Color.colorOrange,
+    borderColor : Color.colorOrange,
+    borderWidth : 1,
+    height : 25,
+    width : 25,
+    justifyContent : "center",
+    alignItems : "center"
+  },
+  centerContaier : {
+    alignSelf : "center",
+    justifyContent : "center",
+    alignItems : "center",
   }
 });
