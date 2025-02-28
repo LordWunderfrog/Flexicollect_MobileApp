@@ -6707,8 +6707,8 @@ class SurveyBox extends Component {
                   questionsArray[currentQuesIndx].hasOwnProperty("isUpdated") &&
                   questionsArray[currentQuesIndx].isUpdated === true
                 ) {
-                  questionObj['release_mission'] = release_mission;
                   let questionObj = this.questionPostObject(currentQuesIndx);
+                  questionObj['release_mission'] = release_mission;
                   if (questionsArray[currentQuesIndx].properties.hasOwnProperty("noreturn") &&
                     questionsArray[currentQuesIndx].properties.noreturn === 1) {
                     this.postAnswerToServer(questionObj, currentQuesIndx, false, 1);
@@ -11146,7 +11146,7 @@ class SurveyBox extends Component {
                       ]}
                       source={{ uri: scaleContents.image_id }}
                     />
-                  ) : (
+                  ) : ( 
                     this.returnTextView(scaleContents, questionArray, index)
                   )}
                   {index === 0 && startText !== null && (
