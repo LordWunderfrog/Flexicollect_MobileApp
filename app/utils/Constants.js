@@ -156,7 +156,7 @@ module.exports = {
   {
     "Afrikaans": {
       "Email": "E-pos",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Wagwoord vergeet",
       "Forgot_Password_Msg": "Kontroleer u e-posboodskappe vir eenmalige wagwoord",
       "Login": "Meld aan",
@@ -179,7 +179,7 @@ module.exports = {
     },
     "Arabic": {
       "Email": "البريد الالكتروني",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "هل نسيت كلمة مرورك ؟",
       "Forgot_Password_Msg": "الرجاء تفقد بريدك الالكتروني / الرسائل من اجل كلمة المرور لمرة واحدة",
       "Login": "تسجيل دخول ",
@@ -202,7 +202,7 @@ module.exports = {
     },
     "Chinese": {
       "Email": "电子邮箱",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "忘记密码",
       "Forgot_Password_Msg": "请查收您的电子邮件或短信中的动态密码",
       "Login": "登录",
@@ -225,7 +225,7 @@ module.exports = {
     },
     "Dutch": {
       "Email": "E-mail",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Wachtwoord vergeten",
       "Forgot_Password_Msg": "Controleer uw e-mail/berichten voor een eenmalig wachtwoord",
       "Login": "Aanmelden",
@@ -248,7 +248,7 @@ module.exports = {
     },
     "English": {
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Forgot Password",
       "Forgot_Password_Msg": "Please check your email/messages for one time password",
       "Login": "LOGIN",
@@ -271,7 +271,7 @@ module.exports = {
     },
     "French": {
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Mot de passe oublié",
       "Forgot_Password_Msg": "Veuillez vérifier vos e-mails/messages pour obtenir un mot de passe unique",
       "Login": "S'IDENTIFIER",
@@ -294,7 +294,7 @@ module.exports = {
     },
     "German": {
       "Email": "Email-Adresse",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Passwort vergessen?",
       "Forgot_Password_Msg": "Sie erhalten von uns eine Email mit einem einmaligen Passwort. ",
       "Login": "Anmeldung",
@@ -317,7 +317,7 @@ module.exports = {
     },
     "Greek": {
       "Email": "Ηλεκτρονική διεύθυνση",
-      "Eolas_International": "2019 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Ξεχάσατε τον κωδικό;",
       "Forgot_Password_Msg": "Ελέγξτε τα email/μηνύματά σας για κωδικό πρόσβασης μονής χρήσης",
       "Login": "Σύνδεση",
@@ -340,7 +340,7 @@ module.exports = {
     },
     "Hindi": {
       "Email": "ईमेल",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "पासवर्ड भूल गए",
       "Forgot_Password_Msg": "कृपया एक बार पासवर्ड के लिए अपना ईमेल / संदेश देखें",
       "Login": "लॉग इन करें",
@@ -363,7 +363,7 @@ module.exports = {
     },
     "Indonesian": {
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Lupa Kata Sandi",
       "Forgot_Password_Msg": "Periksa kembali email anda utk memasukkan kata sandi",
       "Login": "Masuk",
@@ -386,7 +386,7 @@ module.exports = {
     },
     "Italian": {
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Password dimenticata",
       "Forgot_Password_Msg": "Controlla la tua email/messaggi per la password temporanea",
       "Login": "Login",
@@ -409,7 +409,7 @@ module.exports = {
     },
     "Japanese": {
       "Email": "Eメール",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "パスワードをお忘れですか",
       "Forgot_Password_Msg": "ワンタイムパスワードについては、メール/メッセージを確認してください",
       "Login": "ログインする",
@@ -432,7 +432,7 @@ module.exports = {
     },
     "Malay": {
       "Email": "E - Mel",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Lupa Kata Laluan",
       "Forgot_Password_Msg": "Sila semak e-mel anda untuk \"One time password(OTP)\"",
       "Login": "Log Masuk",
@@ -455,7 +455,7 @@ module.exports = {
     },
     "Polish": {
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Zapomniałem hasło",
       "Forgot_Password_Msg": "Sprawdź wiadomości w celu uzyskania hasła jednorazowego",
       "Login": "Zaloguj się",
@@ -478,7 +478,7 @@ module.exports = {
     },
     "Portuguese": {
       "Email": "E-mail",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Esqueceu a senha?",
       "Forgot_Password_Msg": "Você receberá uma senha de uso único. Por favor, verifique seu e-mail.",
       "Login": "Entrar",
@@ -501,7 +501,7 @@ module.exports = {
     },
     "Russian": {
       "Email": "Эл. адрес",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Забыли пароль",
       "Forgot_Password_Msg": "Пожалуйста, проверьте свою электронную почту / сообщения для одного временного пароля",
       "Login": "Логин",
@@ -524,7 +524,7 @@ module.exports = {
     },
     "Spanish": {
       "Email": "Correo electrónico",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Olvidó su contraseña",
       "Forgot_Password_Msg": "Por favor revise su correo electrónico/mensajes para la contraseña única",
       "Login": "Registrarse",
@@ -547,7 +547,7 @@ module.exports = {
     },
     "Tagalog": {
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Nalimutan ang Password",
       "Forgot_Password_Msg": "Mangyaring suriin ang iyong email / mga mensahe para sa isang beses na password",
       "Login": "Mag-log-in",
@@ -570,7 +570,7 @@ module.exports = {
     },
     "Thai": {
       "Email": "อีเมล",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "ลืมรหัสผ่าน",
       "Forgot_Password_Msg": "กรุณาตรวจสอบอีเมล/ข้อความของคุณสำหรับรหัสผ่านครั้งเดียว",
       "Login": "เข้าสู่ระบบ",
@@ -593,7 +593,7 @@ module.exports = {
     },
     "Vietnamese": {
       "Email": "E-mail",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "Quên mật khẩu",
       "Forgot_Password_Msg": "Vui lòng kiểm tra email/tin nhắn của bạn để lấy mã xác thực",
       "Login": "ĐĂNG NHẬP",
@@ -616,7 +616,7 @@ module.exports = {
     },
     "Urdu": {
       "Email": "ای میل",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "Forgot_Password": "پاسورڈ بھول گے",
       "Forgot_Password_Msg": "براہ کرم ایک بار کے پاس ورڈ کے لئے اپنے ای میل / پیغامات کو چیک کریں",
       "Login": "لاگ ان کریں",
@@ -646,7 +646,7 @@ module.exports = {
       "Country": "Land",
       "DOB": "Geboortedatum",
       "Email_ID": "E-pos identiteit",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Eerste naam",
       "Gender": "geslag",
       "Gender_List": [
@@ -685,7 +685,7 @@ module.exports = {
       "Country": "البلد",
       "DOB": "تاريخ الولادة",
       "Email_ID": "اسم المستخدم",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "الاسم الأول",
       "Gender": "الجنس",
       "Gender_List": [
@@ -724,7 +724,7 @@ module.exports = {
       "Country": "国别",
       "DOB": "出生日期",
       "Email_ID": "电子邮箱",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "名字",
       "Gender": "性别",
       "Gender_List": [
@@ -763,7 +763,7 @@ module.exports = {
       "Country": "Land",
       "DOB": "Geboordedatum",
       "Email_ID": "Account e-mail",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Voornaam",
       "Gender": "Geslacht",
       "Gender_List": [
@@ -802,7 +802,7 @@ module.exports = {
       "Country": "Country",
       "DOB": "DOB(dd/mm/yyyy)",
       "Email_ID": "Email ID",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "First Name",
       "Gender": "Gender",
       "Gender_List": [
@@ -841,7 +841,7 @@ module.exports = {
       "Country": "Pays",
       "DOB": "Date de naissance",
       "Email_ID": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Prénom",
       "Gender": "Genre",
       "Gender_List": [
@@ -880,7 +880,7 @@ module.exports = {
       "Country": "Land",
       "DOB": "Geburtsdatum",
       "Email_ID": "Email-Identifikationsnummer",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Vorname",
       "Gender": "Geschlecht",
       "Gender_List": [
@@ -919,7 +919,7 @@ module.exports = {
       "Country": "Χώρα",
       "DOB": "Ημερομηνία Γέννησης",
       "Email_ID": "Ταυτότητα διεύθυνσης ηλεκτρονικού ταχυδρομείου",
-      "Eolas_International": "2019 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Ονομα",
       "Gender": "Γένος",
       "Gender_List": [
@@ -958,7 +958,7 @@ module.exports = {
       "Country": "देश",
       "DOB": "जन्म तिथि",
       "Email_ID": "ईमेल आईडी",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "पहला नाम",
       "Gender": "लिंग",
       "Gender_List": [
@@ -997,7 +997,7 @@ module.exports = {
       "Country": "Negara",
       "DOB": "Tanggal Lahir",
       "Email_ID": "Email ID",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nama Depan",
       "Gender": "Jenis Kelamin",
       "Gender_List": [
@@ -1036,7 +1036,7 @@ module.exports = {
       "Country": "Nazione",
       "DOB": "Data di nascita",
       "Email_ID": "ID Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nome",
       "Gender": "Sesso",
       "Gender_List": [
@@ -1075,7 +1075,7 @@ module.exports = {
       "Country": "国",
       "DOB": "DOB（生年月日）",
       "Email_ID": "電子メールID",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "ファーストネーム",
       "Gender": "性別",
       "Gender_List": [
@@ -1114,7 +1114,7 @@ module.exports = {
       "Country": "Negara",
       "DOB": "Tarikh Lahir",
       "Email_ID": "Alamat E-mel",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nama Pertama",
       "Gender": "Jantina",
       "Gender_List": [
@@ -1153,7 +1153,7 @@ module.exports = {
       "Country": "Kraj",
       "DOB": "Data urodzenia",
       "Email_ID": "Email ID",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Imię",
       "Gender": "Płeć",
       "Gender_List": [
@@ -1192,7 +1192,7 @@ module.exports = {
       "Country": "País",
       "DOB": "Data de nascimento",
       "Email_ID": "Endereço de e-mail",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nome",
       "Gender": "Gênero",
       "Gender_List": [
@@ -1231,7 +1231,7 @@ module.exports = {
       "Country": "Страна",
       "DOB": "DOB (дата рождения)",
       "Email_ID": "Электронный идентификатор",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Имя",
       "Gender": "Пол",
       "Gender_List": [
@@ -1270,7 +1270,7 @@ module.exports = {
       "Country": "País",
       "DOB": "Fecha de nacimiento",
       "Email_ID": "Identificación de correo",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nombre",
       "Gender": "Género",
       "Gender_List": [
@@ -1309,7 +1309,7 @@ module.exports = {
       "Country": "Bansa",
       "DOB": "Araw ng kapanganakan",
       "Email_ID": "Email ID",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Pangalan",
       "Gender": "Kasarian",
       "Gender_List": [
@@ -1348,7 +1348,7 @@ module.exports = {
       "Country": "ประเทศ",
       "DOB": "วันเกิด(วันเดือนปีเกิด)",
       "Email_ID": "ชื่ออีเมล์",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "ชื่อจริง",
       "Gender": "เพศ",
       "Gender_List": [
@@ -1387,7 +1387,7 @@ module.exports = {
       "Country": "Quốc gia",
       "DOB": "Ngày sinh",
       "Email_ID": "Địa chỉ email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Tên",
       "Gender": "Giới tính",
       "Gender_List": [
@@ -1426,7 +1426,7 @@ module.exports = {
       "Country": "ملک",
       "DOB": "تاریخ پیدائش",
       "Email_ID": "ای میل ایڈریس",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "پہلا نام",
       "Gender": "صنف",
       "Gender_List": [
@@ -1470,7 +1470,7 @@ module.exports = {
       "Country_Code": "Landelike kode",
       "Current_Password": "huidige Sleutelwoord",
       "Email": "E-pos",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Eerste naam",
       "Gender": "geslag",
       "Gender_List": [
@@ -1553,7 +1553,7 @@ module.exports = {
       "Country_Code": "الرقم الدولي",
       "Current_Password": "رمز البلد",
       "Email": "البريد الالكتروني",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "الاسم الأول",
       "Gender": "النوع",
       "Gender_List": [
@@ -1636,7 +1636,7 @@ module.exports = {
       "Country_Code": "国家代码",
       "Current_Password": "当前密码",
       "Email": "电子邮箱",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "名字",
       "Gender": "性别",
       "Gender_List": [
@@ -1719,7 +1719,7 @@ module.exports = {
       "Country_Code": "Landcode",
       "Current_Password": "Huidig wachtwoord",
       "Email": "E-mail",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Voornaam",
       "Gender": "Geslacht",
       "Gender_List": [
@@ -1802,7 +1802,7 @@ module.exports = {
       "Country_Code": "Country Code",
       "Current_Password": "Current Password",
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "First Name",
       "Gender": "Gender",
       "Gender_List": [
@@ -1885,7 +1885,7 @@ module.exports = {
       "Country_Code": "Code du pays",
       "Current_Password": "Mot de passe actuel",
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Prénom",
       "Gender": "Genre",
       "Gender_List": [
@@ -1968,7 +1968,7 @@ module.exports = {
       "Country_Code": "Länder-Vorwahl",
       "Current_Password": "Passwort ändern",
       "Email": "Email-Adresse",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Vorname",
       "Gender": "Geschlecht",
       "Gender_List": [
@@ -2051,7 +2051,7 @@ module.exports = {
       "Country_Code": "Ταχυδρομικός κώδικας",
       "Current_Password": "Τρέχων κωδικός πρόσβασης",
       "Email": "Ηλεκτρονική διεύθυνση",
-      "Eolas_International": "2019 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Ονομα",
       "Gender": "Γένος",
       "Gender_List": [
@@ -2134,7 +2134,7 @@ module.exports = {
       "Country_Code": "देश कोड",
       "Current_Password": "वर्तमान पासवर्ड",
       "Email": "ईमेल",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "पहला नाम",
       "Gender": "लिंग",
       "Gender_List": [
@@ -2217,7 +2217,7 @@ module.exports = {
       "Country_Code": "Kode Negara",
       "Current_Password": "Kata sandi saat ini",
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nama Depan",
       "Gender": "Jenis Kelamin",
       "Gender_List": [
@@ -2300,7 +2300,7 @@ module.exports = {
       "Country_Code": "Prefisso del Paese",
       "Current_Password": "Password attuale",
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nome",
       "Gender": "Sesso",
       "Gender_List": [
@@ -2383,7 +2383,7 @@ module.exports = {
       "Country_Code": "国コード",
       "Current_Password": "現在のパスワード",
       "Email": "Eメール",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "ファーストネーム",
       "Gender": "性別",
       "Gender_List": [
@@ -2466,7 +2466,7 @@ module.exports = {
       "Country_Code": "Kod Negara",
       "Current_Password": "Kata Laluan terkini",
       "Email": "E-Mel",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nama Pertama",
       "Gender": "Jantina",
       "Gender_List": [
@@ -2549,7 +2549,7 @@ module.exports = {
       "Country_Code": "Kod kraju",
       "Current_Password": "Obecne hasło",
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Imię",
       "Gender": "Płeć",
       "Gender_List": [
@@ -2632,7 +2632,7 @@ module.exports = {
       "Country_Code": "Código do país",
       "Current_Password": "Senha atual",
       "Email": "E-mail",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nome",
       "Gender": "Gênero",
       "Gender_List": [
@@ -2715,7 +2715,7 @@ module.exports = {
       "Country_Code": "Код страны",
       "Current_Password": "Текущий пароль",
       "Email": "Эл. адрес",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Имя",
       "Gender": "Пол",
       "Gender_List": [
@@ -2798,7 +2798,7 @@ module.exports = {
       "Country_Code": "Código de país",
       "Current_Password": "Contraseña actual",
       "Email": "Correo electrónico",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Nombre",
       "Gender": "Género",
       "Gender_List": [
@@ -2881,7 +2881,7 @@ module.exports = {
       "Country_Code": "Code ng Bansa",
       "Current_Password": "Kasalukuyang Password",
       "Email": "Email",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Pangalan",
       "Gender": "Kasarian",
       "Gender_List": [
@@ -2964,7 +2964,7 @@ module.exports = {
       "Country_Code": "รหัสประเทศ",
       "Current_Password": "รหัสผ่านปัจจุบัน",
       "Email": "อีเมล",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "ชื่อจริง",
       "Gender": "เพศ",
       "Gender_List": [
@@ -3047,7 +3047,7 @@ module.exports = {
       "Country_Code": "Mã quốc gia",
       "Current_Password": "Mật khẩu hiện tại",
       "Email": "E-mail",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "Tên",
       "Gender": "Giới tính",
       "Gender_List": [
@@ -3130,7 +3130,7 @@ module.exports = {
       "Country_Code": "ملک کا کوڈ",
       "Current_Password": "موجودہ پاس ورڈ",
       "Email": "ای میل",
-      "Eolas_International": "© 2023 Eolas International",
+      "Eolas_International": "© 2025 Eolas International",
       "First_Name": "پہلا نام",
       "Gender": "صنف",
       "Gender_List": [

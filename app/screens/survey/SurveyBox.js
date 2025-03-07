@@ -3178,8 +3178,19 @@ class SurveyBox extends Component {
         }
         this.addQuestionBasedOnChoiceType(newquestionsArray)
 
+        let a = [];
+        let b = [];
+        for(let i = 0; i<arry.length ; i++){
+          let item = arry[i]
+          if(a.includes(item)){
+            b.push(item);
+          }else{
+            a.push(item);
+          }
+        }
+        const new_que_length = this.state.questionLength - arry.length;
         this.setState({
-          questionLength: this.state.questionLength - arry.length + 1,
+          questionLength: b.length>0 ? new_que_length + 1 : new_que_length ,
           progressNumber: this.state.progressNumber,
           maxReachedQuestion: this.state.progressNumber
         })
@@ -8463,6 +8474,7 @@ class SurveyBox extends Component {
     let selectedItems = [];
     let answer;
     const queProperty = questionArray.properties;
+    const other_value = questionArray.answer.other_value && questionArray.answer.other_value || "";
     const { multiLevelTrueMultiChoiceOuterArray } = this.state;
     let questionCopy = JSON.parse(
       JSON.stringify(multiLevelTrueMultiChoiceOuterArray[parentIndex].data)
@@ -8541,6 +8553,10 @@ class SurveyBox extends Component {
       multilevel: 1,
       selected_option: selectedItems
     };
+    if(other_value && other_value.length>0){
+      const find_other = selectedItems.find((item)=>item.id == "other")
+      answer["other_value"] = find_other ? other_value : ""
+    }
     questionArray.answer = answer; // replace answer object
     questionArray.isUpdated = true;
     let localArray = this.state.questionsArr;
@@ -8666,7 +8682,7 @@ class SurveyBox extends Component {
     );
     item.isClicked = !item.isClicked;
     questionCopy[index] = item;
-
+    const other_value = questionArray.answer.other_value && questionArray.answer.other_value  || "";
     let queProperty = questionArray && questionArray.properties
     if (queProperty && queProperty.setlimit == 1) {
       if (queProperty.setlimit_type == "setminmaxlimit") {
@@ -8743,6 +8759,10 @@ class SurveyBox extends Component {
       multilevel: 0,
       selected_option: selectedItems
     };
+    if(other_value && other_value.length>0){
+      const find_other = selectedItems.find((item)=>item.id == "other")
+      answer["other_value"] = find_other ? other_value : ""
+    }
     questionArray.answer = answer; //replace answer object
     questionArray.isUpdated = true;
     let localArray = this.state.questionsArr;
@@ -8906,8 +8926,13 @@ class SurveyBox extends Component {
   /* set answer for choice question other option textbox */
   setAnswerForOtherInput(questionArr, questionIndex) {
     let inputAnswer = questionArr.answer;
+    let other_val = true;
+    if(inputAnswer && inputAnswer.hasOwnProperty("selected_option") && inputAnswer.selected_option.length>0){
+      const find = inputAnswer.selected_option.find((item)=>item.id == "other");
+      other_val = find ? true : false
+    }
     if (inputAnswer) {
-      return inputAnswer.other_value ? inputAnswer.other_value : "";
+      return other_val ? inputAnswer.other_value ? inputAnswer.other_value : "" : "";
     }
     return "";
   }
