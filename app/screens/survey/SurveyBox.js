@@ -2809,13 +2809,13 @@ class SurveyBox extends Component {
       })
       if (arry.length > 0) {
         const newArray = this.shuffleArray(arry)
-        if (this.state.questionsArr[this.state.pageCount].properties.noreturn == 1 
-              && this.state.questionsArr[this.state.pageCount].conditions.length > 0) {
+        if (this.state.questionsArr[this.state.pageCount].properties.noreturn == 1
+          && this.state.questionsArr[this.state.pageCount].conditions.length > 0) {
           const temp_first = {
             ...newArray[0],
-            properties : {
+            properties: {
               ...newArray[0].properties,
-              noreturn : 0
+              noreturn: 0
             }
           }
           const noReturnNewArray = [temp_first, ...newArray]
@@ -3180,17 +3180,17 @@ class SurveyBox extends Component {
 
         let a = [];
         let b = [];
-        for(let i = 0; i<arry.length ; i++){
+        for (let i = 0; i < arry.length; i++) {
           let item = arry[i]
-          if(a.includes(item)){
+          if (a.includes(item)) {
             b.push(item);
-          }else{
+          } else {
             a.push(item);
           }
         }
         const new_que_length = this.state.questionLength - arry.length;
         this.setState({
-          questionLength: b.length>0 ? new_que_length + 1 : new_que_length ,
+          questionLength: b.length > 0 ? new_que_length + 1 : new_que_length,
           progressNumber: this.state.progressNumber,
           maxReachedQuestion: this.state.progressNumber
         })
@@ -8509,7 +8509,7 @@ class SurveyBox extends Component {
       item.data.map(dataItem => {
         if (dataItem.isClicked) {
           const find = questionArray?.answer?.selected_option
-          && questionArray?.answer?.selected_option.find((element) => element.id == item.id && element.sublabel_id == dataItem.id );
+            && questionArray?.answer?.selected_option.find((element) => element.id == item.id && element.sublabel_id == dataItem.id);
           let obj = {
             id: item.id,
             label: item.title,
@@ -8521,14 +8521,14 @@ class SurveyBox extends Component {
             remote_sub_label_image: dataItem.remote_label_image ? dataItem.remote_label_image : ""
           };
 
-          if(queProperty?.multiPreference && queProperty.multiPreference == 1){
+          if (queProperty?.multiPreference && queProperty.multiPreference == 1) {
             const preference = questionArray.answer == "" || questionArray.answer.selected_option == []
               ? 1 : find
-              ? find.preference_order : questionArray?.answer?.selected_option.length + 1;
-           
+                ? find.preference_order : questionArray?.answer?.selected_option.length + 1;
+
             obj = {
               ...obj,
-              preference_order : preference
+              preference_order: preference
             }
           }
 
@@ -8540,7 +8540,7 @@ class SurveyBox extends Component {
         }
       });
     });
-    if(queProperty?.multiPreference && queProperty.multiPreference == 1){
+    if (queProperty?.multiPreference && queProperty.multiPreference == 1) {
       selectedItems.sort((a, b) => a.preference_order - b.preference_order);
       selectedItems = selectedItems.map((item, index) => ({
         ...item,
@@ -8553,8 +8553,8 @@ class SurveyBox extends Component {
       multilevel: 1,
       selected_option: selectedItems
     };
-    if(other_value && other_value.length>0){
-      const find_other = selectedItems.find((item)=>item.id == "other")
+    if (other_value && other_value.length > 0) {
+      const find_other = selectedItems.find((item) => item.id == "other")
       answer["other_value"] = find_other ? other_value : ""
     }
     questionArray.answer = answer; // replace answer object
@@ -8682,7 +8682,7 @@ class SurveyBox extends Component {
     );
     item.isClicked = !item.isClicked;
     questionCopy[index] = item;
-    const other_value = questionArray.answer.other_value && questionArray.answer.other_value  || "";
+    const other_value = questionArray.answer.other_value && questionArray.answer.other_value || "";
     let queProperty = questionArray && questionArray.properties
     if (queProperty && queProperty.setlimit == 1) {
       if (queProperty.setlimit_type == "setminmaxlimit") {
@@ -8730,14 +8730,14 @@ class SurveyBox extends Component {
           label_image: item.label_image,
           remote_label_image: item.remote_label_image ? item.remote_label_image : ""
         };
-        if(queProperty?.multiPreference && queProperty.multiPreference == 1){
+        if (queProperty?.multiPreference && queProperty.multiPreference == 1) {
           const preference = questionArray.answer == "" || questionArray?.answer?.selected_option == []
             ? 1 : find
-            ? find.preference_order : questionArray?.answer?.selected_option.length + 1;
-         
+              ? find.preference_order : questionArray?.answer?.selected_option.length + 1;
+
           obj = {
             ...obj,
-            preference_order : preference
+            preference_order: preference
           }
         }
         selectedItems.push(obj);
@@ -8747,7 +8747,7 @@ class SurveyBox extends Component {
         }
       }
     });
-    if(queProperty?.multiPreference && queProperty.multiPreference == 1){
+    if (queProperty?.multiPreference && queProperty.multiPreference == 1) {
       selectedItems.sort((a, b) => a.preference_order - b.preference_order);
       selectedItems = selectedItems.map((item, index) => ({
         ...item,
@@ -8759,8 +8759,8 @@ class SurveyBox extends Component {
       multilevel: 0,
       selected_option: selectedItems
     };
-    if(other_value && other_value.length>0){
-      const find_other = selectedItems.find((item)=>item.id == "other")
+    if (other_value && other_value.length > 0) {
+      const find_other = selectedItems.find((item) => item.id == "other")
       answer["other_value"] = find_other ? other_value : ""
     }
     questionArray.answer = answer; //replace answer object
@@ -8927,8 +8927,8 @@ class SurveyBox extends Component {
   setAnswerForOtherInput(questionArr, questionIndex) {
     let inputAnswer = questionArr.answer;
     let other_val = true;
-    if(inputAnswer && inputAnswer.hasOwnProperty("selected_option") && inputAnswer.selected_option.length>0){
-      const find = inputAnswer.selected_option.find((item)=>item.id == "other");
+    if (inputAnswer && inputAnswer.hasOwnProperty("selected_option") && inputAnswer.selected_option.length > 0) {
+      const find = inputAnswer.selected_option.find((item) => item.id == "other");
       other_val = find ? true : false
     }
     if (inputAnswer) {
@@ -11171,7 +11171,7 @@ class SurveyBox extends Component {
                       ]}
                       source={{ uri: scaleContents.image_id }}
                     />
-                  ) : ( 
+                  ) : (
                     this.returnTextView(scaleContents, questionArray, index)
                   )}
                   {index === 0 && startText !== null && (
@@ -12210,7 +12210,7 @@ class SurveyBox extends Component {
 
       renderItem={({ item, index, section }) => {
         const find = questionArray?.answer?.selected_option && questionArray?.answer?.selected_option.length > 0 &&
-        questionArray?.answer?.selected_option.find((element)=>element.id == section.id && element.sublabel_id == item.id)
+          questionArray?.answer?.selected_option.find((element) => element.id == section.id && element.sublabel_id == item.id)
         return (
           section.headerClicked && (
             <TouchableWithoutFeedback
@@ -12234,12 +12234,12 @@ class SurveyBox extends Component {
                         defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
                   </View>
-                  <View flex={0.1} style={styles.centerContaier}> 
+                  <View flex={0.1} style={styles.centerContaier}>
                     {
                       questionArray?.properties?.multiPreference && questionArray?.properties?.multiPreference == 1 && find
                       && (
                         <View style={styles.preferenceContainer}>
-                         <Text style={{color : Color.colorWhite}}>{find?.preference_order}</Text>
+                          <Text style={{ color: Color.colorWhite }}>{find?.preference_order}</Text>
                         </View>
                       )
                     }
@@ -12466,8 +12466,8 @@ class SurveyBox extends Component {
           bounces={false}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
-            const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 && 
-            questionArr?.answer?.selected_option.find((element)=>element.id == item.id);
+            const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 &&
+              questionArr?.answer?.selected_option.find((element) => element.id == item.id);
             return (
               <TouchableWithoutFeedback
                 key={index}
@@ -12492,13 +12492,13 @@ class SurveyBox extends Component {
                     paddingTop: 15,
                     paddingBottom: 15
                   }}>
-                    <View style={{position : "absolute" , right : 5 , top:5 , zIndex:100}}>
+                    <View style={{ position: "absolute", right: 5, top: 5, zIndex: 100 }}>
                       {
                         questionArr?.properties?.multiPreference && questionArr?.properties?.multiPreference == 1 && find
-                          && (
-                            <View style={styles.preferenceContainer}>
-                              <Text style={{color : Color.colorWhite}}>{find?.preference_order}</Text>
-                            </View>
+                        && (
+                          <View style={styles.preferenceContainer}>
+                            <Text style={{ color: Color.colorWhite }}>{find?.preference_order}</Text>
+                          </View>
                         )
                       }
                     </View>
@@ -12626,140 +12626,140 @@ class SurveyBox extends Component {
                   width: '100%',
                 }}>
                   {item.map((elem, i) => {
-                    const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 && 
-                    questionArr?.answer?.selected_option.find((element)=>element.id == elem.id);
-                    return(item[i].hasOwnProperty('id') &&
-                    <View
-                      key={i}
-                      style={[{
-                        width: elem.id === 'other' ? '100%' : '50%',
-                        backgroundColor: 'white',
-                        flexDirection: "column",
-                        alignSelf: 'center',
-                        justifyContent: 'center'
-                      }]}
-                    >
-                      <TouchableWithoutFeedback
-                        style={{
-                          // flexDirection: "column",
-                          width: '100%',
-                          // alignSelf:'center',
-                          // justifyContent :'center'
-                        }}
-                        onPress={() => choice_type === 'single' ?
-                          this.singleLevelCheck(
-                            parentPosition,
-                            elem.index,
-                            questionIndex,
-                            questionArr
-                          ) :
-                          this.singleLevelMultiCheck(
-                            elem.index,
-                            elem,
-                            parentPosition,
-                            questionIndex,
-                            questionArr
-                          )
-                        }
+                    const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 &&
+                      questionArr?.answer?.selected_option.find((element) => element.id == elem.id);
+                    return (item[i].hasOwnProperty('id') &&
+                      <View
+                        key={i}
+                        style={[{
+                          width: elem.id === 'other' ? '100%' : '50%',
+                          backgroundColor: 'white',
+                          flexDirection: "column",
+                          alignSelf: 'center',
+                          justifyContent: 'center'
+                        }]}
                       >
-                        <View
-                          style={[{
-                            flexDirection: "column",
+                        <TouchableWithoutFeedback
+                          style={{
+                            // flexDirection: "column",
                             width: '100%',
-                            marginBottom: 10,
-                            marginTop: 10
-                          }]}
+                            // alignSelf:'center',
+                            // justifyContent :'center'
+                          }}
+                          onPress={() => choice_type === 'single' ?
+                            this.singleLevelCheck(
+                              parentPosition,
+                              elem.index,
+                              questionIndex,
+                              questionArr
+                            ) :
+                            this.singleLevelMultiCheck(
+                              elem.index,
+                              elem,
+                              parentPosition,
+                              questionIndex,
+                              questionArr
+                            )
+                          }
                         >
-                          <View style={[{
-                            alignSelf: 'center',
-                            justifyContent: 'center',
-
-                          }, item.length > 1 ?
-                            (item[0].label_image === "" ||
-                              item[0].label_image === null ||
-                              item[0].label_image === undefined) ?
-
-                              (
-                                item[1].label_image === "" ||
-                                item[1].label_image === null ||
-                                item[1].label_image === undefined
-                              ) ? {} : { width: 120, height: 80 }
-                              : { width: 120, height: 80 }
-                            : (elem.label_image === "" ||
-                              elem.label_image === null ||
-                              elem.label_image === undefined) ? {} :
-                              { width: 120, height: 80 }
-
-                          ]}>
-
-                            {elem.label_image !== "" &&
-                              elem.label_image !== null &&
-                              elem.label_image !== undefined && (
-                                <Image
-                                  resizeMode={"contain"}
-                                  resizeMethod={'resize'}
-                                  style={{
-                                    width: 120,
-                                    height: 80,
-                                    alignSelf: "center",
-                                  }}
-                                  source={{ uri: elem.label_image }}
-                                />
-                              )}
-                          </View>
                           <View
-                            style={{
-                              flexDirection: "row",
-                              alignSelf: "center",
-                              width: 120,
-                              marginTop: 5,
-                            }}
+                            style={[{
+                              flexDirection: "column",
+                              width: '100%',
+                              marginBottom: 10,
+                              marginTop: 10
+                            }]}
                           >
-                            <Image
-                              style={styles.checkBoxImage}
-                              source={choice_type === 'single' ? this.imageRadioBox(elem.isClicked) : this.imageCheckBox(elem.isClicked)}/>
-                            {elem.label ? <RenderHtml
-                              source={{ html: elem.label_text ? elem.label_text : elem.label }}
-                              contentWidth={width}
-                              baseStyle={styles.baseStyleSubText}
-                              //baseFontStyle={styles.subText}
-                              tagsStyles={darkBluetagsStyles}
-                              defaultTextProps={{ allowFontScaling: false }}
-                            /> : null}
-                          </View>
-                            <View style={{position : "absolute" , right:15}}>
+                            <View style={[{
+                              alignSelf: 'center',
+                              justifyContent: 'center',
+
+                            }, item.length > 1 ?
+                              (item[0].label_image === "" ||
+                                item[0].label_image === null ||
+                                item[0].label_image === undefined) ?
+
+                                (
+                                  item[1].label_image === "" ||
+                                  item[1].label_image === null ||
+                                  item[1].label_image === undefined
+                                ) ? {} : { width: 120, height: 80 }
+                                : { width: 120, height: 80 }
+                              : (elem.label_image === "" ||
+                                elem.label_image === null ||
+                                elem.label_image === undefined) ? {} :
+                                { width: 120, height: 80 }
+
+                            ]}>
+
+                              {elem.label_image !== "" &&
+                                elem.label_image !== null &&
+                                elem.label_image !== undefined && (
+                                  <Image
+                                    resizeMode={"contain"}
+                                    resizeMethod={'resize'}
+                                    style={{
+                                      width: 120,
+                                      height: 80,
+                                      alignSelf: "center",
+                                    }}
+                                    source={{ uri: elem.label_image }}
+                                  />
+                                )}
+                            </View>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignSelf: "center",
+                                width: 120,
+                                marginTop: 5,
+                              }}
+                            >
+                              <Image
+                                style={styles.checkBoxImage}
+                                source={choice_type === 'single' ? this.imageRadioBox(elem.isClicked) : this.imageCheckBox(elem.isClicked)} />
+                              {elem.label ? <RenderHtml
+                                source={{ html: elem.label_text ? elem.label_text : elem.label }}
+                                contentWidth={width}
+                                baseStyle={styles.baseStyleSubText}
+                                //baseFontStyle={styles.subText}
+                                tagsStyles={darkBluetagsStyles}
+                                defaultTextProps={{ allowFontScaling: false }}
+                              /> : null}
+                            </View>
+                            <View style={{ position: "absolute", right: 15 }}>
                               {
                                 questionArr?.properties?.multiPreference && questionArr?.properties?.multiPreference == 1 && find
                                 && (
                                   <View style={styles.preferenceContainer}>
-                                   <Text style={{color : Color.colorWhite}}>{find?.preference_order}</Text>
+                                    <Text style={{ color: Color.colorWhite }}>{find?.preference_order}</Text>
                                   </View>
                                 )
                               }
                             </View>
 
 
-                          {elem.id === 'other' &&
-                            <View>
-                              <View style={styles.othertextbox}>
-                                <TextInput
-                                  onFocus={() => { Platform.OS == 'ios' ? this.scrollView.scrollToEnd() : null }}
-                                  multiline={true}
-                                  editable={elem.isClicked}
-                                  style={styles.othertextinput}
-                                  value={this.setAnswerForOtherInput(questionArr, questionIndex)}
-                                  onChangeText={text => {
-                                    this.updateOtherTextInput(questionArr, text, questionIndex, elem.index),
-                                      Platform.OS == 'ios' ? this.scrollView.scrollToEnd() : null
-                                  }
-                                  }
-                                />
+                            {elem.id === 'other' &&
+                              <View>
+                                <View style={styles.othertextbox}>
+                                  <TextInput
+                                    onFocus={() => { Platform.OS == 'ios' ? this.scrollView.scrollToEnd() : null }}
+                                    multiline={true}
+                                    editable={elem.isClicked}
+                                    style={styles.othertextinput}
+                                    value={this.setAnswerForOtherInput(questionArr, questionIndex)}
+                                    onChangeText={text => {
+                                      this.updateOtherTextInput(questionArr, text, questionIndex, elem.index),
+                                        Platform.OS == 'ios' ? this.scrollView.scrollToEnd() : null
+                                    }
+                                    }
+                                  />
+                                </View>
                               </View>
-                            </View>
-                          }
-                          {/* <View style={styles.viewBg} /> */}
-                        </View>
-                      </TouchableWithoutFeedback>
+                            }
+                            {/* <View style={styles.viewBg} /> */}
+                          </View>
+                        </TouchableWithoutFeedback>
                       </View>)
                   })}
                 </View>
@@ -12887,8 +12887,8 @@ class SurveyBox extends Component {
           bounces={false}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
-            const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 && 
-            questionArr?.answer?.selected_option.find((element)=>element.id == item.id)
+            const find = questionArr?.answer?.selected_option && questionArr?.answer?.selected_option.length > 0 &&
+              questionArr?.answer?.selected_option.find((element) => element.id == item.id)
             // const number = 1.50-(find?.preference_order+1)/itemstorender.length;
             return (
               <TouchableWithoutFeedback
@@ -12915,12 +12915,12 @@ class SurveyBox extends Component {
                         defaultTextProps={{ allowFontScaling: false }}
                       /> : null}
                     </View>
-                    <View flex={0.1} style={styles.centerContaier}> 
+                    <View flex={0.1} style={styles.centerContaier}>
                       {
                         questionArr?.properties?.multiPreference && questionArr?.properties?.multiPreference == 1 && find
                         && (
                           <View style={styles.preferenceContainer}>
-                           <Text style={{color : Color.colorWhite}}>{find?.preference_order}</Text>
+                            <Text style={{ color: Color.colorWhite }}>{find?.preference_order}</Text>
                           </View>
                         )
                       }
@@ -15404,20 +15404,20 @@ const styles = ScaledSheet.create({
     marginHorizontal: 20,
     marginTop: 10
   },
-  preferenceContainer : {
-    alignSelf : "center",
-    borderRadius:30,
+  preferenceContainer: {
+    alignSelf: "center",
+    borderRadius: 30,
     backgroundColor: Color.colorOrange,
-    borderColor : Color.colorOrange,
-    borderWidth : 1,
-    height : 25,
-    width : 25,
-    justifyContent : "center",
-    alignItems : "center"
+    borderColor: Color.colorOrange,
+    borderWidth: 1,
+    height: 25,
+    width: 25,
+    justifyContent: "center",
+    alignItems: "center"
   },
-  centerContaier : {
-    alignSelf : "center",
-    justifyContent : "center",
-    alignItems : "center",
+  centerContaier: {
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
   }
 });
