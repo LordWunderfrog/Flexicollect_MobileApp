@@ -662,6 +662,39 @@ class SignIn extends Component {
     }
 
 
+    /**
+     * check if user is login another account immediately after logout
+     * cool down time is 30 minute for now 
+     * Cool down is for restricting user to login by another account from one device to restrict frud submission of survey 
+     */
+    async checkCoolDown(mobOrEmail, password) {
+        let url = Constants.BASE_URL_V2 + Service.LOGIN;
+        let inputData = {
+            username: mobOrEmail,
+            password: password,
+            language: this.state.Language
+        }
+        const cooldownTime = 30 * 60 * 1000;
+        const currentTime = Date.now();
+        const userData = await AsyncStorage.getItem("lastLoginUser");
+        const logOutTime = await AsyncStorage.getItem("logoutTime");
+        const _UserData = await JSON.parse(userData);
+
+        if (currentTime - logOutTime < cooldownTime) {
+            if (_UserData.mobile == inputData.username || _UserData.email == inputData.username) {
+                this.loginNetworkCall(url, inputData)
+            }
+            else {
+                //Cool period - Alert  
+                Alert.alert(this.state.translation[this.state.Language].LoginRestricted,
+                    this.state.translation[this.state.Language].LoginRestrictedMessage)
+                this.setState({ isLoading: false })
+            }
+        }
+        else {
+            this.loginNetworkCall(url, inputData)
+        }
+    }
 
     /**
      * validation
@@ -689,7 +722,7 @@ class SignIn extends Component {
                                 if (password.length >= 6) {
                                     if (status === 'online') {
                                         this.setState({ isLoading: true })
-                                        this.loginNetworkCall(mobOrEmail, password)
+                                        this.checkCoolDown(mobOrEmail, password)
                                     } else {
                                         Constants.showSnack(this.state.translation_common[this.state.Language].No_Internet)
                                     }
@@ -720,7 +753,7 @@ class SignIn extends Component {
                                 if (password !== '') {
                                     if (password.length >= 6) {
                                         this.setState({ isLoading: true })
-                                        let result = this.loginNetworkCall(mobOrEmail, password)
+                                        let result = this.checkCoolDown(mobOrEmail, password)
                                     } else {
                                         Constants.showSnack(this.state.translation_common[this.state.Language].Password_Character)
                                     }
@@ -744,13 +777,7 @@ class SignIn extends Component {
     /**
      * signIn api call
      * */
-    loginNetworkCall(mobOrEmail, password) {
-        let url = Constants.BASE_URL_V2 + Service.LOGIN;
-        let inputData = {
-            username: mobOrEmail,
-            password: password,
-            language: this.state.Language
-        }
+    loginNetworkCall(url, inputData) {
         axios.post(url, inputData, {
             timeout: Constants.TIMEOUT,
         }).then(response => {
@@ -819,6 +846,7 @@ class SignIn extends Component {
                     //     actions: [NavigationActions.navigate({ routeName: 'SurveyBox', params: { missionId: id, missionName: name, from: 'home' } })],
                     // });
                     // this.props.navigation.dispatch(resetAction);
+                    Constants.saveKey('loginTimeStamp', Date.now().toString());
                     const resetAction = CommonActions.reset({
                         index: 0,
                         routes: [{ name: 'SurveyBox', params: { missionId: id, missionName: name, from: 'home' } }],

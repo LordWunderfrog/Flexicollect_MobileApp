@@ -1034,6 +1034,9 @@ class ProfileScreen extends Component {
     async clear_appdata() {
         global.mission_mount = false;
         global.isDownloadProgress = '';
+        // "UserInfo"
+        const userData = await AsyncStorage.getItem("UserInfo");
+        const _UserData = await JSON.parse(userData)
         const path = await AsyncStorage.getItem("rnfspath");
         AsyncStorage.clear()
             .then(() => {
@@ -1090,6 +1093,8 @@ class ProfileScreen extends Component {
                         this.props.navigation.dispatch(resetAction);
                     });
             })
+        Constants.saveKey('logoutTime', Date.now().toString());
+        Constants.saveKey('lastLoginUser', JSON.stringify(_UserData));
     }
 
     /** Delete user profile  */

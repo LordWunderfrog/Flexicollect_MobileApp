@@ -176,6 +176,8 @@ module.exports = {
       "Version_Check": "Weergawe Kontroleer",
       "Upgraded_App_Msg": "As u die program opgradeer het, kliek OK om voort te gaan.",
       "New_Version_Msg": "Nuwe weergawe van die program is beskikbaar in die winkel. Kliek OK om op te gradeer en voort te gaan.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Arabic": {
       "Email": "البريد الالكتروني",
@@ -199,6 +201,8 @@ module.exports = {
       "Version_Check": "فحص النسخة",
       "Upgraded_App_Msg": "إذا قمت بترقية التطبيق، انقر على موافق للمتابعة.",
       "New_Version_Msg": "إصدار جديد من التطبيق متاح في المتجر. انقر على موافق للترقية والمتابعة.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Chinese": {
       "Email": "电子邮箱",
@@ -222,6 +226,8 @@ module.exports = {
       "Version_Check": "版本检查",
       "Upgraded_App_Msg": "如果您已升级应用程序，请点击“确定”继续。",
       "New_Version_Msg": "商店中有新版本的应用程序可用。请点击“确定”升级并继续。",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Dutch": {
       "Email": "E-mail",
@@ -245,6 +251,8 @@ module.exports = {
       "Version_Check": "Versiecontrole",
       "Upgraded_App_Msg": "Als u de app heeft geüpgraded, klik dan op OK om door te gaan.",
       "New_Version_Msg": "Er is een nieuwe versie van de app beschikbaar in de winkel. Klik op OK om te upgraden en door te gaan.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "English": {
       "Email": "Email",
@@ -268,6 +276,8 @@ module.exports = {
       "Version_Check": "Version Check",
       "Upgraded_App_Msg": "If you have upgraded the app, Click OK to continue.",
       "New_Version_Msg": "New Version of App is available in Store. Click OK to upgrade and continue.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "French": {
       "Email": "Email",
@@ -291,6 +301,8 @@ module.exports = {
       "Version_Check": "Vérification de la version",
       "Upgraded_App_Msg": "Si vous avez mis à jour l'application, cliquez sur OK pour continuer.",
       "New_Version_Msg": "Une nouvelle version de l'application est disponible dans le magasin. Cliquez sur OK pour mettre à niveau et continuer.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "German": {
       "Email": "Email-Adresse",
@@ -314,6 +326,8 @@ module.exports = {
       "Version_Check": "Versionsprüfung",
       "Upgraded_App_Msg": "Wenn Sie die App aktualisiert haben, klicken Sie auf OK, um fortzufahren.",
       "New_Version_Msg": "Eine neue Version der App ist im Store verfügbar. Klicken Sie auf OK, um zu aktualisieren und fortzufahren.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Greek": {
       "Email": "Ηλεκτρονική διεύθυνση",
@@ -337,6 +351,8 @@ module.exports = {
       "Version_Check": "Έλεγχος έκδοσης",
       "Upgraded_App_Msg": "Εάν έχετε αναβαθμίσει την εφαρμογή, κάντε κλικ στο OK για να συνεχίσετε.",
       "New_Version_Msg": "Η νέα έκδοση της εφαρμογής είναι διαθέσιμη στο Store. Κάντε κλικ στο OK για αναβάθμιση και συνέχεια.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Hindi": {
       "Email": "ईमेल",
@@ -360,6 +376,8 @@ module.exports = {
       "Version_Check": "संस्करण जांच",
       "Upgraded_App_Msg": "यदि आपने ऐप को अपग्रेड किया है, तो जारी रखने के लिए ओके पर क्लिक करें।",
       "New_Version_Msg": "ऐप का नया संस्करण स्टोर में उपलब्ध है। अपग्रेड करने और जारी रखने के लिए ओके पर क्लिक करें।",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Indonesian": {
       "Email": "Email",
@@ -383,6 +401,8 @@ module.exports = {
       "Version_Check": "Periksa Versi",
       "Upgraded_App_Msg": "Jika Anda telah meng-upgrade aplikasi, Klik OK untuk melanjutkan.",
       "New_Version_Msg": "Versi Terbaru Aplikasi tersedia di Toko. Klik OK untuk meng-upgrade dan melanjutkan.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Italian": {
       "Email": "Email",
@@ -406,6 +426,8 @@ module.exports = {
       "Version_Check": "Controllo versione",
       "Upgraded_App_Msg": "Se hai aggiornato l'app, clicca OK per continuare.",
       "New_Version_Msg": "Nuova versione dell'app disponibile nello store. Clicca OK per effettuare l'aggiornamento e continuare.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Japanese": {
       "Email": "Eメール",
@@ -429,6 +451,8 @@ module.exports = {
       "Version_Check": "バージョンチェック",
       "Upgraded_App_Msg": "アプリをアップグレードした場合は、OKをクリックして続行してください。",
       "New_Version_Msg": "新しいバージョンのアプリがストアで利用可能です。アップグレードして続行するには、OKをクリックしてください。",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Malay": {
       "Email": "E - Mel",
@@ -452,6 +476,8 @@ module.exports = {
       "Version_Check": "Semakan Versi",
       "Upgraded_App_Msg": "Jika anda telah mengemas kini aplikasi, klik OK untuk teruskan.",
       "New_Version_Msg": "Versi Baru Aplikasi tersedia di Store. Klik OK untuk mengemas kini dan teruskan.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Polish": {
       "Email": "Email",
@@ -475,6 +501,8 @@ module.exports = {
       "Version_Check": "Sprawdź wersję",
       "Upgraded_App_Msg": "Jeśli zaktualizowałeś aplikację, kliknij OK, aby kontynuować.",
       "New_Version_Msg": "Nowa wersja aplikacji jest dostępna w Sklepie. Kliknij OK, aby zaktualizować i kontynuować.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Portuguese": {
       "Email": "E-mail",
@@ -498,6 +526,8 @@ module.exports = {
       "Version_Check": "Verificar Versão",
       "Upgraded_App_Msg": "Se você atualizou o aplicativo, clique em OK para continuar.",
       "New_Version_Msg": "Nova versão do aplicativo disponível na loja. Clique em OK para atualizar e continuar.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Russian": {
       "Email": "Эл. адрес",
@@ -521,6 +551,8 @@ module.exports = {
       "Version_Check": "Проверка версии",
       "Upgraded_App_Msg": "Если вы обновили приложение, нажмите OK, чтобы продолжить.",
       "New_Version_Msg": "Новая версия приложения доступна в магазине. Щелкните OK, чтобы обновить и продолжить.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Spanish": {
       "Email": "Correo electrónico",
@@ -544,6 +576,8 @@ module.exports = {
       "Version_Check": "Comprobar versión",
       "Upgraded_App_Msg": "Si ha actualizado la aplicación, haga clic en Aceptar para continuar.",
       "New_Version_Msg": "Hay una nueva versión de la aplicación disponible en la tienda. Haga clic en Aceptar para actualizar y continuar.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Tagalog": {
       "Email": "Email",
@@ -567,6 +601,8 @@ module.exports = {
       "Version_Check": "Pagsusuri ng Bersyon",
       "Upgraded_App_Msg": "Kung na-upgrade mo na ang app, I-click ang OK upang magpatuloy.",
       "New_Version_Msg": "Available ang Bagong Bersyon ng App sa Store. I-click ang OK upang mag-upgrade at magpatuloy.",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Thai": {
       "Email": "อีเมล",
@@ -590,6 +626,8 @@ module.exports = {
       "Version_Check": "ตรวจสอบเวอร์ชัน",
       "Upgraded_App_Msg": "หากคุณได้อัพเกรดแอปพลิเคชันแล้ว กด OK เพื่อดำเนินการต่อ",
       "New_Version_Msg": "มีเวอร์ชันใหม่ของแอปพลิเคชันที่มีอยู่ในร้านค้า กด OK เพื่ออัปเกรดและดำเนินการต่อ",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Vietnamese": {
       "Email": "E-mail",
@@ -612,7 +650,9 @@ module.exports = {
       "ResetPassword_Sucess_Msg": "Nhấp vào liên kết được gửi đến địa chỉ đã đăng ký để đặt lại mật khẩu",
       "Version_Check": "Kiểm tra phiên bản",
       "Upgraded_App_Msg": "Nếu bạn đã nâng cấp ứng dụng, hãy nhấp vào OK để tiếp tục",
-      "New_Version_Msg": "Phiên bản mới của ứng dụng đã có trong Store. Nhấp vào OK để nâng cấp và tiếp tục"
+      "New_Version_Msg": "Phiên bản mới của ứng dụng đã có trong Store. Nhấp vào OK để nâng cấp và tiếp tục",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     },
     "Urdu": {
       "Email": "ای میل",
@@ -636,6 +676,8 @@ module.exports = {
       "Version_Check": "ورژن چیک کریں",
       "Upgraded_App_Msg": "اگر آپ نے ایپ کو اپ گریڈ کیا ہے تو، جاری رکھنے کے لئے OK پر کلک کریں۔",
       "New_Version_Msg": "نئی ایپ کا نیا ورژن اسٹور میں دستیاب ہے۔ اپ گریڈ کرنے اور جاری رکھنے کے لئے OK پر کلک کریں۔",
+      "LoginRestrictedMessage": "You cannot log in with another account on this device until the restriction period ends.",
+      "LoginRestricted": "Login is restricted.",
     }
   },
   signup: {
