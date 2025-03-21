@@ -29,7 +29,8 @@ import {
 } from "react-native";
 import { PERMISSIONS, check, request, RESULTS, openSettings } from 'react-native-permissions';
 import GeolocationIOS from "@react-native-community/geolocation";
-import Geolocation from 'react-native-geolocation-service'
+import Geolocation from '@react-native-community/geolocation';
+// import Geolocation from 'react-native-geolocation-service' //change above lib due to address not getting presice in andorid 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import { WebView } from "react-native-webview";

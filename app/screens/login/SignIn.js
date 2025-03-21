@@ -62,7 +62,9 @@ class SignIn extends Component {
             languagelist: Constants.languages,
             translation: Constants.signin,
             translation_common: Constants.common_text,
-            appVersion: ''
+            appVersion: '',
+            code: '',
+            showCode: false,
         }
 
         this.handleNavigation = this.handleNavigation.bind(this);
@@ -674,20 +676,55 @@ class SignIn extends Component {
             password: password,
             language: this.state.Language
         }
-        const cooldownTime = 30 * 60 * 1000;
+        const cooldownTime = 12 * 60 * 60 * 1000;
         const currentTime = Date.now();
         const userData = await AsyncStorage.getItem("lastLoginUser");
         const logOutTime = await AsyncStorage.getItem("logoutTime");
         const _UserData = await JSON.parse(userData);
-
-        if (currentTime - logOutTime < cooldownTime) {
+        if (this.state.showCode) {
+            if (this.state.code.trim() == "codeforpm") {
+                this.loginNetworkCall(url, inputData)
+            }
+            else {
+                Alert.alert(
+                    this.state.translation[this.state.Language].InvalidCode,
+                    this.state.translation[this.state.Language].LoginRestrictedMessage,
+                    [
+                        {
+                            text: "Ok", style: "default", onPress: () => {
+                                this.setState({
+                                    showCode: false,
+                                    code: ""
+                                })
+                            },
+                        },
+                    ],
+                );
+                this.setState({ isLoading: false })
+            }
+        }
+        else if (currentTime - logOutTime < cooldownTime) {
             if (_UserData.mobile == inputData.username || _UserData.email == inputData.username) {
                 this.loginNetworkCall(url, inputData)
             }
             else {
                 //Cool period - Alert  
-                Alert.alert(this.state.translation[this.state.Language].LoginRestricted,
-                    this.state.translation[this.state.Language].LoginRestrictedMessage)
+                Alert.alert(
+                    this.state.translation[this.state.Language].LoginRestricted,
+                    this.state.translation[this.state.Language].LoginRestrictedMessage,
+                    [
+                        { text: this.state.translation[this.state.Language].Cancel, style: "default", onPress: () => { } },
+                        {
+                            text: this.state.translation[this.state.Language].useCode,
+                            onPress: () => {
+                                this.setState({
+                                    showCode: true,
+                                    code: ""
+                                })
+                            },
+                        },
+                    ],
+                );
                 this.setState({ isLoading: false })
             }
         }
@@ -838,7 +875,12 @@ class SignIn extends Component {
                     newUrl = decodeURIComponent(newUrl);
                     const id = this.getParameterByName("mission", newUrl)
                     const name = this.getParameterByName("name", newUrl)
-                    this.setState({ url: '', webSurvey: false });
+                    this.setState({
+                        url: '',
+                        showCode: false,
+                        code: '',
+                        webSurvey: false
+                    })
                     Constants.saveKey('webUrl', "");
                     //this.props.navigation.navigate('SurveyBox', {missionId: id, missionName: name, from: 'home'})
                     // const resetAction = StackActions.reset({
@@ -1170,6 +1212,25 @@ class SignIn extends Component {
                                             </View>
                                         </TouchableOpacity>
                                     </View> : null}
+
+                                {this.state.showCode && <View style={styles.inputView}>
+                                    <TextInput
+                                        style={styles.InputText}
+                                        value={this.state.code}
+                                        numberOfLines={1}
+                                        autoCapitalize='none'
+                                        underlineColorAndroid={Color.colorWhite}
+                                        placeholderTextColor={Color.colorLitGrey}
+                                        returnKeyType="done"
+                                        placeholder={this.state.translation[this.state.Language].enterCode}
+                                        placeholderColor={Color.colorLitGrey}
+                                        selectionColor={'black'}
+                                        keyboardType={"default"}
+                                        secureTextEntry
+                                        maxLength={10}
+                                        onChangeText={code => this.setState({ code: code.trim() })}
+                                    />
+                                </View>}
 
                                 {/*SignIn*/}
                                 <TouchableOpacity style={styles.loginButtonColor}
