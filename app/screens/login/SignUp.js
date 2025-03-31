@@ -102,8 +102,10 @@ class SignUp extends Component {
             confirmpasswordTextSecure: true,
             confirmpassword: '',
             Language: global.language,
-            languagelist: Platform.OS == 'ios' ? Constants.languages : [],
-            translation: Platform.OS == 'ios' ? Constants.signin : [],
+            // languagelist: Platform.OS == 'ios' ? Constants.languages : [],
+            // translation: Platform.OS == 'ios' ? Constants.signin : [],
+            languagelist: Constants.languages,
+            translation: Constants.signup,
             translation_common: Constants.common_text,
             showCountryCode: false
         }
@@ -124,7 +126,7 @@ class SignUp extends Component {
 
     /** component life cycle methods */
     UNSAFE_componentWillMount() {
-        this.getpagetranslation()
+        // this.getpagetranslation()
         this.getlanguagelist()
     }
     componentDidUpdate() {

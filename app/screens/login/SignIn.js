@@ -62,7 +62,9 @@ class SignIn extends Component {
             languagelist: Constants.languages,
             translation: Constants.signin,
             translation_common: Constants.common_text,
-            appVersion: ''
+            appVersion: '',
+            code: '',
+            showCode: false,
         }
 
         this.handleNavigation = this.handleNavigation.bind(this);
@@ -184,7 +186,7 @@ class SignIn extends Component {
             this.state.translation[this.state.Language].Version_Check,
             this.state.translation[this.state.Language].Upgraded_App_Msg,
             [
-                { text: 'OK', onPress: () => this.checkAppVersionAndContinue() }
+                { text: this.state.translation[this.state.Language].OK, onPress: () => this.checkAppVersionAndContinue() }
             ],
             { cancelable: false },
         );
@@ -202,7 +204,7 @@ class SignIn extends Component {
                 this.state.translation[this.state.Language].Version_Check,
                 this.state.translation[this.state.Language].New_Version_Msg,
                 [
-                    { text: 'OK', onPress: () => { this.checkAppUpdate() } }
+                    { text: this.state.translation[this.state.Language].OK, onPress: () => { this.checkAppUpdate() } }
                 ],
                 { cancelable: false },
             );
@@ -232,7 +234,7 @@ class SignIn extends Component {
                                 this.state.translation[this.state.Language].Version_Check,
                                 this.state.translation[this.state.Language].New_Version_Msg,
                                 [
-                                    { text: 'OK', onPress: () => { this.checkAppUpdate() } }
+                                    { text: this.state.translation[this.state.Language].OK, onPress: () => { this.checkAppUpdate() } }
                                 ],
                                 { cancelable: false },
                             );
@@ -662,6 +664,74 @@ class SignIn extends Component {
     }
 
 
+    /**
+     * check if user is login another account immediately after logout
+     * cool down time is 30 minute for now 
+     * Cool down is for restricting user to login by another account from one device to restrict frud submission of survey 
+     */
+    async checkCoolDown(mobOrEmail, password) {
+        let url = Constants.BASE_URL_V2 + Service.LOGIN;
+        let inputData = {
+            username: mobOrEmail,
+            password: password,
+            language: this.state.Language
+        }
+        const cooldownTime = 12 * 60 * 60 * 1000;
+        const currentTime = Date.now();
+        const userData = await AsyncStorage.getItem("lastLoginUser");
+        const logOutTime = await AsyncStorage.getItem("logoutTime");
+        const _UserData = await JSON.parse(userData);
+        if (this.state.showCode) {
+            if (this.state.code.trim() == "codeforpm") {
+                this.loginNetworkCall(url, inputData)
+            }
+            else {
+                Alert.alert(
+                    this.state.translation[this.state.Language].InvalidCode,
+                    this.state.translation[this.state.Language].LoginRestrictedMessage,
+                    [
+                        {
+                            text: this.state.translation[this.state.Language].OK, style: "default", onPress: () => {
+                                this.setState({
+                                    showCode: false,
+                                    code: ""
+                                })
+                            },
+                        },
+                    ],
+                );
+                this.setState({ isLoading: false })
+            }
+        }
+        else if (currentTime - logOutTime < cooldownTime) {
+            if (_UserData.mobile == inputData.username || _UserData.email == inputData.username) {
+                this.loginNetworkCall(url, inputData)
+            }
+            else {
+                //Cool period - Alert  
+                Alert.alert(
+                    this.state.translation[this.state.Language].LoginRestricted,
+                    this.state.translation[this.state.Language].LoginRestrictedMessage,
+                    [
+                        { text: this.state.translation[this.state.Language].Cancel, style: "default", onPress: () => { } },
+                        {
+                            text: this.state.translation[this.state.Language].useCode,
+                            onPress: () => {
+                                this.setState({
+                                    showCode: true,
+                                    code: ""
+                                })
+                            },
+                        },
+                    ],
+                );
+                this.setState({ isLoading: false })
+            }
+        }
+        else {
+            this.loginNetworkCall(url, inputData)
+        }
+    }
 
     /**
      * validation
@@ -689,7 +759,7 @@ class SignIn extends Component {
                                 if (password.length >= 6) {
                                     if (status === 'online') {
                                         this.setState({ isLoading: true })
-                                        this.loginNetworkCall(mobOrEmail, password)
+                                        this.checkCoolDown(mobOrEmail, password)
                                     } else {
                                         Constants.showSnack(this.state.translation_common[this.state.Language].No_Internet)
                                     }
@@ -720,7 +790,7 @@ class SignIn extends Component {
                                 if (password !== '') {
                                     if (password.length >= 6) {
                                         this.setState({ isLoading: true })
-                                        let result = this.loginNetworkCall(mobOrEmail, password)
+                                        let result = this.checkCoolDown(mobOrEmail, password)
                                     } else {
                                         Constants.showSnack(this.state.translation_common[this.state.Language].Password_Character)
                                     }
@@ -744,13 +814,7 @@ class SignIn extends Component {
     /**
      * signIn api call
      * */
-    loginNetworkCall(mobOrEmail, password) {
-        let url = Constants.BASE_URL_V2 + Service.LOGIN;
-        let inputData = {
-            username: mobOrEmail,
-            password: password,
-            language: this.state.Language
-        }
+    loginNetworkCall(url, inputData) {
         axios.post(url, inputData, {
             timeout: Constants.TIMEOUT,
         }).then(response => {
@@ -811,7 +875,12 @@ class SignIn extends Component {
                     newUrl = decodeURIComponent(newUrl);
                     const id = this.getParameterByName("mission", newUrl)
                     const name = this.getParameterByName("name", newUrl)
-                    this.setState({ url: '', webSurvey: false });
+                    this.setState({
+                        url: '',
+                        showCode: false,
+                        code: '',
+                        webSurvey: false
+                    })
                     Constants.saveKey('webUrl', "");
                     //this.props.navigation.navigate('SurveyBox', {missionId: id, missionName: name, from: 'home'})
                     // const resetAction = StackActions.reset({
@@ -819,6 +888,7 @@ class SignIn extends Component {
                     //     actions: [NavigationActions.navigate({ routeName: 'SurveyBox', params: { missionId: id, missionName: name, from: 'home' } })],
                     // });
                     // this.props.navigation.dispatch(resetAction);
+                    Constants.saveKey('loginTimeStamp', Date.now().toString());
                     const resetAction = CommonActions.reset({
                         index: 0,
                         routes: [{ name: 'SurveyBox', params: { missionId: id, missionName: name, from: 'home' } }],
@@ -1142,6 +1212,25 @@ class SignIn extends Component {
                                             </View>
                                         </TouchableOpacity>
                                     </View> : null}
+
+                                {this.state.showCode && <View style={styles.inputView}>
+                                    <TextInput
+                                        style={styles.InputText}
+                                        value={this.state.code}
+                                        numberOfLines={1}
+                                        autoCapitalize='none'
+                                        underlineColorAndroid={Color.colorWhite}
+                                        placeholderTextColor={Color.colorLitGrey}
+                                        returnKeyType="done"
+                                        placeholder={this.state.translation[this.state.Language].enterCode}
+                                        placeholderColor={Color.colorLitGrey}
+                                        selectionColor={'black'}
+                                        keyboardType={"default"}
+                                        secureTextEntry
+                                        maxLength={10}
+                                        onChangeText={code => this.setState({ code: code.trim() })}
+                                    />
+                                </View>}
 
                                 {/*SignIn*/}
                                 <TouchableOpacity style={styles.loginButtonColor}
