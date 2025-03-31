@@ -186,7 +186,7 @@ class SignIn extends Component {
             this.state.translation[this.state.Language].Version_Check,
             this.state.translation[this.state.Language].Upgraded_App_Msg,
             [
-                { text: 'OK', onPress: () => this.checkAppVersionAndContinue() }
+                { text: this.state.translation[this.state.Language].OK, onPress: () => this.checkAppVersionAndContinue() }
             ],
             { cancelable: false },
         );
@@ -204,7 +204,7 @@ class SignIn extends Component {
                 this.state.translation[this.state.Language].Version_Check,
                 this.state.translation[this.state.Language].New_Version_Msg,
                 [
-                    { text: 'OK', onPress: () => { this.checkAppUpdate() } }
+                    { text: this.state.translation[this.state.Language].OK, onPress: () => { this.checkAppUpdate() } }
                 ],
                 { cancelable: false },
             );
@@ -234,7 +234,7 @@ class SignIn extends Component {
                                 this.state.translation[this.state.Language].Version_Check,
                                 this.state.translation[this.state.Language].New_Version_Msg,
                                 [
-                                    { text: 'OK', onPress: () => { this.checkAppUpdate() } }
+                                    { text: this.state.translation[this.state.Language].OK, onPress: () => { this.checkAppUpdate() } }
                                 ],
                                 { cancelable: false },
                             );
@@ -691,7 +691,7 @@ class SignIn extends Component {
                     this.state.translation[this.state.Language].LoginRestrictedMessage,
                     [
                         {
-                            text: "Ok", style: "default", onPress: () => {
+                            text: this.state.translation[this.state.Language].OK, style: "default", onPress: () => {
                                 this.setState({
                                     showCode: false,
                                     code: ""

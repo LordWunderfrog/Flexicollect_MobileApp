@@ -178,10 +178,11 @@ module.exports = {
       "New_Version_Msg": "Nuwe weergawe van die program is beskikbaar in die winkel. Kliek OK om op te gradeer en voort te gaan.",
       "LoginRestrictedMessage": "Jy kan nie met 'n ander rekening op hierdie toestel aanmeld totdat die beperkingstydperk verby is nie.",
       "LoginRestricted": "Aanmelding is beperk",
-      "InvalidCode":"Ongeldige kode",
+      "InvalidCode": "Ongeldige kode",
       "useCode": "Gebruik kode",
       "enterCode": "Voer kode in",
       "Cancel": "kanselleer",
+      "OK": "OK",
     },
     "Arabic": {
       "Email": "البريد الالكتروني",
@@ -211,6 +212,7 @@ module.exports = {
       "useCode": "استخدم الكود",
       "enterCode": "أدخل الرمز",
       "Cancel": "إلغاء",
+      "OK": "موافق",
     },
     "Chinese": {
       "Email": "电子邮箱",
@@ -240,6 +242,7 @@ module.exports = {
       "useCode": "使用代码",
       "enterCode": "输入代码",
       "Cancel": "取消",
+      "OK": "确定",
     },
     "Dutch": {
       "Email": "E-mail",
@@ -269,6 +272,7 @@ module.exports = {
       "useCode": "Gebruik code",
       "enterCode": "Voer code in",
       "Cancel": "Afbreken",
+      "OK": "OK",
     },
     "English": {
       "Email": "Email",
@@ -298,6 +302,7 @@ module.exports = {
       "useCode": "Use Code",
       "enterCode": "Enter Code",
       "Cancel": "Cancel",
+      "OK": "OK",
     },
     "French": {
       "Email": "Email",
@@ -327,6 +332,7 @@ module.exports = {
       "useCode": "Utiliser le code",
       "enterCode": "Entrez le code",
       "Cancel": "Annuler",
+      "OK": "OK",
     },
     "German": {
       "Email": "Email-Adresse",
@@ -356,6 +362,7 @@ module.exports = {
       "useCode": "Code verwenden",
       "enterCode": "Code eingeben",
       "Cancel": "Abbrechen",
+      "OK": "OK",
     },
     "Greek": {
       "Email": "Ηλεκτρονική διεύθυνση",
@@ -385,6 +392,7 @@ module.exports = {
       "useCode": "Χρησιμοποιήστε κωδικό",
       "enterCode": "Εισαγάγετε κωδικό",
       "Cancel": "Ακύρωση",
+      "OK": "OK",
     },
     "Hindi": {
       "Email": "ईमेल",
@@ -414,6 +422,7 @@ module.exports = {
       "useCode": "कोड का उपयोग करें",
       "enterCode": "कोड दर्ज करें",
       "Cancel": "रद्द करें",
+      "OK": "ठीक है",
     },
     "Indonesian": {
       "Email": "Email",
@@ -443,6 +452,7 @@ module.exports = {
       "useCode": "Gunakan Kode",
       "enterCode": "Masukkan Kode",
       "Cancel": "Batal",
+      "OK": "OK",
     },
     "Italian": {
       "Email": "Email",
@@ -472,6 +482,7 @@ module.exports = {
       "useCode": "Usa il codice",
       "enterCode": "Inserisci il codice",
       "Cancel": "Annullare",
+      "OK": "OK",
     },
     "Japanese": {
       "Email": "Eメール",
@@ -501,6 +512,7 @@ module.exports = {
       "useCode": "コードを使用する",
       "enterCode": "コードを入力",
       "Cancel": "キャンセル",
+      "OK": "OK",
     },
     "Malay": {
       "Email": "E - Mel",
@@ -530,6 +542,7 @@ module.exports = {
       "useCode": "Gunakan Kod",
       "enterCode": "Masukkan Kod",
       "Cancel": "Batal",
+      "OK": "OK",
     },
     "Polish": {
       "Email": "Email",
@@ -559,6 +572,7 @@ module.exports = {
       "useCode": "Użyj kodu",
       "enterCode": "Wprowadź kod",
       "Cancel": "Porzuć",
+      "OK": "OK",
     },
     "Portuguese": {
       "Email": "E-mail",
@@ -588,6 +602,7 @@ module.exports = {
       "useCode": "Usar código",
       "enterCode": "Digite o código",
       "Cancel": "Cancelar",
+      "OK": "OK",
     },
     "Russian": {
       "Email": "Эл. адрес",
@@ -617,6 +632,7 @@ module.exports = {
       "useCode": "Использовать код",
       "enterCode": "Введите код",
       "Cancel": "Отмена",
+      "OK": "OK",
     },
     "Spanish": {
       "Email": "Correo electrónico",
@@ -646,6 +662,7 @@ module.exports = {
       "useCode": "Usar código",
       "enterCode": "Introducir código",
       "Cancel": "Cancelar",
+      "OK": "Aceptar",
     },
     "Tagalog": {
       "Email": "Email",
@@ -675,6 +692,7 @@ module.exports = {
       "useCode": "Gamitin ang Code",
       "enterCode": "Ipasok ang Code",
       "Cancel": "Kanselahin",
+      "OK": "OK",
     },
     "Thai": {
       "Email": "อีเมล",
@@ -704,6 +722,7 @@ module.exports = {
       "useCode": "ใช้โค้ด",
       "enterCode": "กรอกรหัส",
       "Cancel": "ยกเลิก",
+      "OK": "ตกลง",
     },
     "Vietnamese": {
       "Email": "E-mail",
@@ -733,6 +752,7 @@ module.exports = {
       "useCode": "Sử dụng Mã",
       "enterCode": "Nhập mã",
       "Cancel": "Hủy bỏ",
+      "OK": "Đồng ý",
     },
     "Urdu": {
       "Email": "ای میل",
@@ -762,6 +782,7 @@ module.exports = {
       "useCode": "کوڈ استعمال کریں۔",
       "enterCode": "کوڈ درج کریں۔",
       "Cancel": "منسوخ کریں",
+      "OK": "ٹھیک ہے",
     }
   },
   signup: {
