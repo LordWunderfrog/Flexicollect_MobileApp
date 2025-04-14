@@ -3473,7 +3473,7 @@ class SurveyBox extends Component {
 
     //console.log(questionObj.hide_list);
     questionResponseQue[questionsArr[currentPage].questionID] = false;
-
+    this.setState({});
     if (noReturn && noReturn == 1) {
       this.setState({ isNoReturncheck: true });
     }
@@ -3624,6 +3624,7 @@ class SurveyBox extends Component {
             })
             .then(response => {
               questionResponseQue[questionsArr[currentPage].questionID] = true;
+              this.setState({});
               // this.state.questionsArr[currentPage].isUpdated = false;
               // this.state.questionsArr[currentPage].isSubmited = true;  //check if meadia sucessfully uploaded
               questionsArr[currentPage].isUpdated = false;
@@ -3754,6 +3755,7 @@ class SurveyBox extends Component {
               /** Logfile TempCode*/
               this.storeLogFile(questionObj, false, error.response, true, true, isSubmit === true ? true : false)
               questionResponseQue[questionsArr[currentPage].questionID] = true;
+              this.setState({});
               if (backBtnFired === true) {
                 this.onBackButtonPressAndroid();
               }
@@ -3790,6 +3792,7 @@ class SurveyBox extends Component {
               })
               .then(response => {
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
+                this.setState({});
                 // this.state.questionsArr[currentPage].isUpdated = false;
                 // this.state.questionsArr[currentPage].isSubmited = true
                 questionsArr[currentPage].isUpdated = false;
@@ -3923,6 +3926,7 @@ class SurveyBox extends Component {
                 this.storeLogFile(questionObj, false, error.response, false, true, isSubmit === true ? true : false)
                 console.log('Error is', error)
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
+                this.setState({});
                 if (backBtnFired === true) {
                   this.onBackButtonPressAndroid();
                 }
@@ -3966,6 +3970,7 @@ class SurveyBox extends Component {
                 if (response.status === 201) {
 
                   questionResponseQue[questionsArr[currentPage].questionID] = true;
+                  this.setState({});
                   // this.state.questionsArr[currentPage].isUpdated = false;
                   // this.state.questionsArr[currentPage].isSubmited = true;
                   questionsArr[currentPage].isUpdated = false;
@@ -4092,6 +4097,7 @@ class SurveyBox extends Component {
                 } else {
 
                   questionResponseQue[questionsArr[currentPage].questionID] = true;
+                  this.setState({});
                   if (backBtnFired === true) {
                     this.onBackButtonPressAndroid();
                   }
@@ -4119,6 +4125,7 @@ class SurveyBox extends Component {
                 /** Logfile TempCode*/
                 this.storeLogFile(questionObj, false, error.response, false, true, isSubmit === true ? true : false)
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
+                this.setState({});
                 if (backBtnFired === true) {
                   this.onBackButtonPressAndroid();
                 }
@@ -4141,6 +4148,7 @@ class SurveyBox extends Component {
       } else {
         //this.saveSurvey()
         questionResponseQue[questionsArr[currentPage].questionID] = true;
+        this.setState({});
         if (backBtnFired === true) {
           this.onBackButtonPressAndroid();
         }
@@ -9699,6 +9707,7 @@ class SurveyBox extends Component {
               type: 'mp4'
             };
             questionResponseQue[this.state.questionsArr[index].questionID] = true;
+            this.setState({})
             this.addAnswerForSelectedMedia(index, source);
           }
           // let videoRes = res.assets[0]
@@ -14523,7 +14532,7 @@ class SurveyBox extends Component {
                         {rightDisable === true && initialLoader === false && (
                           <TouchableOpacity
                             style={styles.submit}
-                            disabled={this.state.isSubmitDisable}
+                            disabled={this.checkPreviousPostInprogress() == false || this.state.isSubmitDisable}
                             onPress={() => {
                               if (this.state.videoProcessing === true) {
                                 Constants.showSnack(translation[Language].Video_Processing_Msg);
@@ -14539,7 +14548,10 @@ class SurveyBox extends Component {
                             }
                             }
                           >
-                            <Text style={styles.submitText}>{translation[Language].Submit}</Text>
+                            {
+                              this.checkPreviousPostInprogress() == false ? <ActivityIndicator color={Color.colorWhite} />
+                                : <Text style={styles.submitText}>{translation[Language].Submit}</Text>
+                            }
                           </TouchableOpacity>
                         )}
                       </View>
