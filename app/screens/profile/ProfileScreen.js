@@ -7,7 +7,7 @@ import {
     Image,
     TouchableOpacity,
     ScrollView, TextInput, Dimensions, ImageBackground, ActivityIndicator,
-    Modal, TouchableHighlight, FlatList, Alert, Switch
+    Modal, TouchableHighlight, FlatList, Alert, Switch, useColorScheme
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
@@ -155,6 +155,7 @@ class ProfileScreen extends Component {
             deleteProfileDialog: false,
             isPepsicodomain: 0,
             accessCode: '',    //pepsico user access code
+            colorScheme: props.colorScheme
         }
 
         this.getLocalData();
@@ -2033,7 +2034,7 @@ class ProfileScreen extends Component {
                                         {translation[Language].Gender_List.map((item, key) => (<Picker.Item
                                             label={item.label}
                                             value={item.value}
-                                            color={Color.colorBlack}
+                                            color={this.state.colorScheme == "dark" ? Color.colorWhite : Color.colorBlack}
                                             key={key} />)
                                         )}
                                     </Picker>
@@ -2055,7 +2056,7 @@ class ProfileScreen extends Component {
                                         {countries.map((item, key) => (<Picker.Item
                                             label={item.label}
                                             value={item.value}
-                                            color={Color.colorBlack}
+                                            color={this.state.colorScheme == "dark" ? Color.colorWhite : Color.colorBlack}
                                             key={key} />)
                                         )}
                                     </Picker>
@@ -2441,7 +2442,11 @@ class ProfileScreen extends Component {
     }
 }
 
-export default ProfileScreen
+// Wrap and export
+export default function (props) {
+    const colorScheme = useColorScheme();
+    return <ProfileScreen {...props} colorScheme={colorScheme} />;
+}
 
 /** status bar height setup */
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;

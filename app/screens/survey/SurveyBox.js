@@ -9089,7 +9089,7 @@ class SurveyBox extends Component {
         {questionArray.properties.hasOwnProperty("sublabel") && questionArray.properties.sublabel.length > 0 ?
           <RenderHtml
             source={{
-              html: questionArray.properties.sublabel_text ? questionArray.properties.sublabel_text : questionArray.properties.sublabel
+              html: this.changeInlineColor(questionArray.properties.sublabel_text ? questionArray.properties.sublabel_text : questionArray.properties.sublabel)
             }}
             contentWidth={width}
             baseStyle={styles.basestyleSublable}
@@ -12235,7 +12235,7 @@ class SurveyBox extends Component {
                     source={this.headerClickImage(section.headerClicked)} />
                   {/* <Text style={styles.headerTitle}>{section.title}</Text> */}
                   {section.title ? <RenderHtml
-                    source={{ html: section.title_text ? section.title_text : section.title }}
+                    source={{ html: this.changeInlineColor(section.title_text ? section.title_text : section.title) }}
                     contentWidth={width}
                     baseStyle={styles.baseStyleSectionTitle}
                     //baseFontStyle={styles.headerTitle}
@@ -12288,7 +12288,7 @@ class SurveyBox extends Component {
                     {/* <Text style={styles.subText}>{item.sublabel}</Text> */}
                     {item.sublabel ?
                       <RenderHtml
-                        source={{ html: item.sublabel_text ? item.sublabel_text : item.sublabel }}
+                        source={{ html: this.changeInlineColor(item.sublabel_text ? item.sublabel_text : item.sublabel) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -12390,7 +12390,7 @@ class SurveyBox extends Component {
                     {/* <Text
                       style={styles.headerTitle}>{section.title}</Text> */}
                     {section.title ? <RenderHtml
-                      source={{ html: section.title_text ? section.title_text : section.title }}
+                      source={{ html: this.changeInlineColor(section.title_text ? section.title_text : section.title) }}
                       contentWidth={width}
                       baseStyle={styles.baseStyleSectionTitle}
                       //baseFontStyle={styles.headerTitle}
@@ -12441,7 +12441,7 @@ class SurveyBox extends Component {
                         source={this.imageRadioBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.sublabel}</Text> */}
                       {item.sublabel ? <RenderHtml
-                        source={{ html: item.sublabel_text ? item.sublabel_text : item.sublabel }}
+                        source={{ html: this.changeInlineColor(item.sublabel_text ? item.sublabel_text : item.sublabel) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -12598,7 +12598,7 @@ class SurveyBox extends Component {
                       />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
-                        source={{ html: item.label_text ? item.label_text : item.label }}
+                        source={{ html: this.changeInlineColor(item.label_text ? item.label_text : item.label) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -12781,7 +12781,7 @@ class SurveyBox extends Component {
                                 style={styles.checkBoxImage}
                                 source={choice_type === 'single' ? this.imageRadioBox(elem.isClicked) : this.imageCheckBox(elem.isClicked)} />
                               {elem.label ? <RenderHtml
-                                source={{ html: elem.label_text ? elem.label_text : elem.label }}
+                                source={{ html: this.changeInlineColor(elem.label_text ? elem.label_text : elem.label) }}
                                 contentWidth={width}
                                 baseStyle={styles.baseStyleSubText}
                                 //baseFontStyle={styles.subText}
@@ -12872,7 +12872,7 @@ class SurveyBox extends Component {
                         source={this.imageRadioBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
-                        source={{ html: item.label_text ? item.label_text : item.label }}
+                        source={{ html: this.changeInlineColor(item.label_text ? item.label_text : item.label) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -12969,7 +12969,7 @@ class SurveyBox extends Component {
                         source={this.imageCheckBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
-                        source={{ html: item.label_text ? item.label_text : item.label }}
+                        source={{ html: this.changeInlineColor(item.label_text ? item.label_text : item.label) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -13823,6 +13823,25 @@ class SurveyBox extends Component {
     }
   }
 
+  /** Check If there is any inline color exist in text from colormap array
+  *  and change it to darkblue color if it's android
+  */
+  changeInlineColor = (text) => {
+    const _colorMap = [
+      "windowtext", "window", "highlight", "highlighttext", "buttonface", "buttontext", "threedlightshadow",
+      "threedshadow", "inactivecaption", "inactivecaptiontext", "infobackground", "infotext"
+    ]
+    let updatedText = text;
+
+    _colorMap.forEach((colorKeyword) => {
+      const regex = new RegExp(`(color|background-color)\\s*:\\s*${colorKeyword}\\s*;?`, 'gi');
+      updatedText = updatedText.replace(regex, `$1: ${Color.colorDarkBlue};`);
+    });
+
+    if (Platform.OS == 'android') return updatedText;
+    else return text;
+  };
+
   /** Class render method */
   render() {
     const {
@@ -13899,7 +13918,7 @@ class SurveyBox extends Component {
                     {/** Dynamic title html element*/}
                     <View style={{ paddingTop: 10, paddingBottom: 0 }}>
                       {questionsArr[pageCount].properties.question_text || questionsArr[pageCount].properties.question ? <RenderHtml
-                        source={{ html: questionsArr[pageCount].properties.question_text ? questionsArr[pageCount].properties.question_text : questionsArr[pageCount].properties.question }}
+                        source={{ html: this.changeInlineColor(questionsArr[pageCount].properties.question_text ? questionsArr[pageCount].properties.question_text : questionsArr[pageCount].properties.question) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleQuestionText}
                         //baseFontStyle={styles.questionText}
@@ -13913,7 +13932,7 @@ class SurveyBox extends Component {
                       "subheading"
                     ) && questionsArr[pageCount].properties.subheading.length > 0) && (
                         <RenderHtml
-                          source={{ html: questionsArr[pageCount].properties.subheading_text ? questionsArr[pageCount].properties.subheading_text : questionsArr[pageCount].properties.subheading }}
+                          source={{ html: this.changeInlineColor(questionsArr[pageCount].properties.subheading_text ? questionsArr[pageCount].properties.subheading_text : questionsArr[pageCount].properties.subheading) }}
                           contentWidth={width}
                           baseStyle={styles.baseStyleSubTitle}
                           // baseFontStyle={styles.hintText}

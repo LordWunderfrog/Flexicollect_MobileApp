@@ -11,7 +11,8 @@ import {
     TouchableOpacity,
     Dimensions, ActivityIndicator,
     KeyboardAvoidingView,
-    Linking
+    Linking,
+    useColorScheme
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
@@ -107,7 +108,8 @@ class SignUp extends Component {
             languagelist: Constants.languages,
             translation: Constants.signup,
             translation_common: Constants.common_text,
-            showCountryCode: false
+            showCountryCode: false,
+            colorScheme: props.colorScheme
         }
 
     }
@@ -995,7 +997,7 @@ class SignUp extends Component {
                                         {translation[Language].Gender_List && translation[Language].Gender_List.map((item, key) => (<Picker.Item
                                             label={item.label}
                                             value={item.value}
-                                            color={Color.colorBlack}
+                                            color={this.state.colorScheme == "dark" ? Color.colorWhite : Color.colorBlack}
                                             key={key} />)
                                         )}
                                     </Picker>
@@ -1039,7 +1041,7 @@ class SignUp extends Component {
                                             {countries.map((item, key) => (<Picker.Item
                                                 label={item.label}
                                                 value={item.value}
-                                                color={Color.colorBlack}
+                                                color={this.state.colorScheme == "dark" ? Color.colorWhite : Color.colorBlack}
                                                 key={key} />)
                                             )}
                                         </Picker>
@@ -1284,7 +1286,10 @@ class SignUp extends Component {
 
 }
 
-export default SignUp
+export default function (props) {
+    const colorScheme = useColorScheme();
+    return <SignUp {...props} colorScheme={colorScheme} />;
+}
 
 /** UI styles used for this class */
 const styles = ScaledSheet.create(
