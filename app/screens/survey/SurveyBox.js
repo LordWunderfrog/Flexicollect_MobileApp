@@ -7315,12 +7315,7 @@ class SurveyBox extends Component {
             }
           }
         }
-        setTimeout(() => {
-          this.setState({
-            progressNumber: this.state.progressNumber + 1,
-            maxReachedQuestion: this.state.progressNumber + 1
-          })
-        }, 200);
+
         if (
           !copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") ||
           copyquestionArray[currentQuesIndx].properties.noreturn === 0
@@ -7356,52 +7351,81 @@ class SurveyBox extends Component {
     return hide;
   };
 
+  /** 
+   * Check if the same question appears more than once in the target/unMetTarget list 
+   * (e.g., in both 'hide' and 'hide_multiple') to avoid triggering 
+   * progress bar updates (increase/decrease) multiple times for the same question.
+   */
+  checkTargetedQuestionCount(target, handler, condition_do) {
+    const available = [];
+
+    for (let t = 0; t < target.length; t++) {
+      const item = target[t];
+
+      if ((item.do === "hide" || item.do === "show") && item.handler === handler) {
+        available.push({ source: item.do });
+      }
+
+      if ((item.do === "hide_multiple" || item.do === "show_multiple") && Array.isArray(item.multifield)) {
+        const found = item.multifield.find((field) => field.value === handler);
+        if (found) {
+          available.push({ source: item.do });
+        }
+      }
+    }
+    const index = available.findIndex((item) => item.source == condition_do);
+    return index;
+  };
+
   /** SET question length and progressNumber according to target and ishide questions */
-  setProgressNumber(questionArr, target, unMetTarget) {
+  async setProgressNumber(questionArr, target, unMetTarget) {
     if (target && target.length > 0) {
       for (let t = 0; t < target.length; t++) {
         if (target[t].do == "hide") {
           const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          const available = this.checkTargetedQuestionCount(target, target[t].handler, "hide");
           const find = this.state.questionsArr.find((item) => item.handler == target[t].handler);
           setTimeout(() => {
             this.setState({
-              questionLength: checkInHidden || !find ? this.state.questionLength : this.state.questionLength - 1
+              questionLength: checkInHidden || !find || available !== 0 ? this.state.questionLength : this.state.questionLength - 1
             }, () => {
               this.setState({
                 hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
               })
             })
-          }, 200);
+          }, 100);
         }
         else if (target[t].do == "show") {
           const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          const available = this.checkTargetedQuestionCount(target, target[t].handler, "show");
           const find = this.state.questionsArr.find((item) => item.handler == target[t].handler);
           setTimeout(() => {
             this.setState({
-              questionLength: checkInHidden || find ? this.state.questionLength + 1 : this.state.questionLength
+              questionLength: checkInHidden || find || available == 0 ? this.state.questionLength + 1 : this.state.questionLength
             }, () => {
               this.setState({
                 hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
               })
             })
-          }, 200);
+          }, 100);
         }
         else if (target[t].do == 'hide_multiple') {
           const multifield = target[t].multifield.length > 0 && target[t].multifield;
           for (let i = 0; i < multifield.length; i++) {
             const find = this.state.questionsArr.find((item) => item.handler == multifield[i].value);
             const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            const available = this.checkTargetedQuestionCount(target, multifield[i].value, "hide_multiple");
             if (checkInHidden || !find) { }
             else {
               setTimeout(() => {
                 this.setState({
-                  questionLength: this.state.questionLength - 1
+                  questionLength: available == 0 ? this.state.questionLength - 1 : this.state.questionLength
                 }, () => {
                   this.setState({
                     hiddenQuestionLength: questionArr.filter((item) => item.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
           }
         }
@@ -7410,16 +7434,17 @@ class SurveyBox extends Component {
           for (let i = 0; i < multifield.length; i++) {
             const find = this.state.questionsArr.find((item) => item.handler == multifield[i].value);
             const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            const available = this.checkTargetedQuestionCount(target, multifield[i].value, "show_multiple");
             if (checkInHidden && find) {
               setTimeout(() => {
                 this.setState({
-                  questionLength: this.state.questionLength + 1
+                  questionLength: available == 0 ? this.state.questionLength + 1 : this.state.questionLength
                 }, () => {
                   this.setState({
                     hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
             else { }
           }
@@ -7434,6 +7459,7 @@ class SurveyBox extends Component {
           const existInTarget = this.findQuestionexistInTarget(unMetTarget[u].handler, target);
           const keyname = question?.questionType == 'capture' ? 'img_stats' : `${question?.questionType}_stats`;
           const stats = question?.properties[keyname] ? question?.properties[keyname] : "";
+          const available = this.checkTargetedQuestionCount(unMetTarget, unMetTarget[u].handler, unMetTarget[u].do);
           if (existInTarget) {
             setTimeout(() => {
               this.setState({
@@ -7443,38 +7469,42 @@ class SurveyBox extends Component {
                   hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                 })
               })
-            }, 200)
+            }, 100)
           }
           else {
             if (checkInHidden) {
               setTimeout(() => {
                 this.setState({
-                  questionLength: stats == "hide"
+                  questionLength: available !== 0
                     ? this.state.questionLength
-                    : stats == "show"
-                      ? this.state.questionLength + 1
-                      : this.state.questionLength + 1
+                    : stats == "hide"
+                      ? this.state.questionLength
+                      : stats == "show"
+                        ? this.state.questionLength + 1
+                        : this.state.questionLength + 1
                 }, () => {
                   this.setState({
                     hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
             else {
               setTimeout(() => {
                 this.setState({
-                  questionLength: stats == "hide"
-                    ? this.state.questionLength - 1
-                    : stats == "show"
-                      ? this.state.questionLength
-                      : this.state.questionLength
+                  questionLength: available !== 0
+                    ? this.state.questionLength
+                    : stats == "hide"
+                      ? this.state.questionLength - 1
+                      : stats == "show"
+                        ? this.state.questionLength
+                        : this.state.questionLength
                 }, () => {
                   this.setState({
                     hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
           }
         }
@@ -7486,6 +7516,7 @@ class SurveyBox extends Component {
             const existInTarget = this.findQuestionexistInTarget(multifield[i].value, target);
             const keyname = question && question?.questionType == 'capture' ? 'img_stats' : `${question?.questionType}_stats`;
             const stats = question && question?.properties[keyname] ? question?.properties[keyname] : "";
+            const available = this.checkTargetedQuestionCount(unMetTarget, multifield[i].value, unMetTarget[u].do);
             if (existInTarget) {
               setTimeout(() => {
                 this.setState({
@@ -7495,44 +7526,54 @@ class SurveyBox extends Component {
                     hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
             else {
               if (checkInHidden) {
                 setTimeout(() => {
                   this.setState({
-                    questionLength: stats == "hide"
+                    questionLength: available !== 0
                       ? this.state.questionLength
-                      : stats == "show"
-                        ? this.state.questionLength + 1
-                        : this.state.questionLength + 1
+                      : stats == "hide"
+                        ? this.state.questionLength
+                        : stats == "show"
+                          ? this.state.questionLength + 1
+                          : this.state.questionLength + 1
                   }, () => {
                     this.setState({
                       hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                     })
                   })
-                }, 200)
+                }, 100)
               }
               else {
                 setTimeout(() => {
                   this.setState({
-                    questionLength: stats == "hide"
-                      ? this.state.questionLength - 1
-                      : stats == "show"
-                        ? this.state.questionLength
-                        : this.state.questionLength
+                    questionLength: available !== 0
+                      ? this.state.questionLength
+                      : stats == "hide"
+                        ? this.state.questionLength - 1
+                        : stats == "show"
+                          ? this.state.questionLength
+                          : this.state.questionLength
                   }, () => {
                     this.setState({
                       hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                     })
                   })
-                }, 200)
+                }, 100)
               }
             }
           }
         }
       }
     }
+    setTimeout(() => {
+      this.setState({
+        progressNumber: this.state.progressNumber + 1,
+        maxReachedQuestion: this.state.progressNumber + 1
+      })
+    }, 200);
   };
 
   /** Set hide/show question as per already hide/showed passed from admin BY KR*/
