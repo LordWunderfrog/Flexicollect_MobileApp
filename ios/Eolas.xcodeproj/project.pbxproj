@@ -733,7 +733,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HJZ3L2XA4R;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HJZ3L2XA4R;
@@ -741,7 +741,7 @@
 				INFOPLIST_FILE = Eolas/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 5.30;
+				MARKETING_VERSION = 5.31;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -773,14 +773,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HJZ3L2XA4R;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HJZ3L2XA4R;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Eolas/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 5.30;
+				MARKETING_VERSION = 5.31;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
