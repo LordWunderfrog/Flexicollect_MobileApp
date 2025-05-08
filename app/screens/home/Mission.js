@@ -5,7 +5,8 @@ import {
 	Platform,
 	TouchableOpacity, AppState,
 	Image, FlatList, ActivityIndicator,
-	Alert, Linking
+	TextInput,
+	Pressable,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo, { NetInfoSubscription, NetInfoState } from '@react-native-community/netinfo';
@@ -37,9 +38,6 @@ let offline_img = '../../images/survey/offline.png';
 let connected = true;
 //let isDownloadProgress = "";
 
-interface State {
-	isConnected: boolean | null;
-}
 
 class Mission extends Component {
 	state = {
@@ -50,11 +48,13 @@ class Mission extends Component {
 		totalFiles: {},
 		downFiles: {},
 		pointBadges: [100, 200, 300, 500, 1000, 2000],
-		translation_common: Constants.common_text
+		translation_common: Constants.common_text,
+		search: "",
+		filteredMission: [],
 	}
 
 	/** components life cycle methods */
-	componentDidMount() {
+	async componentDidMount() {
 		global.mission_mount = true;
 		this.checkNetworkSpeed()
 		this.getOfflineStatus();
@@ -79,7 +79,7 @@ class Mission extends Component {
 			this.getMissionData();
 		});
 
-		this.messageListener = messaging().onMessage((message: RemoteMessage) => {
+		this.messageListener = messaging().onMessage((message) => {
 			if (message.data && message.data.title && message.data.title == 'Invalid Status Update' && message.data.body && message.data.body != '') {
 				this.getMissionDataForStatusUpdate('inp_' + message.data.body, message.data.body + '_LastAccess');
 			}
@@ -184,7 +184,7 @@ class Mission extends Component {
 	/**
 	 * Check device internet connectivity and notify device online or offline
 	 */
-	_handleConnectivityChange = (state: NetInfoState) => {
+	_handleConnectivityChange = (state) => {
 		if (state.isConnected) {
 			if (Platform.OS == 'ios' && connected) {
 				/** ios not work proper connection change so call every time */
@@ -1091,7 +1091,7 @@ class Mission extends Component {
 								xpPoints = response.data.current_customer_xp + '/' + response.data.total_customer_xp;
 							}
 							Constants.saveKey("xpPoint", xpPoints);
-							const missionNewArray = response.data.mission_data && response.data.mission_data.map(obj => ({ ...obj, totalSubmissionByuser: 0 }))
+							const missionNewArray = response.data.mission_data && response.data.mission_data.map(obj => ({ ...obj, totalSubmissionByuser: 0 })) || [];
 
 							// /** get per user count done while user is online mode and set it as default value for key for offline mode and add totalSubmissionByuser key for locally manage to submittion limit  */
 							if (missionObject !== null && missionObject !== undefined && missionObject.length > 0) {
@@ -1312,19 +1312,54 @@ class Mission extends Component {
 		// this.props.navigation.dispatch(resetAction);
 	}
 
+	filterMission(value) {
+		if (value && value.trim().length > 0) {
+			this.setState({
+				search: value
+			});
+			const _filterMission = this.state.missionData.filter((item, index) =>
+				item.mission_name.toLowerCase().includes(value.toLowerCase()));
+			this.setState({
+				filteredMission: _filterMission
+			})
+		}
+		else if (value == "" || value.trim() == "") {
+			this.setState({
+				search: ""
+			})
+		}
+	}
+
 	/** Class render method*/
 	render() {
-		const { isLoading, missionData, offlineObj } = this.state;
+		const { isLoading, missionData, offlineObj, search, filteredMission } = this.state;
 		return (
 			<View style={styles.viewContainer}>
 
-				{!isLoading && missionData.length > 0 && (
+				{!isLoading && missionData && missionData.length > 0 &&
+					<View style={styles.InputView}>
+						<TextInput
+							style={styles.InputText}
+							value={search}
+							underlineColorAndroid={Color.colorWhite}
+							placeholderTextColor={Color.colorLitGrey}
+							returnKeyType="next"
+							placeholder={this.props.translation[this.props.Language].searchByMission}
+							placeholderColor={Color.colorLitGrey}
+							selectionColor={'black'}
+							keyboardType={"default"}
+							onChangeText={(value) => this.filterMission(value)}
+						/>
+					</View>
+				}
+
+				{!isLoading && missionData && missionData.length > 0 && (
 					<FlatList
 						contentContainerStyle={{ paddingBottom: 10 }}
 						style={styles.resultFlatListContainer}
 						showsVerticalScrollIndicator={false}
 						vertical
-						data={missionData}
+						data={search && search.trim().length > 0 ? filteredMission : missionData}
 						renderItem={
 							({ item, index }) => {
 								return (
@@ -1429,19 +1464,22 @@ class Mission extends Component {
 						keyExtractor={(item, index) => index.toString()}
 					/>)}
 
-				{
-					isLoading && (
-						<ActivityIndicator style={{ alignSelf: 'center', flex: 1, justifyContent: 'center' }}
-							size="large"
-							color={Color.colorDarkBlue} />
-					)
-				}
-
-				{!isLoading && missionData.length === 0 && (
-					<View style={{ alignSelf: 'center', flex: 1, justifyContent: 'center' }}>
+				{!isLoading && missionData && missionData.length === 0 ? (
+					<View style={{ alignSelf: 'center', flex: 1, justifyContent: "center" }}>
 						<Text style={{ color: Color.colorBlack, fontSize: 20 }}>{this.props.translation[this.props.Language].No_Survey}</Text>
 					</View>
-				)}
+				) :
+					!isLoading && search.trim().length > 0 && filteredMission.length === 0 ? (
+						<View style={{ alignSelf: 'center', flex: 1, justifyContent: "center" }}>
+							<Text style={{ color: Color.colorBlack, fontSize: 20 }}>{this.props.translation[this.props.Language].No_Survey}</Text>
+						</View>
+					) :
+						isLoading &&
+						<ActivityIndicator style={{ flex: 1, alignSelf: 'center', }}
+							size="large"
+							color={Color.colorDarkBlue}
+						/>
+				}
 
 				{/* <TouchableOpacity onPress={this.onClickNotification} >
 					<View style={{ padding: 20, backgroundColor: 'red', position: 'absolute', bottom: 20, alignSelf: 'center' }}>
@@ -1647,5 +1685,26 @@ const styles = ScaledSheet.create({
 		borderTopRightRadius: 10,
 		backgroundColor: Color.colorGreen,
 		borderColor: Color.colorTinyGrey
+	},
+	InputView: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		fontSize: Dimension.normalText,
+		textAlign: 'left',
+		fontWeight: 'normal',
+		margin: Dimension.marginEight,
+		color: Color.colorBlack,
+		backgroundColor: Color.colorWhite,
+		borderWidth: 1,
+		borderColor: Color.colorDarkBlue,
+		borderRadius: 7,
+		height: 40,
+	},
+	InputText: {
+		color: Color.colorBlack,
+		padding: 10,
+		width: "100%",
+		borderColor: "none"
 	}
 })

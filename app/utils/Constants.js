@@ -131,6 +131,7 @@ module.exports = {
   languages: Platform.OS == 'ios' ? [
     { "label": "Afrikaans", "value": "Afrikaans" },
     { "label": "Arabic", "value": "Arabic" },
+    { "label": "Cantonese", "value": "Cantonese" },
     { "label": "Chinese", "value": "Chinese" },
     { "label": "Dutch", "value": "Dutch" },
     { "label": "English", "value": "English" },
@@ -150,7 +151,7 @@ module.exports = {
     { "label": "Thai", "value": "Thai" },
     { "label": "Vietnamese", "value": "Vietnamese" },
     { "label": "Urdu", "value": "Urdu" }]
-    : ["Afrikaans", "Arabic", "Chinese", "Dutch", "English", "French", "German", "Greek", "Hindi",
+    : ["Afrikaans", "Arabic", "Cantonese", "Chinese", "Dutch", "English", "French", "German", "Greek", "Hindi",
       "Indonesian", "Italian", "Japanese", "Malay", "Polish", "Portuguese", "Russian", "Spanish", "Tagalog", "Thai", "Vietnamese", "Urdu"],
   signin:
   {
@@ -213,6 +214,36 @@ module.exports = {
       "enterCode": "أدخل الرمز",
       "Cancel": "إلغاء",
       "OK": "موافق",
+    },
+    "Cantonese": {
+      "Email": "電郵",
+      "Eolas_International": "© 2025 Eolas International",
+      "Forgot_Password": "忘記密碼",
+      "Forgot_Password_Msg": "請檢查你的電郵/訊息以獲取一次性密碼  ",
+      "Login": "登入  ",
+      "Mobile": "手機號碼  ",
+      "Mobile_Email": "手機號碼 / 電郵  ",
+      "Password": "密碼  ",
+      "Privacy_Policy": "密碼無效  ",
+      "Register_new_account": "私隱政策  ",
+      "Reset_Password": "註冊新帳戶  ",
+      "Signin": "重設密碼  ",
+      "Terms_of_service": "登入  ",
+      "password_invalid": "服務條款  ",
+      "welcome": "歡迎來到 \"Eolas\" 網路 ",
+      "Password_Changed_MSg": "密碼已成功更改",
+      "Email_Verified": "電郵驗證成功。請登入以使用應用程式",
+      "ResetPassword_Sucess_Msg": "重設密碼連結已發送到你註冊的電郵地址",
+      "Version_Check": "版本檢查",
+      "Upgraded_App_Msg": "如果你已升級應用程式，請按「確定」繼續。",
+      "New_Version_Msg": "應用程式有新版本可供更新，請按「確定」升級並繼續。",
+      "LoginRestrictedMessage": "喺限制期結束之前，你唔可以用呢部裝置上面嘅其他帳戶登入。",
+      "LoginRestricted": "登入受到限制",
+      "InvalidCode": "無效嘅代碼",
+      "useCode": "用代碼",
+      "enterCode": "輸入代碼",
+      "Cancel": "取消",
+      "OK": "得"
     },
     "Chinese": {
       "Email": "电子邮箱",
@@ -863,6 +894,45 @@ module.exports = {
       "Success_Reg_Msg": "تم التسجيل بنجاح",
       "Terms_Service": "شروط الخدمة",
       "Valid_Email": "الرجاء إدخال بريد إلكتروني فعال"
+    },
+    "Cantonese": {
+      "Agree_Terms_Conditions": "同意條款與條件  ",
+      "City": "城市  ",
+      "Confirm_Password": "確認密碼  ",
+      "Country": "國家  ",
+      "DOB": "出生日期  ",
+      "Email_ID": "電郵地址  ",
+      "Eolas_International": "© 2025 Eolas International",
+      "First_Name": "名字  ",
+      "Gender": "性別  ",
+      "Gender_List": [
+        {
+          "label": "男性",
+          "value": "1"
+        },
+        {
+          "label": "女性",
+          "value": "2"
+        },
+        {
+          "label": "寧願唔講",
+          "value": "3"
+        }
+      ],
+      "Last_Name": "姓氏  ",
+      "Mobile": "手機號碼  ",
+      "New_User_Sign_up": "新用戶註冊  ",
+      "Password": "密碼  ",
+      "Register": "註冊  ",
+      "Select_City": "選擇城市  ",
+      "Select_Country": "選擇國家  ",
+      "Select_Gender": "選擇性別  ",
+      "Select_State": "選擇州/省  ",
+      "Sign_In": "登入  ",
+      "State": "州/省  ",
+      "Success_Reg_Msg": "成功註冊  ",
+      "Terms_Service": "服務條款  ",
+      "Valid_Email": "請輸入有效的電郵地址 ",
     },
     "Chinese": {
       "Agree_Terms_Conditions": "同意条款",
@@ -1773,6 +1843,89 @@ module.exports = {
       "enterPepsicoCode": "يرجى إدخال رمز PepsiCo",
       "Sync_Inprogress": "جارٍ التزامن",
       "Logout_Message": "هل أنت متأكد أنك تريد تسجيل الخروج؟ تأكد من أن هناك بعض الاستطلاعات غير المتصلة لم يتم تزامنها بعد. ستفقد تلك البيانات إذا قمت بتسجيل الخروج دون التزامن"
+    },
+    "Cantonese": {
+      "App_Version": "應用程式版本  ",
+      "Cancel": "取消  ",
+      "Change_Password": "更改密碼  ",
+      "City": "城市  ",
+      "Country": "國家  ",
+      "Country_Code": "國家代碼  ",
+      "Current_Password": "當前密碼  ",
+      "Email": "電郵  ",
+      "Eolas_International": "© 2025 Eolas International",
+      "First_Name": "名字  ",
+      "Gender": "性別  ",
+      "Gender_List": [
+        {
+          "label": "男性",
+          "value": "1"
+        },
+        {
+          "label": "女性",
+          "value": "2"
+        },
+        {
+          "label": "寧願唔講",
+          "value": "3"
+        }
+      ],
+      "LOGOUT": "登出  ",
+      "Last_Name": "姓氏  ",
+      "Mobile_Number": "手機號碼  ",
+      "New_Password": "新密碼  ",
+      "Password": "密碼  ",
+      "Payal_Email": "Paypal 電郵  ",
+      "Photo": "照片  ",
+      "Photos": "相片  ",
+      "Profile_Setup": "個人資料設置  ",
+      "Save": "儲存  ",
+      "Skip": "跳過  ",
+      "State": "州/省  ",
+      "Sync_Offline": "同步離線問卷  ",
+      "Mission_Backup": "離線問卷備份  ",
+      "Export_Mission": "匯出問卷  ",
+      "Set_Offline": "設為離線  ",
+      "No_Offline_Mission": "離線問卷不可用  ",
+      "Offline_Mission": "離線問卷  ",
+      "Sync_Now": "立即同步  ",
+      "View_Survey": "查看問卷  ",
+      "Que": "問題  ",
+      "Ans": "答案  ",
+      "Info_Text": "資訊文字  ",
+      "Address": "地址  ",
+      "Barcode_Value": "條碼數值  ",
+      "Video_Presented": "已顯示影片  ",
+      "Audio_Presented": "已顯示聲音",
+      "Option": "選項  ",
+      "Sub_Option": "子選項  ",
+      "Not_Answered": "找不到資料  ",
+      "Export": "匯出  ",
+      "Delete": "刪除  ",
+      "Mission": "問卷  ",
+      "DeleteAll_Text": "全部刪除  ",
+      "Delete_All_Mission": "刪除所有問卷  ",
+      "Synced": "已同步  ",
+      "Not_Synced": "未同步  ",
+      "Sync_Status": "同步狀態  ",
+      "Offline_Sync_Success": "離線問卷已成功同步  ",
+      "Submission_Exported": "提交內容已成功匯出  ",
+      "Empty_Answer_Msg": "你未對此問卷提供任何答案  ",
+      "Advanced_Settings": "進階設定",
+      "Delete_Mission_Confirmation": "你確定要刪除此離線問卷嗎？  ",
+      "Delete_Mission_Msg": "你有儲存的離線提交，請聯絡你的 Eolas 聯絡人確認是否已收到全部提交  ",
+      "DeleteAll_Mission_Confirmation": "你確定要刪除所有離線問卷嗎？請先與你的 Eolas 聯絡人確認是否已收到所有提交  ",
+      "Delete_Profile": "刪除個人資料  ",
+      "Delete_Profile_confirmation": "若要確認刪除個人資料，請在下方輸入「DELETE」  ",
+      "Enter_Delete": "請輸入「DELETE」以確認  ",
+      "Confirm": "確認  ",
+      "Delete_Account": "你確定要刪除帳戶嗎？  ",
+      "Yes": "是  ",
+      "NO": "否  ",
+      "Sync_Error_Offlinemode": "你的網際網路連線似乎較慢，請使用更穩定的網路以獲得更佳體驗 ",
+      "enterPepsicoCode": "請輸入百事可樂代碼",
+      "Sync_Inprogress": "同步緊",
+      "Logout_Message": "你肯定你想登出？  確保部分離線問卷仲未同步。如果你喺冇同步嘅情況下登出，你就會失去呢啲資料",
     },
     "Chinese": {
       "App_Version": "APP版本",
@@ -3389,7 +3542,8 @@ module.exports = {
       "Total_XP": "Totale XP",
       "enterPepsicoCode": "Voer asseblief PepsiCo-kode in",
       "emptyLeader": "Hoi, dit lyk asof niemand hierdie missie nog voltooi het nie. Wees die eerste om die missie te voltooi en die top-posisie in te neem.",
-      "Offlinemode_MSG": "Jy is in die aflaai-modus"
+      "Offlinemode_MSG": "Jy is in die aflaai-modus",
+      "searchByMission": "Soek volgens missie naam"
     },
     "Arabic": {
       "History": "السجل",
@@ -3426,7 +3580,46 @@ module.exports = {
       "Total_XP": "إجمالي الخبرة",
       "enterPepsicoCode": "الرجاء إدخال رمز PepsiCo",
       "emptyLeader": "مرحبًا، يبدو أنه لا يوجد أي شخص قد أكمل هذه المهمة بعد. كن الأول في إكمال المهمة والوصول إلى المركز الأول.",
-      "Offlinemode_MSG": "أنت في وضع عدم الاتصال"
+      "Offlinemode_MSG": "أنت في وضع عدم الاتصال",
+      "searchByMission": "ابحث باسم المهمة"
+    },
+    "Cantonese": {
+      "History": "歷史  ",
+      "Home": "首頁  ",
+      "In_Progress": "進行中  ",
+      "Mission": "任務  ",
+      "Mission_Completed": "已完成任務  ",
+      "Missions": "任務  ",
+      "No_Notification": "沒有通知  ",
+      "No_Payment": "未完成任何任務  ",
+      "No_Survey": "沒有可用的問卷  ",
+      "No_XP": "未完成任何任務  ",
+      "Notifications": "通知  ",
+      "Payment": "付款  ",
+      "Payments": "付款紀錄  ",
+      "Profile": "個人資料  ",
+      "XP_Experience": "經驗值 (XP)  ",
+      "Streak": "連續完成紀錄  ",
+      "Achievements": "成就  ",
+      "Points": "分數  ",
+      "Leaders": "排行榜  ",
+      "Awards": "獎勵  ",
+      "Welcome": "歡迎  ",
+      "Hi": "你好  ",
+      "enter_participantCode": "請輸入設置指示中提供的參與者代碼，然後按繼續",
+      "code_info": "需要呢個代碼先可以存取特別任務同排行榜內容。",
+      "Skip": "跳過",
+      "Continue": "繼續  ",
+      "Highest": "最高  ",
+      "Total_Points": "總分  ",
+      "Current_Rank": "目前排名",
+      "Position": "位置",
+      "User": "用戶  ",
+      "Total_XP": "總經驗值",
+      "enterPepsicoCode": "請輸入百事可樂代碼",
+      "emptyLeader": "看來還沒有人完成這份問卷。趕快成為第一位完成的人並登上排行榜首位！  ",
+      "Offlinemode_MSG": "你目前處於離線模式  ",
+      "searchByMission": "按任務名稱搜尋"
     },
     "Chinese": {
       "History": "过往经历",
@@ -3463,7 +3656,8 @@ module.exports = {
       "Total_XP": "总经验",
       "enterPepsicoCode": "请输入 PepsiCo 代码",
       "emptyLeader": "嘿，看起来还没有人完成这个任务。成为第一个完成任务并获得最高名次的人。",
-      "Offlinemode_MSG": "您处于离线模式"
+      "Offlinemode_MSG": "您处于离线模式",
+      "searchByMission": "按任務名稱搜尋"
     },
     "Dutch": {
       "History": "Geschiedenis",
@@ -3500,7 +3694,8 @@ module.exports = {
       "Total_XP": "Totaal XP",
       "enterPepsicoCode": "Voer de PepsiCo-code in",
       "emptyLeader": "Hé, het lijkt erop dat niemand deze missie nog heeft voltooid. Wees de eerste die de missie voltooit en de hoogste positie inneemt.",
-      "Offlinemode_MSG": "Je bent offline"
+      "Offlinemode_MSG": "Je bent offline",
+      "searchByMission": "Zoek op missienaam"
     },
     "English": {
       "History": "History",
@@ -3537,7 +3732,8 @@ module.exports = {
       "Total_XP": "Total XP",
       "enterPepsicoCode": "Please enter PepsiCo Code",
       "emptyLeader": "Hey, it looks like no one has completed this mission yet. Be the first to complete the mission and take the top spot.",
-      "Offlinemode_MSG": "You are in offline mode"
+      "Offlinemode_MSG": "You are in offline mode",
+      "searchByMission": "Search By Mission Name"
     },
     "French": {
       "History": "Historique",
@@ -3574,7 +3770,8 @@ module.exports = {
       "Total_XP": "XP total",
       "enterPepsicoCode": "Veuillez entrer le code PepsiCo",
       "emptyLeader": "Hé, il semblerait que personne n'ait encore terminé cette mission. Soyez le premier à la terminer et occupez la première place.",
-      "Offlinemode_MSG": "Vous êtes en mode hors ligne"
+      "Offlinemode_MSG": "Vous êtes en mode hors ligne",
+      "searchByMission": "Recherche par nom de mission"
     },
     "German": {
       "History": "Verlauf",
@@ -3611,7 +3808,8 @@ module.exports = {
       "Total_XP": "Gesamt-XP",
       "enterPepsicoCode": "Bitte geben Sie den PepsiCo-Code ein",
       "emptyLeader": "Hey, anscheinend hat noch niemand diesen Fragebogen abgeschlossen. Seien Sie der Erste, der den Fragebogen abschließt und den Spitzenplatz einnimmt.",
-      "Offlinemode_MSG": "Sie befinden sich im Offline-Modus"
+      "Offlinemode_MSG": "Sie befinden sich im Offline-Modus",
+      "searchByMission": "Suche nach Missionsnamen"
     },
     "Greek": {
       "History": "Ιστορία",
@@ -3648,7 +3846,8 @@ module.exports = {
       "Total_XP": "Σύνολο XP",
       "enterPepsicoCode": "Παρακαλώ εισάγετε τον Κωδικό PepsiCo",
       "emptyLeader": "Γεια, φαίνεται ότι κανείς δεν έχει ολοκληρώσει αυτήν την έρευνα ακόμα. Γίνε ο πρώτος που θα ολοκληρώσει την έρευνα και θα πάρει την πρώτη θέση.",
-      "Offlinemode_MSG": "Είστε σε λειτουργία εκτός σύνδεσης"
+      "Offlinemode_MSG": "Είστε σε λειτουργία εκτός σύνδεσης",
+      "searchByMission": "Αναζήτηση με όνομα αποστολής"
     },
     "Hindi": {
       "History": "इतिहास",
@@ -3685,7 +3884,8 @@ module.exports = {
       "Total_XP": "कुल XP",
       "enterPepsicoCode": "कृपया PepsiCo कोड दर्ज करें",
       "emptyLeader": "अरे, ऐसा लगता है कि अब तक कोई भी इस मिशन को पूरा नहीं कर चुका है। पहला व्यक्ति बनें और मिशन को पूरा करके शीर्ष स्थान पर पहुंचें।",
-      "Offlinemode_MSG": "आप ऑफ़लाइन मोड में हैं"
+      "Offlinemode_MSG": "आप ऑफ़लाइन मोड में हैं",
+      "searchByMission": "मिशन नाम से खोजें"
     },
     "Indonesian": {
       "History": "Riwayat",
@@ -3722,7 +3922,8 @@ module.exports = {
       "Total_XP": "Total XP",
       "enterPepsicoCode": "Silakan masukkan Kode PepsiCo",
       "emptyLeader": "Hei, sepertinya belum ada yang menyelesaikan misi ini. Jadilah yang pertama untuk menyelesaikan misi dan mendapatkan peringkat teratas.",
-      "Offlinemode_MSG": "Anda sedang dalam mode offline"
+      "Offlinemode_MSG": "Anda sedang dalam mode offline",
+      "searchByMission": "Cari dengan nama misi"
     },
     "Italian": {
       "History": "Storia",
@@ -3759,7 +3960,8 @@ module.exports = {
       "Total_XP": "XP totale",
       "enterPepsicoCode": "Inserisci il codice PepsiCo",
       "emptyLeader": "Ehi, sembra che nessuno abbia ancora completato questa missione. Sii il primo a completare la missione e raggiungi la vetta.",
-      "Offlinemode_MSG": "Sei in modalità offline"
+      "Offlinemode_MSG": "Sei in modalità offline",
+      "searchByMission": "Cerca per nome della missione"
     },
     "Japanese": {
       "History": "歴史",
@@ -3796,7 +3998,8 @@ module.exports = {
       "Total_XP": "総XP",
       "enterPepsicoCode": "Please enter PepsiCo Code",
       "emptyLeader": "まだ誰もこのミッションを完了していないようです。最初にミッションを完了し、トップの座を手に入れましょう。",
-      "Offlinemode_MSG": "オフラインモードです"
+      "Offlinemode_MSG": "オフラインモードです",
+      "searchByMission": "ミッション名で検索します"
     },
     "Malay": {
       "History": "Sejarah",
@@ -3833,7 +4036,8 @@ module.exports = {
       "Total_XP": "Jumlah XP",
       "enterPepsicoCode": "Sila masukkan Kod PepsiCo",
       "emptyLeader": "Hei, nampaknya tiada sesiapa yang telah menyelesaikan misi ini. Jadilah orang pertama yang menyelesaikan misi ini dan tempatkan di tangga teratas.",
-      "Offlinemode_MSG": "Anda berada dalam mod luar talian"
+      "Offlinemode_MSG": "Anda berada dalam mod luar talian",
+      "searchByMission": "Cari mengikut nama misi"
     },
     "Polish": {
       "History": "Historia",
@@ -3870,7 +4074,8 @@ module.exports = {
       "Total_XP": "Łączne doświadczenie",
       "enterPepsicoCode": "Proszę wprowadzić kod PepsiCo",
       "emptyLeader": "Hej, wygląda na to, że jeszcze nikt nie ukończył tej misji. Bądź pierwszy, który ją ukończy i zdobądź pierwsze miejsce.",
-      "Offlinemode_MSG": "Jesteś w trybie offline"
+      "Offlinemode_MSG": "Jesteś w trybie offline",
+      "searchByMission": "Wyszukaj według nazwy misji"
     },
     "Portuguese": {
       "History": "História",
@@ -3907,7 +4112,8 @@ module.exports = {
       "Total_XP": "XP Total",
       "enterPepsicoCode": "Por favor, insira o código da PepsiCo",
       "emptyLeader": "Ei, parece que ninguém completou essa missão ainda. Seja o primeiro a completar a missão e ficar no topo.",
-      "Offlinemode_MSG": "Você está no modo offline"
+      "Offlinemode_MSG": "Você está no modo offline",
+      "searchByMission": "Pesquise por nome da missão"
     },
     "Russian": {
       "History": "история",
@@ -3944,7 +4150,8 @@ module.exports = {
       "Total_XP": "Общий XP",
       "enterPepsicoCode": "Пожалуйста, введите код PepsiCo",
       "emptyLeader": "Привет, похоже, никто еще не выполнил это задание. Будьте первым, кто выполнит задание и займет первое место.",
-      "Offlinemode_MSG": "Вы находитесь в автономном режиме"
+      "Offlinemode_MSG": "Вы находитесь в автономном режиме",
+      "searchByMission": "Поиск по названию миссии"
     },
     "Spanish": {
       "History": "Historia",
@@ -3981,7 +4188,8 @@ module.exports = {
       "Total_XP": "XP total",
       "enterPepsicoCode": "Por favor, ingrese el código de PepsiCo",
       "emptyLeader": "Oye, parece que nadie ha completado esta misión aún. Sé el primero en completar la misión y ocupar el primer lugar.",
-      "Offlinemode_MSG": "Estás en modo sin conexión"
+      "Offlinemode_MSG": "Estás en modo sin conexión",
+      "searchByMission": "Buscar por nombre de la misión"
     },
     "Tagalog": {
       "History": "Kasaysayan",
@@ -4018,7 +4226,8 @@ module.exports = {
       "Total_XP": "Kabuuang XP",
       "enterPepsicoCode": "Mangyaring magpasok ng PepsiCo Code",
       "emptyLeader": "Hey, wala pang nakakumpletong misyon. Maging una na makumpleto ang misyon at makuha ang nangungunang puwesto.",
-      "Offlinemode_MSG": "Nasa offline mode ka"
+      "Offlinemode_MSG": "Nasa offline mode ka",
+      "searchByMission": "Maghanap Ayon sa Pangalan ng Misyon"
     },
     "Thai": {
       "History": "ประวัติความเป็นมา",
@@ -4055,7 +4264,8 @@ module.exports = {
       "Total_XP": "XP รวม",
       "enterPepsicoCode": "โปรดป้อนรหัส PepsiCo",
       "emptyLeader": "เฮ้คุณดูเหมือนไม่มีใครที่ได้ทำภารกิจนี้เสร็จสิ้นแล้ว เป็นคนแรกที่ทำภารกิจเสร็จสิ้นและเป็นผู้นำสูงสุด",
-      "Offlinemode_MSG": "คุณกำลังใช้งานในโหมดออฟไลน์"
+      "Offlinemode_MSG": "คุณกำลังใช้งานในโหมดออฟไลน์",
+      "searchByMission": "ค้นหาตามชื่อภารกิจ"
     },
     "Vietnamese": {
       "History": "Lịch sử",
@@ -4092,7 +4302,8 @@ module.exports = {
       "Total_XP": "Tổng số điểm tích lũy",
       "enterPepsicoCode": "Vui lòng nhập mã PepsiCo",
       "emptyLeader": "Này, có vẻ như chưa có ai hoàn thành nhiệm vụ này. Hãy là người đầu tiên hoàn thành nhiệm vụ và chiếm vị trí cao nhất",
-      "Offlinemode_MSG": "Bạn đang ở chế độ ngoại tuyến"
+      "Offlinemode_MSG": "Bạn đang ở chế độ ngoại tuyến",
+      "searchByMission": "Tìm kiếm theo tên nhiệm vụ"
     },
     "Urdu": {
       "History": "ہسٹری /",
@@ -4129,8 +4340,9 @@ module.exports = {
       "Total_XP": "کل XP",
       "enterPepsicoCode": "براہ کرم پیپسی کو کوڈ درج کریں",
       "emptyLeader": "یہاں نظر آرہا ہے کہ ابھی تک کوئی بھی اس مشن کو مکمل نہیں کیا ہے۔ پہلے مشن مکمل کریں اور اوپار",
-      "Offlinemode_MSG": "آپ آف لائن موڈ میں ہیں"
-    },
+      "Offlinemode_MSG": "آپ آف لائن موڈ میں ہیں",
+      "searchByMission": "مشن کے نام سے تلاش کریں"
+    }
   },
   survey:
   {
@@ -4225,6 +4437,52 @@ module.exports = {
       "MaxDiffSelectMsg": "يرجى اختيار العنصر الأقل والأكثر لكل مجموعة من الأسئلة",
       "SelectDate": "الرجاء تحديد التاريخ",
       "MaxVideoLimit": "يجب ألا تزيد مدة الفيديو عن 3 دقائق",
+    },
+    "Cantonese": {
+      "Loading_Questions": "載入問題  ",
+      "Mandatory_Msg": "請回答此問題  ",
+      "Processing_Msg": "先前的答案正在處理中。請稍候並重試。  ",
+      "Submit": "提交  ",
+      "Submitting_Survey": "正在提交問卷  ",
+      "Survey_Completed": "問卷已成功完成  ",
+      "Validating_Msg": "正在驗證...  ",
+      "Video_Processing_Msg": "影片處理中。請等候直到影片載入完畢。  ",
+      "SlowNetwork_Survey_Submit": "看來你的網際網路連接較慢，為了更好的體驗，問卷將會以離線方式提交  ",
+      "Permission_Title": "權限  ",
+      "GPS_Permission_Msg": "請開啟定位和 GPS 模式  ",
+      "Camera_Barcode_Permission": "Eolas 需要使用你的相機來掃描條碼  ",
+      "Camera_TakePicture_Permission": "Eolas 需要使用你的相機來為問卷拍照  ",
+      "Camera_Video_Permission": "Eolas 需要使用你的相機來為問卷拍攝影片  ",
+      "Camera_General_Permission": "Eolas 為了問卷需要使用你的相機來上傳媒體  ",
+      "Photos_General_Permission": "Eolas 為了問卷需要將你的照片上傳媒體  ",
+      "External_Storage_Permission": "Eolas 需要將資訊寫入你的外部儲存裝置  ",
+      "Microphone_Permission": "Eolas 需要使用你的麥克風來錄音  ",
+      "Audio_Recorder_Permission": "Eolas 需要使用你的錄音器來錄音  ",
+      "Cancel": "取消  ",
+      "OK": "確定  ",
+      "Confirm": "確定",
+      "GoBack": "返去",
+      "Survey_NotAvailable_For_Offline": "此問卷不可用。請關閉此問卷並連接網際網路下載，下載後可供離線使用  ",
+      "Survey_Submitting_Error": "提交此問卷時似乎出現問題，請使用主頁的支援按鈕聯絡我們  ",
+      "Submission_Exceeded": "問卷子問卷數量超出限制  ",
+      "Try_Again": "再試一次  ",
+      "NO_Scale_Found": "未找到評分標準  ",
+      "Take_Photo": "拍照  ",
+      "Take_Audio": "錄音  ",
+      "Take_Video": "錄影  ",
+      "Choose_Image": "選擇圖片  ",
+      "Choose_Audio": "選擇聲音",
+      "Choose_Video": "選擇影片  ",
+      "Minimum_Validation_Msg": "請揀最低限度",
+      "Maximum_Validation_Msg": "請揀最大",
+      "Option": "選項",
+      "Set": "設定",
+      "of": "嘅",
+      "Least": "最少",
+      "Most": "最",
+      "MaxDiffSelectMsg": "請為所有問題選擇最少同最多項目",
+      "SelectDate": "請揀日期",
+      "MaxVideoLimit": "影片持續時間唔應該超過3分鐘"
     },
     "Chinese": {
       "Loading_Questions": "加载问题",
@@ -5161,6 +5419,36 @@ module.exports = {
       "Address_NotFound": "لم يتم العثور على العنوان",
       "We_CouldNot_GetYour_Location": "لم نتمكن من الحصول على موقعك.",
       "InValid_User": "معرف مستخدم غير صالح"
+    },
+    "Cantonese": {
+      "No_Internet": "請檢查你嘅網絡連線",
+      "Enter_Email": "請輸入你嘅電郵",
+      "Enter_Password": "請輸入你嘅密碼",
+      "Enter_FirstName": "請輸入你嘅名",
+      "Enter_LastName": "請輸入你嘅姓氏",
+      "Password_Character": "密碼必須至少有6個字元",
+      "ValidMobOr_Email": "請輸入有效嘅手機號碼或者電郵 ID",
+      "Valid_Email": "請輸入有效嘅電郵地址",
+      "Password_Validation": "密碼同確認密碼唔啱",
+      "Enter_Confirmpassword": "請輸入確認密碼",
+      "Enter_ValidDate": "請輸入有效嘅出生日期",
+      "Enter_Dob": "請輸入你嘅出生日期",
+      "Enter_MobNo": "請輸入你嘅手機號碼",
+      "Enter_Country_Code": "請輸入你嘅國家代碼",
+      "TapTo_Place": "㩒一下就可以放置標記",
+      "Enter_Text": "輸入文字 ...",
+      "Select_Rate": "請揀一個值",
+      "Processing_Image": "唔該等下！我哋處理緊圖片。",
+      "Not_Valid_BarCode": "唔有效嘅條碼",
+      "BarCode_NotReadable": "條碼唔可讀",
+      "Scan_Hint": "喺長方形入面放條碼嚟掃描佢",
+      "QrCode_Not_Supported": "條碼掃描唔到",
+      "Posting_Error": "儲存你其中一個答案嗰陣有問題。請撳去掣，然後再填返嗰個問題。",
+      "Session_Expired": "好似有啲嘢出事。請重新登入",
+      "Loading_Detail": "載入緊詳情 ...",
+      "Address_NotFound": "搵唔到地址",
+      "We_CouldNot_GetYour_Location": "我哋搵唔到你嘅位置。",
+      "InValid_User": "無效嘅用戶 ID"
     },
     "Chinese": {
       "No_Internet": "请检查您的网络连接",

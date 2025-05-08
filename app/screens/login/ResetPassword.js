@@ -57,8 +57,10 @@ class ResetPassword extends Component {
             isLoading: false,
             currentTextSecure: true,
             Language: global.language,
-            languagelist: Platform.OS == 'ios' ? Constants.languages : [],
-            translation: Platform.OS == 'ios' ? Constants.signin : [],
+            // languagelist: Platform.OS == 'ios' ? Constants.languages : [],
+            // translation: Platform.OS == 'ios' ? Constants.signin : [],
+            languagelist: Constants.languages,
+            translation: Constants.signin,
             translation_signup: Constants.signup,
             translation_common: Constants.common_text,
             confirmpasswordTextSecure: true
@@ -68,7 +70,7 @@ class ResetPassword extends Component {
     /** component life cycle methods */
     UNSAFE_componentWillMount() {
         if (Platform.OS == 'android') {
-            this.getpagetranslation()
+            //this.getpagetranslation()
             this.getlanguagelist()
         }
     }
