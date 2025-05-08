@@ -746,15 +746,7 @@ PODS:
     - React-Core
   - RNSVG (13.14.0):
     - React-Core
-  - RNZipArchive (6.1.0):
-    - React-Core
-    - RNZipArchive/Core (= 6.1.0)
-    - SSZipArchive (~> 2.2)
-  - RNZipArchive/Core (6.1.0):
-    - React-Core
-    - SSZipArchive (~> 2.2)
   - SocketRocket (0.6.1)
-  - SSZipArchive (2.4.3)
   - TZImagePickerController (3.8.3):
     - TZImagePickerController/Basic (= 3.8.3)
     - TZImagePickerController/Location (= 3.8.3)
@@ -873,7 +865,6 @@ DEPENDENCIES:
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
   - RNSound (from `../node_modules/react-native-sound`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNZipArchive (from `../node_modules/react-native-zip-archive`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -905,7 +896,6 @@ SPEC REPOS:
     - OpenSSL-Universal
     - PromisesObjC
     - SocketRocket
-    - SSZipArchive
     - TZImagePickerController
     - YogaKit
 
@@ -1071,8 +1061,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-sound"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNZipArchive:
-    :path: "../node_modules/react-native-zip-archive"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1183,13 +1171,11 @@ SPEC CHECKSUMS:
   RNSnackbar: 3727b42bf6c4314a53c18185b5203e915a4ab020
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
-  RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   TZImagePickerController: e9909edbadf7381140efc5b5c9f5bdbfd630f7d4
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 209c20369f4c01951a25e7146786967c85cf9a3e
+PODFILE CHECKSUM: 68f22abf57adda1f53512f017319f97474f2f536
 
 COCOAPODS: 1.15.2

@@ -2916,9 +2916,9 @@ class SurveyBox extends Component {
    * @param loop_triggered_qid - looping triggered question id   
    * @param loop_number - loop number
   */
-  clear_loop(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number) {
-    this.clear_local(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number);
-    this.clear_loop_api(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number);
+  clear_loop(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number, _qId) {
+    this.clear_local(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number, _qId);
+    this.clear_loop_api(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number, _qId);
   }
 
   /**
@@ -2928,11 +2928,11 @@ class SurveyBox extends Component {
    * @param loop_triggered_qid - looping triggered question id   
    * @param loop_number - loop number
    */
-  clear_local(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number) {
+  clear_local(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number, _qId) {
 
     if (question_id !== null) {
       this.state.questionsArr.map((m, i) => {
-        if (question_id === m.questionID && !m.loop_triggered_qid) {
+        if (question_id === m.questionID && !m.loop_triggered_qid && i == _qId) {
           m.answer = ""
         }
       })
@@ -3011,10 +3011,16 @@ class SurveyBox extends Component {
    * @param loop_triggered_qid - looping triggered question id   
    * @param loop_number - loop number
    */
-  async clear_loop_api(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number) {
+  async clear_loop_api(surveyAnsTagId, question_id, loop_triggered_qid, loop_set_num, loop_number, _qId) {
+    const filter = this.state.questionsArr.filter((item) => item.questionID == question_id);
+    const findIndex = this.state.questionsArr.findIndex((item) => item.questionID == question_id)
     let url = '';
     if (question_id !== null) {
-      url = Constants.BASE_URL_V2 + Service.CLEAR_LOOP_ANSWERS + surveyAnsTagId + '&question_id=' + question_id;
+      if (filter && filter.length > 1 && findIndex <= _qId) {
+        url = '';
+      } else {
+        url = Constants.BASE_URL_V2 + Service.CLEAR_LOOP_ANSWERS + surveyAnsTagId + '&question_id=' + question_id;
+      }
     }
     else if (loop_triggered_qid !== null) {
       url = Constants.BASE_URL_V2 + Service.CLEAR_LOOP_ANSWERS + surveyAnsTagId + '&loop_triggered_qid=' + loop_triggered_qid;
@@ -3113,25 +3119,25 @@ class SurveyBox extends Component {
     }
     if (label === 'loop' || label === 'loop_set') {
       if (loop_triggered_qid === null) {
-        this.clear_loop(surveyAnsTagId, null, questionID, null, null)
+        this.clear_loop(surveyAnsTagId, null, questionID, null, null, currentQuesIndx)
       } else {
-        this.clear_loop(surveyAnsTagId, null, loop_triggered_qid, loop_set_num + 1, null)
+        this.clear_loop(surveyAnsTagId, null, loop_triggered_qid, loop_set_num + 1, null, currentQuesIndx)
       }
     } else if (label === 'loop_input') {
       if (loop_triggered_qid === null) {
-        this.clear_loop(surveyAnsTagId, null, questionID, null, null)
+        this.clear_loop(surveyAnsTagId, null, questionID, null, null, currentQuesIndx)
       } else {
-        this.clear_loop(surveyAnsTagId, null, loop_triggered_qid, null, null)
+        this.clear_loop(surveyAnsTagId, null, loop_triggered_qid, null, null, currentQuesIndx)
       }
     } else if (label === 'hide') {
       if (questionsArray[currentQuesIndx].hasOwnProperty('isDefault_loopset')) {
-        this.clear_loop(surveyAnsTagId, questionID, null, null, null)
+        this.clear_loop(surveyAnsTagId, questionID, null, null, null, currentQuesIndx)
       } else {
-        this.clear_loop(surveyAnsTagId, questionID, null, null, null)
-        this.clear_loop(surveyAnsTagId, null, questionID, null, null)
+        this.clear_loop(surveyAnsTagId, questionID, null, null, null, currentQuesIndx)
+        this.clear_loop(surveyAnsTagId, null, questionID, null, null, currentQuesIndx)
       }
     } else if (label === 'hide_loop') {
-      this.clear_loop(surveyAnsTagId, null, loop_triggered_qid, loop_set_num, loop_number)
+      this.clear_loop(surveyAnsTagId, null, loop_triggered_qid, loop_set_num, loop_number, currentQuesIndx)
     }
   }
 
@@ -3467,7 +3473,7 @@ class SurveyBox extends Component {
 
     //console.log(questionObj.hide_list);
     questionResponseQue[questionsArr[currentPage].questionID] = false;
-
+    this.setState({});
     if (noReturn && noReturn == 1) {
       this.setState({ isNoReturncheck: true });
     }
@@ -3618,6 +3624,7 @@ class SurveyBox extends Component {
             })
             .then(response => {
               questionResponseQue[questionsArr[currentPage].questionID] = true;
+              this.setState({});
               // this.state.questionsArr[currentPage].isUpdated = false;
               // this.state.questionsArr[currentPage].isSubmited = true;  //check if meadia sucessfully uploaded
               questionsArr[currentPage].isUpdated = false;
@@ -3748,6 +3755,7 @@ class SurveyBox extends Component {
               /** Logfile TempCode*/
               this.storeLogFile(questionObj, false, error.response, true, true, isSubmit === true ? true : false)
               questionResponseQue[questionsArr[currentPage].questionID] = true;
+              this.setState({});
               if (backBtnFired === true) {
                 this.onBackButtonPressAndroid();
               }
@@ -3784,6 +3792,7 @@ class SurveyBox extends Component {
               })
               .then(response => {
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
+                this.setState({});
                 // this.state.questionsArr[currentPage].isUpdated = false;
                 // this.state.questionsArr[currentPage].isSubmited = true
                 questionsArr[currentPage].isUpdated = false;
@@ -3917,6 +3926,7 @@ class SurveyBox extends Component {
                 this.storeLogFile(questionObj, false, error.response, false, true, isSubmit === true ? true : false)
                 console.log('Error is', error)
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
+                this.setState({});
                 if (backBtnFired === true) {
                   this.onBackButtonPressAndroid();
                 }
@@ -3960,6 +3970,7 @@ class SurveyBox extends Component {
                 if (response.status === 201) {
 
                   questionResponseQue[questionsArr[currentPage].questionID] = true;
+                  this.setState({});
                   // this.state.questionsArr[currentPage].isUpdated = false;
                   // this.state.questionsArr[currentPage].isSubmited = true;
                   questionsArr[currentPage].isUpdated = false;
@@ -4086,6 +4097,7 @@ class SurveyBox extends Component {
                 } else {
 
                   questionResponseQue[questionsArr[currentPage].questionID] = true;
+                  this.setState({});
                   if (backBtnFired === true) {
                     this.onBackButtonPressAndroid();
                   }
@@ -4113,6 +4125,7 @@ class SurveyBox extends Component {
                 /** Logfile TempCode*/
                 this.storeLogFile(questionObj, false, error.response, false, true, isSubmit === true ? true : false)
                 questionResponseQue[questionsArr[currentPage].questionID] = true;
+                this.setState({});
                 if (backBtnFired === true) {
                   this.onBackButtonPressAndroid();
                 }
@@ -4135,6 +4148,7 @@ class SurveyBox extends Component {
       } else {
         //this.saveSurvey()
         questionResponseQue[questionsArr[currentPage].questionID] = true;
+        this.setState({});
         if (backBtnFired === true) {
           this.onBackButtonPressAndroid();
         }
@@ -6519,6 +6533,40 @@ class SurveyBox extends Component {
   };
 
   /**
+   * function to find proper index of condition's targeted handler if it's in loop
+   * @returns index of question from question array
+   */
+  findQuestionFromArray = (queArr, targetObject, isMultifield, f_index) => {
+    let filter = [];
+    if (isMultifield) filter = queArr.filter((item) => item.handler == targetObject.multifield[f_index].value);
+    else filter = queArr.filter((item) => item.handler == targetObject.handler);
+
+    if (filter && filter.length == 1) {
+      const index = queArr.findIndex(item => item.handler === filter[0].handler)
+      return index;
+    }
+    else if (filter && filter.length > 1) {
+      let returnItem;
+      filter.map((item) => {
+        if (targetObject?.loop && targetObject?.loop == true) {
+          const id = queArr.findIndex(elem => elem.handler === item.handler
+            && elem?.isloop == targetObject?.loop
+            && elem?.loop_set_num == targetObject?.loop_set_num
+            && elem?.loop_triggered_qid == targetObject?.loop_triggered_qid);
+          return returnItem = id;
+        }
+        else {
+          const id = queArr.findIndex(elem => elem.handler === item.handler
+            && !elem.hasOwnProperty("loop_number")
+            && !elem.hasOwnProperty("loop_triggered_qid"))
+          return returnItem = id;
+        }
+      })
+      return returnItem;
+    }
+  };
+
+  /**
    * this method used for page change on navigation button click
    * validate current question condition
    * check noreturn flag include current question
@@ -6979,15 +7027,14 @@ class SurveyBox extends Component {
                       if (unMetTarget[k].multifield[j].value === questionsArray[i].handler && questionsArray[i].loop_triggered_qid === unMetTarget[k].loop_triggered_qid
                         && questionsArray[i].loop_set_num === unMetTarget[k].loop_set_num
                       ) {
-                        if (unMetTarget[k].do === "show_multiple") {
-                          if (unMetTarget[k].loop_number < questionsArray[i].loop_number) {
-                            questionsArray[i].isHide = false;
-                            //break;
+                        const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], true, j);
+                        if (unMetTarget[k].do === "show_multiple" && _qId) {
+                          if (unMetTarget[k].loop_number < questionsArray[_qId].loop_number) {
+                            questionsArray[_qId].isHide = false;
                           }
-                        } else if (unMetTarget[k].do === "hide_multiple") {
-                          if (unMetTarget[k].loop_number < questionsArray[i].loop_number) {
-                            questionsArray[i].isHide = false;
-                            // break;
+                        } else if (unMetTarget[k].do === "hide_multiple" && _qId) {
+                          if (unMetTarget[k].loop_number < questionsArray[_qId].loop_number) {
+                            questionsArray[_qId].isHide = false;
                           }
                         }
 
@@ -6999,19 +7046,20 @@ class SurveyBox extends Component {
                           unMetTarget[k].multifield[j].value ===
                           questionsArray[i].handler && !questionsArray[i].hasOwnProperty("loop_number")
                         ) {
+                          const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], true, j);
                           if (unMetTarget[k].do === "show_multiple") {
-                            questionsArray[i].isHide = false;
+                            questionsArray[_qId].isHide = false;
                           } else if (unMetTarget[k].do === "hide_multiple") {
-                            questionsArray[i].isHide = false;
+                            questionsArray[_qId].isHide = false;
                           }
 
                           if (unMetTarget[k].hasOwnProperty('isHide') && unMetTarget[k].isHide) {
                             if (unMetTarget[k].multifield[j].hasOwnProperty('trigger') && unMetTarget[k].multifield[j].trigger) {
                               // skip triggerd ques in the list
                             } else {
-                              questionsArray[i].isHide = true;
+                              questionsArray[_qId].isHide = true;
                               if (update && update === true) {
-                                this.clear_loop_answer(questionsArray, target[k], i, 'hide')
+                                this.clear_loop_answer(questionsArray, target[k], _qId, 'hide')
                               }
                             }
                           }
@@ -7023,19 +7071,19 @@ class SurveyBox extends Component {
                         unMetTarget[k].multifield[j].value ===
                         questionsArray[i].handler && !questionsArray[i].hasOwnProperty("loop_number")
                       ) {
-
+                        const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], true, j);
                         if (unMetTarget[k].do === "show_multiple") {
-                          questionsArray[i].isHide = false;
+                          questionsArray[_qId].isHide = false;
                         } else if (unMetTarget[k].do === "hide_multiple") {
-                          questionsArray[i].isHide = false;
+                          questionsArray[_qId].isHide = false;
                         }
                         if (unMetTarget[k].hasOwnProperty('isHide') && unMetTarget[k].isHide) {
                           if (unMetTarget[k].multifield[j].hasOwnProperty('trigger') && unMetTarget[k].multifield[j].trigger) {
                             // skip triggerd ques in the list
                           } else {
-                            questionsArray[i].isHide = true;
+                            questionsArray[_qId].isHide = true;
                             if (update && update === true) {
-                              this.clear_loop_answer(questionsArray, target[k], i, 'hide')
+                              this.clear_loop_answer(questionsArray, target[k], _qId, 'hide')
                             }
                           }
                         }
@@ -7050,14 +7098,15 @@ class SurveyBox extends Component {
                     if (unMetTarget[k].handler === questionsArray[i].handler && questionsArray[i].loop_triggered_qid === unMetTarget[k].loop_triggered_qid
                       && questionsArray[i].loop_set_num === unMetTarget[k].loop_set_num
                     ) {
+                      const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], false);
                       if (unMetTarget[k].do === "show") {
-                        if (unMetTarget[k].loop_number < questionsArray[i].loop_number) {
-                          questionsArray[i].isHide = false;
+                        if (unMetTarget[k].loop_number < questionsArray[_qId].loop_number) {
+                          questionsArray[_qId].isHide = false;
                           //break;  //Hide break to solve issue of loop inside loop(one more loop inside that) is not showing the condtion 
                         }
                       } else if (unMetTarget[k].do === "hide") {
-                        if (unMetTarget[k].loop_number < questionsArray[i].loop_number) {
-                          questionsArray[i].isHide = false;
+                        if (unMetTarget[k].loop_number < questionsArray[_qId].loop_number) {
+                          questionsArray[_qId].isHide = false;
                           //break;  //Hide break to solve issue of loop inside loop(one more loop inside that) is not hiding the condtion 
                         }
                       }
@@ -7065,19 +7114,21 @@ class SurveyBox extends Component {
                     else {
                       /** solve issue of hide is not working if target is outside loop then if condition not getting true */
                       if (unMetTarget[k].handler === questionsArray[i].handler) {
+                        const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], false);
                         if (unMetTarget[k].do === "show") {
-                          questionsArray[i].isHide = false;
+                          questionsArray[_qId].isHide = false;
                         } else if (unMetTarget[k].do === "hide") {
-                          questionsArray[i].isHide = false;
+                          questionsArray[_qId].isHide = false;
                         }
                       }
                     }
                   } else {
                     if (unMetTarget[k].handler === questionsArray[i].handler && !questionsArray[i].hasOwnProperty("loop_number")) {
+                      const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], false,);
                       if (unMetTarget[k].do === "show") {
-                        questionsArray[i].isHide = false;
+                        questionsArray[_qId].isHide = false;
                       } else if (unMetTarget[k].do === "hide") {
-                        questionsArray[i].isHide = false;
+                        questionsArray[_qId].isHide = false;
                       }
                     }
                   }
@@ -7114,15 +7165,16 @@ class SurveyBox extends Component {
                       if (target[k].multifield[j].value === questionsArray[i].handler && questionsArray[i].loop_triggered_qid === target[k].loop_triggered_qid
                         && questionsArray[i].loop_set_num === target[k].loop_set_num
                       ) {
+                        const _qId = this.findQuestionFromArray(questionsArray, target[k], true, j);
                         if (target[k].do === "show_multiple") {
-                          if (target[k].loop_number < questionsArray[i].loop_number) {
-                            questionsArray[i].isHide = false;
+                          if (target[k].loop_number < questionsArray[_qId].loop_number) {
+                            questionsArray[_qId].isHide = false;
                             //break;
                           }
                         } else if (target[k].do === "hide_multiple") {
-                          if (target[k].loop_number < questionsArray[i].loop_number) {
-                            questionsArray[i].isHide = true;
-                            this.clear_loop_answer(questionsArray, target[k], i, 'hide_loop')
+                          if (target[k].loop_number < questionsArray[_qId].loop_number) {
+                            questionsArray[_qId].isHide = true;
+                            this.clear_loop_answer(questionsArray, target[k], _qId, 'hide_loop')
                             //break;
                           }
                         }
@@ -7134,18 +7186,19 @@ class SurveyBox extends Component {
                           target[k].multifield[j].value ===
                           questionsArray[i].handler && !questionsArray[i].hasOwnProperty("loop_number")
                         ) {
+                          const _qId = this.findQuestionFromArray(questionsArray, target[k], true, j);
                           if (target[k].do === "show_multiple") {
-                            questionsArray[i].isHide = false;
+                            questionsArray[_qId].isHide = false;
                           } else if (target[k].do === "hide_multiple") {
-                            questionsArray[i].isHide = true;
-                            this.clear_loop_answer(questionsArray, target[k], i, 'hide')
+                            questionsArray[_qId].isHide = true;
+                            this.clear_loop_answer(questionsArray, target[k], _qId, 'hide')
                           }
 
                           if (target[k].hasOwnProperty('isHide') && target[k].isHide === true) {
                             if (target[k].multifield[j].hasOwnProperty('trigger') && target[k].multifield[j].trigger) {
                               target[k].multifield[j].trigger = false
                             } else {
-                              questionsArray[i].isHide = false;
+                              questionsArray[_qId].isHide = false;
                             }
                           }
                         }
@@ -7155,18 +7208,19 @@ class SurveyBox extends Component {
                         target[k].multifield[j].value ===
                         questionsArray[i].handler && !questionsArray[i].hasOwnProperty("loop_number")
                       ) {
+                        const _qId = this.findQuestionFromArray(questionsArray, target[k], true, j);
                         if (target[k].do === "show_multiple") {
-                          questionsArray[i].isHide = false;
+                          questionsArray[_qId].isHide = false;
                         } else if (target[k].do === "hide_multiple") {
-                          questionsArray[i].isHide = true;
-                          this.clear_loop_answer(questionsArray, target[k], i, 'hide')
+                          questionsArray[_qId].isHide = true;
+                          this.clear_loop_answer(questionsArray, target[k], _qId, 'hide')
                         }
                         if (target[k].hasOwnProperty('isHide') && target[k].isHide === true) {
                           if (target[k].multifield[j].hasOwnProperty('trigger') && target[k].multifield[j].trigger) {
                             target[k].multifield[j].trigger = false
                             // questionsArray[i].isHide = false;
                           } else {
-                            questionsArray[i].isHide = false;
+                            questionsArray[_qId].isHide = false;
                           }
 
                         }
@@ -7181,15 +7235,16 @@ class SurveyBox extends Component {
                     if (target[k].handler === questionsArray[i].handler && questionsArray[i].loop_triggered_qid === target[k].loop_triggered_qid
                       && questionsArray[i].loop_set_num === target[k].loop_set_num
                     ) {
+                      const _qId = this.findQuestionFromArray(questionsArray, target[k], false);
                       if (target[k].do === "show") {
-                        if (target[k].loop_number < questionsArray[i].loop_number) {
-                          questionsArray[i].isHide = false;
+                        if (target[k].loop_number < questionsArray[_qId].loop_number) {
+                          questionsArray[_qId].isHide = false;
                           //break;  //Hide break to solve issue of loop inside loop(one more loop inside that) is not showing the condtion 
                         }
                       } else if (target[k].do === "hide") {
-                        if (target[k].loop_number < questionsArray[i].loop_number) {
-                          questionsArray[i].isHide = true;
-                          this.clear_loop_answer(questionsArray, target[k], i, 'hide_loop');
+                        if (target[k].loop_number < questionsArray[_qId].loop_number) {
+                          questionsArray[_qId].isHide = true;
+                          this.clear_loop_answer(questionsArray, target[k], _qId, 'hide_loop');
                           //break;  //Hide break to solve issue of loop inside loop(one more loop inside that) is not hiding the condtion 
                         }
                       }
@@ -7197,21 +7252,23 @@ class SurveyBox extends Component {
                     else {
                       /** solve issue of hide is not working if target is outside loop then if condition not getting true */
                       if (target[k].handler === questionsArray[i].handler) {
+                        const _qId = this.findQuestionFromArray(questionsArray, target[k], false);
                         if (target[k].do === "show") {
-                          questionsArray[i].isHide = false;
+                          questionsArray[_qId].isHide = false;
                         } else if (target[k].do === "hide") {
-                          questionsArray[i].isHide = true;
-                          this.clear_loop_answer(questionsArray, target[k], i, 'hide')
+                          questionsArray[_qId].isHide = true;
+                          this.clear_loop_answer(questionsArray, target[k], _qId, 'hide')
                         }
                       }
                     }
                   } else {
                     if (target[k].handler === questionsArray[i].handler && !questionsArray[i].hasOwnProperty("loop_number")) {
+                      const _qId = this.findQuestionFromArray(questionsArray, target[k], false);
                       if (target[k].do === "show") {
-                        questionsArray[i].isHide = false;
+                        questionsArray[_qId].isHide = false;
                       } else if (target[k].do === "hide") {
-                        questionsArray[i].isHide = true;
-                        this.clear_loop_answer(questionsArray, target[k], i, 'hide')
+                        questionsArray[_qId].isHide = true;
+                        this.clear_loop_answer(questionsArray, target[k], _qId, 'hide')
                       }
                     }
                   }
@@ -7266,12 +7323,7 @@ class SurveyBox extends Component {
             }
           }
         }
-        setTimeout(() => {
-          this.setState({
-            progressNumber: this.state.progressNumber + 1,
-            maxReachedQuestion: this.state.progressNumber + 1
-          })
-        }, 200);
+
         if (
           !copyquestionArray[currentQuesIndx].properties.hasOwnProperty("noreturn") ||
           copyquestionArray[currentQuesIndx].properties.noreturn === 0
@@ -7307,52 +7359,81 @@ class SurveyBox extends Component {
     return hide;
   };
 
+  /** 
+   * Check if the same question appears more than once in the target/unMetTarget list 
+   * (e.g., in both 'hide' and 'hide_multiple') to avoid triggering 
+   * progress bar updates (increase/decrease) multiple times for the same question.
+   */
+  checkTargetedQuestionCount(target, handler, condition_do) {
+    const available = [];
+
+    for (let t = 0; t < target.length; t++) {
+      const item = target[t];
+
+      if ((item.do === "hide" || item.do === "show") && item.handler === handler) {
+        available.push({ source: item.do });
+      }
+
+      if ((item.do === "hide_multiple" || item.do === "show_multiple") && Array.isArray(item.multifield)) {
+        const found = item.multifield.find((field) => field.value === handler);
+        if (found) {
+          available.push({ source: item.do });
+        }
+      }
+    }
+    const index = available.findIndex((item) => item.source == condition_do);
+    return index;
+  };
+
   /** SET question length and progressNumber according to target and ishide questions */
-  setProgressNumber(questionArr, target, unMetTarget) {
+  async setProgressNumber(questionArr, target, unMetTarget) {
     if (target && target.length > 0) {
       for (let t = 0; t < target.length; t++) {
         if (target[t].do == "hide") {
           const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          const available = this.checkTargetedQuestionCount(target, target[t].handler, "hide");
           const find = this.state.questionsArr.find((item) => item.handler == target[t].handler);
           setTimeout(() => {
             this.setState({
-              questionLength: checkInHidden || !find ? this.state.questionLength : this.state.questionLength - 1
+              questionLength: checkInHidden || !find || available !== 0 ? this.state.questionLength : this.state.questionLength - 1
             }, () => {
               this.setState({
                 hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
               })
             })
-          }, 200);
+          }, 100);
         }
         else if (target[t].do == "show") {
           const checkInHidden = this.checkTargetQuestionHidden(target[t].handler);
+          const available = this.checkTargetedQuestionCount(target, target[t].handler, "show");
           const find = this.state.questionsArr.find((item) => item.handler == target[t].handler);
           setTimeout(() => {
             this.setState({
-              questionLength: checkInHidden || find ? this.state.questionLength + 1 : this.state.questionLength
+              questionLength: checkInHidden || find || available == 0 ? this.state.questionLength + 1 : this.state.questionLength
             }, () => {
               this.setState({
                 hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
               })
             })
-          }, 200);
+          }, 100);
         }
         else if (target[t].do == 'hide_multiple') {
           const multifield = target[t].multifield.length > 0 && target[t].multifield;
           for (let i = 0; i < multifield.length; i++) {
             const find = this.state.questionsArr.find((item) => item.handler == multifield[i].value);
             const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            const available = this.checkTargetedQuestionCount(target, multifield[i].value, "hide_multiple");
             if (checkInHidden || !find) { }
             else {
               setTimeout(() => {
                 this.setState({
-                  questionLength: this.state.questionLength - 1
+                  questionLength: available == 0 ? this.state.questionLength - 1 : this.state.questionLength
                 }, () => {
                   this.setState({
                     hiddenQuestionLength: questionArr.filter((item) => item.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
           }
         }
@@ -7361,16 +7442,17 @@ class SurveyBox extends Component {
           for (let i = 0; i < multifield.length; i++) {
             const find = this.state.questionsArr.find((item) => item.handler == multifield[i].value);
             const checkInHidden = this.checkTargetQuestionHidden(multifield[i].value);
+            const available = this.checkTargetedQuestionCount(target, multifield[i].value, "show_multiple");
             if (checkInHidden && find) {
               setTimeout(() => {
                 this.setState({
-                  questionLength: this.state.questionLength + 1
+                  questionLength: available == 0 ? this.state.questionLength + 1 : this.state.questionLength
                 }, () => {
                   this.setState({
                     hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
             else { }
           }
@@ -7385,6 +7467,7 @@ class SurveyBox extends Component {
           const existInTarget = this.findQuestionexistInTarget(unMetTarget[u].handler, target);
           const keyname = question?.questionType == 'capture' ? 'img_stats' : `${question?.questionType}_stats`;
           const stats = question?.properties[keyname] ? question?.properties[keyname] : "";
+          const available = this.checkTargetedQuestionCount(unMetTarget, unMetTarget[u].handler, unMetTarget[u].do);
           if (existInTarget) {
             setTimeout(() => {
               this.setState({
@@ -7394,38 +7477,42 @@ class SurveyBox extends Component {
                   hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                 })
               })
-            }, 200)
+            }, 100)
           }
           else {
             if (checkInHidden) {
               setTimeout(() => {
                 this.setState({
-                  questionLength: stats == "hide"
+                  questionLength: available !== 0
                     ? this.state.questionLength
-                    : stats == "show"
-                      ? this.state.questionLength + 1
-                      : this.state.questionLength + 1
+                    : stats == "hide"
+                      ? this.state.questionLength
+                      : stats == "show"
+                        ? this.state.questionLength + 1
+                        : this.state.questionLength + 1
                 }, () => {
                   this.setState({
                     hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
             else {
               setTimeout(() => {
                 this.setState({
-                  questionLength: stats == "hide"
-                    ? this.state.questionLength - 1
-                    : stats == "show"
-                      ? this.state.questionLength
-                      : this.state.questionLength
+                  questionLength: available !== 0
+                    ? this.state.questionLength
+                    : stats == "hide"
+                      ? this.state.questionLength - 1
+                      : stats == "show"
+                        ? this.state.questionLength
+                        : this.state.questionLength
                 }, () => {
                   this.setState({
                     hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
           }
         }
@@ -7437,6 +7524,7 @@ class SurveyBox extends Component {
             const existInTarget = this.findQuestionexistInTarget(multifield[i].value, target);
             const keyname = question && question?.questionType == 'capture' ? 'img_stats' : `${question?.questionType}_stats`;
             const stats = question && question?.properties[keyname] ? question?.properties[keyname] : "";
+            const available = this.checkTargetedQuestionCount(unMetTarget, multifield[i].value, unMetTarget[u].do);
             if (existInTarget) {
               setTimeout(() => {
                 this.setState({
@@ -7446,44 +7534,54 @@ class SurveyBox extends Component {
                     hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                   })
                 })
-              }, 200)
+              }, 100)
             }
             else {
               if (checkInHidden) {
                 setTimeout(() => {
                   this.setState({
-                    questionLength: stats == "hide"
+                    questionLength: available !== 0
                       ? this.state.questionLength
-                      : stats == "show"
-                        ? this.state.questionLength + 1
-                        : this.state.questionLength + 1
+                      : stats == "hide"
+                        ? this.state.questionLength
+                        : stats == "show"
+                          ? this.state.questionLength + 1
+                          : this.state.questionLength + 1
                   }, () => {
                     this.setState({
                       hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                     })
                   })
-                }, 200)
+                }, 100)
               }
               else {
                 setTimeout(() => {
                   this.setState({
-                    questionLength: stats == "hide"
-                      ? this.state.questionLength - 1
-                      : stats == "show"
-                        ? this.state.questionLength
-                        : this.state.questionLength
+                    questionLength: available !== 0
+                      ? this.state.questionLength
+                      : stats == "hide"
+                        ? this.state.questionLength - 1
+                        : stats == "show"
+                          ? this.state.questionLength
+                          : this.state.questionLength
                   }, () => {
                     this.setState({
                       hiddenQuestionLength: questionArr.filter((_que) => _que.isHide == true)
                     })
                   })
-                }, 200)
+                }, 100)
               }
             }
           }
         }
       }
     }
+    setTimeout(() => {
+      this.setState({
+        progressNumber: this.state.progressNumber + 1,
+        maxReachedQuestion: this.state.progressNumber + 1
+      })
+    }, 200);
   };
 
   /** Set hide/show question as per already hide/showed passed from admin BY KR*/
@@ -7611,10 +7709,11 @@ class SurveyBox extends Component {
                   unMetTarget[k].multifield[j].value ===
                   questionsArray[i].handler
                 ) {
+                  const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], true, j);
                   if (unMetTarget[k].do === "show_multiple") {
-                    questionsArray[i].isHide = false;
+                    questionsArray[_qId].isHide = false;
                   } else if (unMetTarget[k].do === "hide_multiple") {
-                    questionsArray[i].isHide = false;
+                    questionsArray[_qId].isHide = false;
                   }
                   break;
                 }
@@ -7623,10 +7722,11 @@ class SurveyBox extends Component {
           } else {
             for (let i = 0; i < questionsArray.length; i++) {
               if (unMetTarget[k].handler === questionsArray[i].handler) {
+                const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], false);
                 if (unMetTarget[k].do === "show") {
-                  questionsArray[i].isHide = false;
+                  questionsArray[_qId].isHide = false;
                 } else if (unMetTarget[k].do === "hide") {
-                  questionsArray[i].isHide = false;
+                  questionsArray[_qId].isHide = false;
                 }
               }
             }
@@ -7645,10 +7745,11 @@ class SurveyBox extends Component {
                   target[k].multifield[j].value ===
                   questionsArray[i].handler
                 ) {
+                  const _qId = this.findQuestionFromArray(questionsArray, target[k], true, j);
                   if (target[k].do === "show_multiple") {
-                    questionsArray[i].isHide = false;
+                    questionsArray[_qId].isHide = false;
                   } else if (target[k].do === "hide_multiple") {
-                    questionsArray[i].isHide = true;
+                    questionsArray[_qId].isHide = true;
                   }
                   break;
                 }
@@ -7657,10 +7758,11 @@ class SurveyBox extends Component {
           } else {
             for (let i = 0; i < questionsArray.length; i++) {
               if (target[k].handler === questionsArray[i].handler) {
+                const _qId = this.findQuestionFromArray(questionsArray, target[k], false);
                 if (target[k].do === "show") {
-                  questionsArray[i].isHide = false;
+                  questionsArray[_qId].isHide = false;
                 } else if (target[k].do === "hide") {
-                  questionsArray[i].isHide = true;
+                  questionsArray[_qId].isHide = true;
                 }
               }
             }
@@ -7798,6 +7900,10 @@ class SurveyBox extends Component {
     try {
       const getHiddenQuestion = await this.getHiddenQuestionsFromAsync();
       let setHiddenQuestion = [];
+      if (question.conditions.length > 0) {
+        const find = question.conditions.find((item) => item.target.do == "loop");
+        if (find) setHiddenQuestion.push(question)
+      }
       let mid = this.state.missionId.toString();
 
       let queueCompleted = this.checkPreviousPostInprogress();
@@ -8025,10 +8131,11 @@ class SurveyBox extends Component {
               if (
                 unMetTarget[k].multifield[j].value === questionsArray[i].handler
               ) {
+                const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], true, j);
                 if (unMetTarget[k].do === "show_multiple") {
-                  questionsArray[i].isHide = false;
+                  questionsArray[_qId].isHide = false;
                 } else if (unMetTarget[k].do === "hide_multiple") {
-                  questionsArray[i].isHide = false;
+                  questionsArray[_qId].isHide = false;
                 }
                 break;
               }
@@ -8037,10 +8144,11 @@ class SurveyBox extends Component {
         } else {
           for (let i = 0; i < questionsArray.length; i++) {
             if (unMetTarget[k].handler === questionsArray[i].handler) {
+              const _qId = this.findQuestionFromArray(questionsArray, unMetTarget[k], false);
               if (unMetTarget[k].do === "show") {
-                questionsArray[i].isHide = false;
+                questionsArray[_qId].isHide = false;
               } else if (unMetTarget[k].do === "hide") {
-                questionsArray[i].isHide = false;
+                questionsArray[_qId].isHide = false;
               }
             }
           }
@@ -8056,10 +8164,11 @@ class SurveyBox extends Component {
           for (let j = 0; j < target[k].multifield.length; j++) {
             for (let i = 0; i < questionsArray.length; i++) {
               if (target[k].multifield[j].value === questionsArray[i].handler) {
+                const _qId = this.findQuestionFromArray(questionsArray, target[k], true, j);
                 if (target[k].do === "show_multiple") {
-                  questionsArray[i].isHide = false;
+                  questionsArray[_qId].isHide = false;
                 } else if (target[k].do === "hide_multiple") {
-                  questionsArray[i].isHide = true;
+                  questionsArray[_qId].isHide = true;
                 }
                 break;
               }
@@ -8068,10 +8177,11 @@ class SurveyBox extends Component {
         } else {
           for (let i = 0; i < questionsArray.length; i++) {
             if (target[k].handler === questionsArray[i].handler) {
+              const _qId = this.findQuestionFromArray(questionsArray, target[k], false);
               if (target[k].do === "show") {
-                questionsArray[i].isHide = false;
+                questionsArray[_qId].isHide = false;
               } else if (target[k].do === "hide") {
-                questionsArray[i].isHide = true;
+                questionsArray[_qId].isHide = true;
               }
             }
           }
@@ -9028,7 +9138,7 @@ class SurveyBox extends Component {
         {questionArray.properties.hasOwnProperty("sublabel") && questionArray.properties.sublabel.length > 0 ?
           <RenderHtml
             source={{
-              html: questionArray.properties.sublabel_text ? questionArray.properties.sublabel_text : questionArray.properties.sublabel
+              html: this.changeInlineColor(questionArray.properties.sublabel_text ? questionArray.properties.sublabel_text : questionArray.properties.sublabel)
             }}
             contentWidth={width}
             baseStyle={styles.basestyleSublable}
@@ -9597,6 +9707,7 @@ class SurveyBox extends Component {
               type: 'mp4'
             };
             questionResponseQue[this.state.questionsArr[index].questionID] = true;
+            this.setState({})
             this.addAnswerForSelectedMedia(index, source);
           }
           // let videoRes = res.assets[0]
@@ -12174,7 +12285,7 @@ class SurveyBox extends Component {
                     source={this.headerClickImage(section.headerClicked)} />
                   {/* <Text style={styles.headerTitle}>{section.title}</Text> */}
                   {section.title ? <RenderHtml
-                    source={{ html: section.title_text ? section.title_text : section.title }}
+                    source={{ html: this.changeInlineColor(section.title_text ? section.title_text : section.title) }}
                     contentWidth={width}
                     baseStyle={styles.baseStyleSectionTitle}
                     //baseFontStyle={styles.headerTitle}
@@ -12227,7 +12338,7 @@ class SurveyBox extends Component {
                     {/* <Text style={styles.subText}>{item.sublabel}</Text> */}
                     {item.sublabel ?
                       <RenderHtml
-                        source={{ html: item.sublabel_text ? item.sublabel_text : item.sublabel }}
+                        source={{ html: this.changeInlineColor(item.sublabel_text ? item.sublabel_text : item.sublabel) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -12329,7 +12440,7 @@ class SurveyBox extends Component {
                     {/* <Text
                       style={styles.headerTitle}>{section.title}</Text> */}
                     {section.title ? <RenderHtml
-                      source={{ html: section.title_text ? section.title_text : section.title }}
+                      source={{ html: this.changeInlineColor(section.title_text ? section.title_text : section.title) }}
                       contentWidth={width}
                       baseStyle={styles.baseStyleSectionTitle}
                       //baseFontStyle={styles.headerTitle}
@@ -12380,7 +12491,7 @@ class SurveyBox extends Component {
                         source={this.imageRadioBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.sublabel}</Text> */}
                       {item.sublabel ? <RenderHtml
-                        source={{ html: item.sublabel_text ? item.sublabel_text : item.sublabel }}
+                        source={{ html: this.changeInlineColor(item.sublabel_text ? item.sublabel_text : item.sublabel) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -12537,7 +12648,7 @@ class SurveyBox extends Component {
                       />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
-                        source={{ html: item.label_text ? item.label_text : item.label }}
+                        source={{ html: this.changeInlineColor(item.label_text ? item.label_text : item.label) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -12720,7 +12831,7 @@ class SurveyBox extends Component {
                                 style={styles.checkBoxImage}
                                 source={choice_type === 'single' ? this.imageRadioBox(elem.isClicked) : this.imageCheckBox(elem.isClicked)} />
                               {elem.label ? <RenderHtml
-                                source={{ html: elem.label_text ? elem.label_text : elem.label }}
+                                source={{ html: this.changeInlineColor(elem.label_text ? elem.label_text : elem.label) }}
                                 contentWidth={width}
                                 baseStyle={styles.baseStyleSubText}
                                 //baseFontStyle={styles.subText}
@@ -12811,7 +12922,7 @@ class SurveyBox extends Component {
                         source={this.imageRadioBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
-                        source={{ html: item.label_text ? item.label_text : item.label }}
+                        source={{ html: this.changeInlineColor(item.label_text ? item.label_text : item.label) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -12908,7 +13019,7 @@ class SurveyBox extends Component {
                         source={this.imageCheckBox(item.isClicked)} />
                       {/* <Text style={styles.subText}>{item.label}</Text> */}
                       {item.label ? <RenderHtml
-                        source={{ html: item.label_text ? item.label_text : item.label }}
+                        source={{ html: this.changeInlineColor(item.label_text ? item.label_text : item.label) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleSubText}
                         //baseFontStyle={styles.subText}
@@ -13762,6 +13873,25 @@ class SurveyBox extends Component {
     }
   }
 
+  /** Check If there is any inline color exist in text from colormap array
+  *  and change it to darkblue color if it's android
+  */
+  changeInlineColor = (text) => {
+    const _colorMap = [
+      "windowtext", "window", "highlight", "highlighttext", "buttonface", "buttontext", "threedlightshadow",
+      "threedshadow", "inactivecaption", "inactivecaptiontext", "infobackground", "infotext"
+    ]
+    let updatedText = text;
+
+    _colorMap.forEach((colorKeyword) => {
+      const regex = new RegExp(`(color|background-color)\\s*:\\s*${colorKeyword}\\s*;?`, 'gi');
+      updatedText = updatedText.replace(regex, `$1: ${Color.colorDarkBlue};`);
+    });
+
+    if (Platform.OS == 'android') return updatedText;
+    else return text;
+  };
+
   /** Class render method */
   render() {
     const {
@@ -13838,7 +13968,7 @@ class SurveyBox extends Component {
                     {/** Dynamic title html element*/}
                     <View style={{ paddingTop: 10, paddingBottom: 0 }}>
                       {questionsArr[pageCount].properties.question_text || questionsArr[pageCount].properties.question ? <RenderHtml
-                        source={{ html: questionsArr[pageCount].properties.question_text ? questionsArr[pageCount].properties.question_text : questionsArr[pageCount].properties.question }}
+                        source={{ html: this.changeInlineColor(questionsArr[pageCount].properties.question_text ? questionsArr[pageCount].properties.question_text : questionsArr[pageCount].properties.question) }}
                         contentWidth={width}
                         baseStyle={styles.baseStyleQuestionText}
                         //baseFontStyle={styles.questionText}
@@ -13852,7 +13982,7 @@ class SurveyBox extends Component {
                       "subheading"
                     ) && questionsArr[pageCount].properties.subheading.length > 0) && (
                         <RenderHtml
-                          source={{ html: questionsArr[pageCount].properties.subheading_text ? questionsArr[pageCount].properties.subheading_text : questionsArr[pageCount].properties.subheading }}
+                          source={{ html: this.changeInlineColor(questionsArr[pageCount].properties.subheading_text ? questionsArr[pageCount].properties.subheading_text : questionsArr[pageCount].properties.subheading) }}
                           contentWidth={width}
                           baseStyle={styles.baseStyleSubTitle}
                           // baseFontStyle={styles.hintText}
@@ -14402,7 +14532,7 @@ class SurveyBox extends Component {
                         {rightDisable === true && initialLoader === false && (
                           <TouchableOpacity
                             style={styles.submit}
-                            disabled={this.state.isSubmitDisable}
+                            disabled={this.checkPreviousPostInprogress() == false || this.state.isSubmitDisable}
                             onPress={() => {
                               if (this.state.videoProcessing === true) {
                                 Constants.showSnack(translation[Language].Video_Processing_Msg);
@@ -14418,7 +14548,10 @@ class SurveyBox extends Component {
                             }
                             }
                           >
-                            <Text style={styles.submitText}>{translation[Language].Submit}</Text>
+                            {
+                              this.checkPreviousPostInprogress() == false ? <ActivityIndicator color={Color.colorWhite} />
+                                : <Text style={styles.submitText}>{translation[Language].Submit}</Text>
+                            }
                           </TouchableOpacity>
                         )}
                       </View>
